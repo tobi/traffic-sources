@@ -1,0 +1,330 @@
+{
+ "devices": [
+  {
+   "re": "OculusBrowser|\\bQuest( \\d|;)",
+   "os": "meta_horizon_os",
+   "form_factor": "xr_headset",
+   "device": "Meta Quest",
+   "src": "https://developers.meta.com/horizon/documentation/web/browser-specs/ ; https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "PicoBrowser|\\bPico \\d",
+   "os": "pico_os",
+   "form_factor": "xr_headset",
+   "device": "Pico",
+   "src": "unverified token",
+   "verified": null
+  },
+  {
+   "re": "\\bPlayStation 5|PlayStation; PlayStation 5",
+   "os": "playstation",
+   "form_factor": "console",
+   "device": "PlayStation 5",
+   "src": "https://useragent.in/game-console-user-agents (sample)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "\\bPlayStation (4|3|Vita|Portable)",
+   "os": "playstation",
+   "form_factor": "console",
+   "device": "PlayStation",
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "\\bXbox\\b",
+   "os": "xbox",
+   "form_factor": "console",
+   "device": "Xbox",
+   "src": "https://www.testmuai.com/latest-version/edge-user-agents/ ; https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "Nintendo Switch|NintendoBrowser",
+   "os": "nintendo_switch",
+   "form_factor": "console",
+   "device": "Nintendo Switch",
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "Steam Deck|Valve Steam Gamepad",
+   "os": "steamos",
+   "form_factor": "console",
+   "device": "Steam Deck",
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "\\bAFT[A-Z0-9]{1,6}\\b|AmazonWebAppPlatform",
+   "os": "fire_os",
+   "form_factor": "tv",
+   "device": "Fire TV",
+   "src": "https://developer.amazon.com/docs/fire-tv/user-agent-strings.html",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "Kindle/|\\bKF[A-Z]{2,4}\\b",
+   "os": "fire_os",
+   "form_factor": "e_reader",
+   "device": "Kindle",
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "Tizen.*(SMART-TV|TV)|SMART-TV.*Tizen",
+   "os": "tizen",
+   "form_factor": "tv",
+   "device": "Samsung TV",
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "Web0S|webOS.*TV|NetCast",
+   "os": "webos",
+   "form_factor": "tv",
+   "device": "LG TV",
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "^Roku/|\\bRoku\\b",
+   "os": "roku",
+   "form_factor": "tv",
+   "device": "Roku",
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "AppleTV|Apple TV|tvOS",
+   "os": "tvos",
+   "form_factor": "tv",
+   "device": "Apple TV",
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "CrKey/",
+   "os": "cast_os",
+   "form_factor": "smart_display",
+   "device": "Chromecast / Google Cast",
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "GoogleTV|Android TV|BRAVIA|\\bAFTV\\b|; TV\\)|Large Screen|SMART-TV|HbbTV|SmartTV",
+   "os": "android_tv",
+   "form_factor": "tv",
+   "device": null,
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "QtCarBrowser|\\bTesla\\b",
+   "os": "tesla",
+   "form_factor": "car",
+   "device": "Tesla",
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0) (QtCarBrowser legacy; current Tesla token unverified)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "Android Automotive|\\bAAOS\\b",
+   "os": "android_automotive",
+   "form_factor": "car",
+   "device": null,
+   "src": "unverified token",
+   "verified": null
+  },
+  {
+   "re": "KAIOS|KaiOS",
+   "os": "kaios",
+   "form_factor": "phone",
+   "device": "KaiOS feature phone",
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "OpenHarmony|ArkWeb/|HarmonyOS",
+   "os": "harmonyos",
+   "form_factor": null,
+   "device": "Huawei",
+   "src": "https://developer.huawei.com/consumer/en/doc/harmonyos-guides/web-default-useragent",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "watchOS|Watch\\d,",
+   "os": "watchos",
+   "form_factor": "wearable",
+   "device": "Apple Watch",
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "Wear OS|\\bwearos\\b",
+   "os": "wear_os",
+   "form_factor": "wearable",
+   "device": null,
+   "src": "unverified token",
+   "verified": null
+  },
+  {
+   "re": "Echo Show|\\bAEO[A-Z]{2}\\b",
+   "os": "fire_os",
+   "form_factor": "smart_display",
+   "device": "Echo Show",
+   "src": "unverified token",
+   "verified": null
+  },
+  {
+   "re": "CrOS ",
+   "os": "chromeos",
+   "form_factor": "desktop",
+   "device": null,
+   "src": "https://www.chromium.org/updates/ua-reduction/",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "iPad|iPadOS",
+   "os": "ipados",
+   "form_factor": "tablet",
+   "device": "Apple",
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "iPhone|iPod|\\biOS\\b",
+   "os": "ios",
+   "form_factor": "phone",
+   "device": "Apple",
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "Android.*(Mobile|; wv\\))",
+   "os": "android",
+   "form_factor": "phone",
+   "device": null,
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "Android",
+   "os": "android",
+   "form_factor": "tablet",
+   "device": null,
+   "src": "https://developer.chrome.com/docs/multidevice/user-agent (Android without 'Mobile' = tablet)",
+   "verified": null
+  },
+  {
+   "re": "Windows Phone",
+   "os": "windows",
+   "form_factor": "phone",
+   "device": null,
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "Windows NT",
+   "os": "windows",
+   "form_factor": "desktop",
+   "device": null,
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "Macintosh|Mac OS X",
+   "os": "macos",
+   "form_factor": "desktop",
+   "device": "Apple",
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0) (iPadOS desktop-mode and visionOS Safari also send Macintosh; cannot separate by UA)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "Linux|X11",
+   "os": "linux",
+   "form_factor": "desktop",
+   "device": null,
+   "src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
+   "verified": "2026-10-24"
+  }
+ ],
+ "browsers": [
+  {
+   "re": "SamsungBrowser/",
+   "name": "samsung_internet"
+  },
+  {
+   "re": "OculusBrowser/",
+   "name": "meta_quest_browser"
+  },
+  {
+   "re": "Silk/",
+   "name": "silk"
+  },
+  {
+   "re": "Edge?/|EdgA/|EdgiOS/",
+   "name": "edge"
+  },
+  {
+   "re": "OPR/|Opera",
+   "name": "opera"
+  },
+  {
+   "re": "YaBrowser/",
+   "name": "yandex"
+  },
+  {
+   "re": "UCBrowser/",
+   "name": "uc"
+  },
+  {
+   "re": "DuckDuckGo/",
+   "name": "duckduckgo"
+  },
+  {
+   "re": "Brave",
+   "name": "brave"
+  },
+  {
+   "re": "FxiOS/|Firefox/",
+   "name": "firefox"
+  },
+  {
+   "re": "CriOS/|Chrome/",
+   "name": "chrome"
+  },
+  {
+   "re": "Version/[\\d.]+.*Safari/",
+   "name": "safari"
+  }
+ ],
+ "clientHints": {
+  "_src": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Client_hints ; https://wicg.github.io/ua-client-hints/",
+  "_verified": "2026-10-24",
+  "platform_map": {
+   "Android": "android",
+   "iOS": "ios",
+   "Windows": "windows",
+   "macOS": "macos",
+   "Linux": "linux",
+   "Chrome OS": "chromeos",
+   "Chromium OS": "chromeos",
+   "Fuchsia": "fuchsia",
+   "Unknown": "unknown"
+  },
+  "form_factor_map": {
+   "Desktop": "desktop",
+   "Automotive": "car",
+   "Mobile": "phone",
+   "Tablet": "tablet",
+   "XR": "xr_headset",
+   "EInk": "e_reader",
+   "Watch": "wearable"
+  }
+ },
+ "surfaces": {
+  "_src": "https://developer.android.com/develop/ui/views/layout/webapps/webview ; https://developer.chrome.com/docs/android/custom-tabs ; https://developer.chrome.com/docs/android/trusted-web-activity ; https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller",
+  "_verified": "2026-10-24"
+ }
+}

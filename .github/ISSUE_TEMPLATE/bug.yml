@@ -1,0 +1,26 @@
+name: Bug report
+description: Something in the crate or CLI misbehaves.
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you expected, and what you got instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: The smallest `Request` or log line that shows it, plus the output.
+      render: text
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: traffic-sources 0.3.0, rustc 1.99.1
+    validations:
+      required: true

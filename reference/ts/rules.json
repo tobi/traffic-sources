@@ -1,0 +1,967 @@
+{
+ "clickIds": [
+  {
+   "param": "gclid",
+   "source": "google",
+   "medium": "cpc",
+   "channel": "paid_search"
+  },
+  {
+   "param": "gbraid",
+   "source": "google",
+   "medium": "cpc",
+   "channel": "paid_search"
+  },
+  {
+   "param": "wbraid",
+   "source": "google",
+   "medium": "cpc",
+   "channel": "paid_search"
+  },
+  {
+   "param": "dclid",
+   "source": "google",
+   "medium": "display",
+   "channel": "display"
+  },
+  {
+   "param": "msclkid",
+   "source": "bing",
+   "medium": "cpc",
+   "channel": "paid_search"
+  },
+  {
+   "param": "yclid",
+   "source": "yandex",
+   "medium": "cpc",
+   "channel": "paid_search"
+  },
+  {
+   "param": "ttclid",
+   "source": "tiktok",
+   "medium": "paid_social",
+   "channel": "paid_social"
+  },
+  {
+   "param": "ScCid",
+   "source": "snapchat",
+   "medium": "paid_social",
+   "channel": "paid_social"
+  },
+  {
+   "param": "twclid",
+   "source": "x",
+   "medium": "paid_social",
+   "channel": "paid_social"
+  },
+  {
+   "param": "li_fat_id",
+   "source": "linkedin",
+   "medium": "paid_social",
+   "channel": "paid_social"
+  },
+  {
+   "param": "epik",
+   "source": "pinterest",
+   "medium": "paid_social",
+   "channel": "paid_social"
+  },
+  {
+   "param": "rdt_cid",
+   "source": "reddit",
+   "medium": "paid_social",
+   "channel": "paid_social"
+  },
+  {
+   "param": "qclid",
+   "source": "quora",
+   "medium": "paid_social",
+   "channel": "paid_social"
+  },
+  {
+   "param": "irclickid",
+   "source": "impact",
+   "medium": "affiliate",
+   "channel": "affiliate"
+  },
+  {
+   "param": "cjevent",
+   "source": "cj",
+   "medium": "affiliate",
+   "channel": "affiliate"
+  },
+  {
+   "param": "ranMID",
+   "source": "rakuten",
+   "medium": "affiliate",
+   "channel": "affiliate"
+  },
+  {
+   "param": "awc",
+   "source": "awin",
+   "medium": "affiliate",
+   "channel": "affiliate"
+  },
+  {
+   "param": "obclid",
+   "source": "outbrain",
+   "medium": "native",
+   "channel": "display"
+  },
+  {
+   "param": "tblci",
+   "source": "taboola",
+   "medium": "native",
+   "channel": "display"
+  },
+  {
+   "param": "fbclid",
+   "source": "facebook",
+   "medium": "social",
+   "channel": "organic_social",
+   "weak": true
+  },
+  {
+   "param": "igshid",
+   "source": "instagram",
+   "medium": "social",
+   "channel": "organic_social",
+   "weak": true
+  },
+  {
+   "param": "igsh",
+   "source": "instagram",
+   "medium": "social",
+   "channel": "organic_social",
+   "weak": true
+  },
+  {
+   "param": "srsltid",
+   "source": "google",
+   "medium": "organic",
+   "channel": "organic_shopping",
+   "weak": true
+  },
+  {
+   "param": "mc_cid",
+   "source": "mailchimp",
+   "medium": "email",
+   "channel": "email"
+  },
+  {
+   "param": "_kx",
+   "source": "klaviyo",
+   "medium": "email",
+   "channel": "email"
+  },
+  {
+   "param": "_hsenc",
+   "source": "hubspot",
+   "medium": "email",
+   "channel": "email"
+  },
+  {
+   "param": "gclsrc",
+   "source": "google",
+   "medium": "cpc",
+   "channel": "paid_search"
+  },
+  {
+   "param": "gad_source",
+   "source": "google",
+   "medium": "cpc",
+   "channel": "paid_search"
+  },
+  {
+   "param": "gad_campaignid",
+   "source": "google",
+   "medium": "cpc",
+   "channel": "paid_search"
+  },
+  {
+   "param": "sccid",
+   "source": "snapchat",
+   "medium": "paid_social",
+   "channel": "paid_social"
+  },
+  {
+   "param": "ob_click_id",
+   "source": "outbrain",
+   "medium": "native",
+   "channel": "display"
+  },
+  {
+   "param": "irclid",
+   "source": "impact",
+   "medium": "affiliate",
+   "channel": "affiliate"
+  },
+  {
+   "param": "ranSiteID",
+   "source": "rakuten",
+   "medium": "affiliate",
+   "channel": "affiliate"
+  },
+  {
+   "param": "mc_eid",
+   "source": "mailchimp",
+   "medium": "email",
+   "channel": "email"
+  },
+  {
+   "param": "_hsmi",
+   "source": "hubspot",
+   "medium": "email",
+   "channel": "email"
+  },
+  {
+   "param": "mkt_tok",
+   "source": "marketo",
+   "medium": "email",
+   "channel": "email"
+  },
+  {
+   "param": "vero_id",
+   "source": "vero",
+   "medium": "email",
+   "channel": "email"
+  },
+  {
+   "param": "oly_enc_id",
+   "source": "omeda",
+   "medium": "email",
+   "channel": "email"
+  },
+  {
+   "param": "s_kwcid",
+   "source": "adobe",
+   "medium": "cpc",
+   "channel": "paid_search"
+  },
+  {
+   "param": "ef_id",
+   "source": "adobe",
+   "medium": "cpc",
+   "channel": "paid_other"
+  },
+  {
+   "param": "oppref",
+   "source": "chatgpt",
+   "medium": "cpc",
+   "channel": "paid_ai"
+  },
+  {
+   "param": "ysclid",
+   "source": "yandex",
+   "medium": "organic",
+   "channel": "organic_search",
+   "weak": true
+  }
+ ],
+ "uaTokens": [
+  {
+   "re": "\\bFB[\\w_]+/(Messenger|MESSENGER)|FBAN/MessengerForiOS",
+   "source": "messenger",
+   "type": "social"
+  },
+  {
+   "re": "\\bInstagram \\d",
+   "source": "instagram",
+   "type": "social"
+  },
+  {
+   "re": "\\bBarcelona \\d",
+   "source": "threads",
+   "type": "social"
+  },
+  {
+   "re": "FBAN/|FB_IAB/|FBAV/|MetaIAB",
+   "source": "facebook",
+   "type": "social"
+  },
+  {
+   "re": "musical_ly|BytedanceWebview|trill_",
+   "source": "tiktok",
+   "type": "social"
+  },
+  {
+   "re": "\\bSnapchat/",
+   "source": "snapchat",
+   "type": "social"
+  },
+  {
+   "re": "Twitter for i(Phone|Pad)(/[\\d.]+)?|TwitterAndroid(/[\\d.]+)?",
+   "source": "x",
+   "type": "social",
+   "note": "X in-app browser: iOS WKWebView 'Twitter for iPhone/<ver>' (iPad builds also say iPhone); Android WebView '; wv)' + 'TwitterAndroid/<ver>'. Android may instead use Chrome Custom Tabs (no token)."
+  },
+  {
+   "re": "LinkedInApp",
+   "source": "linkedin",
+   "type": "social"
+  },
+  {
+   "re": "\\[Pinterest/|Pinterest for Android",
+   "source": "pinterest",
+   "type": "social"
+  },
+  {
+   "re": "\\bReddit/",
+   "source": "reddit",
+   "type": "social"
+  },
+  {
+   "re": "\\b(WAiOS|WA4A)/",
+   "source": "whatsapp",
+   "type": "social"
+  },
+  {
+   "re": "Telegram-Android/",
+   "source": "telegram",
+   "type": "social"
+  },
+  {
+   "re": "\\bLine/\\d",
+   "source": "line",
+   "type": "social"
+  },
+  {
+   "re": "MicroMessenger/",
+   "source": "wechat",
+   "type": "social"
+  },
+  {
+   "re": "KAKAOTALK",
+   "source": "kakaotalk",
+   "type": "social"
+  },
+  {
+   "re": "NAVER\\(inapp;",
+   "source": "naver",
+   "type": "search"
+  },
+  {
+   "re": "\\bGSA/",
+   "source": "google",
+   "type": "search"
+  },
+  {
+   "re": "\\bTeams/\\d",
+   "source": "teams",
+   "type": "social"
+  },
+  {
+   "re": "Weibo|__weibo__",
+   "source": "weibo",
+   "type": "social"
+  },
+  {
+   "re": "aweme|ByteDance.*Douyin",
+   "source": "douyin",
+   "type": "social"
+  },
+  {
+   "re": "discord",
+   "source": "discord",
+   "type": "social"
+  },
+  {
+   "re": "Zalo",
+   "source": "zalo",
+   "type": "social"
+  },
+  {
+   "re": "Viber",
+   "source": "viber",
+   "type": "social"
+  },
+  {
+   "re": "\\bYJApp",
+   "source": "yahoo_japan",
+   "type": "search"
+  },
+  {
+   "re": "BingSapphire|BingWeb",
+   "source": "bing",
+   "type": "search"
+  },
+  {
+   "re": "\\bQQ/\\d|MQQBrowser",
+   "source": "qq",
+   "type": "social"
+  },
+  {
+   "re": "Slack(_SSB)?/",
+   "source": "slack",
+   "type": "social"
+  },
+  {
+   "re": "\\bTeams/",
+   "source": "teams",
+   "type": "social"
+  },
+  {
+   "re": "\\btrill_\\d|ByteLocale",
+   "source": "tiktok",
+   "type": "social"
+  },
+  {
+   "re": "RedditAndroid|\\bReddit/",
+   "source": "reddit",
+   "type": "social"
+  },
+  {
+   "re": "Telegram(-Android)?/",
+   "source": "telegram",
+   "type": "social"
+  }
+ ],
+ "xRequestedWith": {
+  "com.facebook.katana": "facebook",
+  "com.facebook.orca": "messenger",
+  "com.instagram.android": "instagram",
+  "com.instagram.barcelona": "threads",
+  "com.zhiliaoapp.musically": "tiktok",
+  "com.ss.android.ugc.trill": "tiktok",
+  "com.ss.android.ugc.aweme": "douyin",
+  "com.snapchat.android": "snapchat",
+  "com.twitter.android": "x",
+  "com.linkedin.android": "linkedin",
+  "com.pinterest": "pinterest",
+  "com.reddit.frontpage": "reddit",
+  "com.whatsapp": "whatsapp",
+  "org.telegram.messenger": "telegram",
+  "jp.naver.line.android": "line",
+  "com.tencent.mm": "wechat",
+  "com.kakao.talk": "kakaotalk",
+  "com.nhn.android.search": "naver",
+  "com.google.android.googlequicksearchbox": "google",
+  "com.google.android.gm": "gmail",
+  "com.microsoft.teams": "teams",
+  "com.Slack": "slack",
+  "com.discord": "discord",
+  "com.vkontakte.android": "vk",
+  "com.sina.weibo": "weibo",
+  "com.xingin.xhs": "xiaohongshu",
+  "com.zing.zalo": "zalo",
+  "com.viber.voip": "viber",
+  "com.microsoft.office.outlook": "outlook",
+  "com.google.android.youtube": "youtube",
+  "org.joinmastodon.android": "mastodon",
+  "xyz.blueskyweb.app": "bluesky",
+  "com.slack": "slack",
+  "com.google.android.apps.messaging": "sms",
+  "com.samsung.android.messaging": "sms"
+ },
+ "referrers": [
+  {
+   "re": "^ntp\\.msn\\.com$",
+   "source": "bing",
+   "type": "search",
+   "note": "Edge new tab page"
+  },
+  {
+   "re": "^syndicatedsearch\\.goog$",
+   "source": "google",
+   "type": "search",
+   "paid": true,
+   "note": "Google AdSense for Search"
+  },
+  {
+   "re": "(^|\\.)googleadservices\\.com$",
+   "source": "google",
+   "type": "search",
+   "paid": true
+  },
+  {
+   "re": "^l\\.threads\\.(com|net)$|(^|\\.)threads\\.(com|net)$",
+   "source": "threads",
+   "type": "social"
+  },
+  {
+   "re": "^out\\.reddit\\.com$",
+   "source": "reddit",
+   "type": "social"
+  },
+  {
+   "re": "^away\\.vk\\.com$|(^|\\.)vk\\.com$",
+   "source": "vk",
+   "type": "social"
+  },
+  {
+   "re": "^statics\\.teams\\.cdn\\.office\\.net$|(^|\\.)teams\\.(microsoft|live)\\.com$",
+   "source": "teams",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)officeapps\\.live\\.com$",
+   "source": "microsoft365",
+   "type": "referral"
+  },
+  {
+   "re": "^(go\\.)?bsky\\.app$",
+   "source": "bluesky",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)(chatgpt\\.com|chat\\.openai\\.com)$",
+   "source": "chatgpt",
+   "type": "ai"
+  },
+  {
+   "re": "(^|\\.)perplexity\\.ai$",
+   "source": "perplexity",
+   "type": "ai"
+  },
+  {
+   "re": "^claude\\.ai$",
+   "source": "claude",
+   "type": "ai"
+  },
+  {
+   "re": "^(gemini|bard|notebooklm)\\.google\\.com$",
+   "source": "gemini",
+   "type": "ai"
+  },
+  {
+   "re": "^copilot\\.microsoft\\.com$",
+   "source": "copilot",
+   "type": "ai"
+  },
+  {
+   "re": "^grok\\.com$",
+   "source": "grok",
+   "type": "ai"
+  },
+  {
+   "re": "^chat\\.deepseek\\.com$",
+   "source": "deepseek",
+   "type": "ai"
+  },
+  {
+   "re": "(^|\\.)meta\\.ai$",
+   "source": "meta_ai",
+   "type": "ai"
+  },
+  {
+   "re": "^duck\\.ai$",
+   "source": "duck_ai",
+   "type": "ai"
+  },
+  {
+   "re": "^poe\\.com$",
+   "source": "poe",
+   "type": "ai"
+  },
+  {
+   "re": "^chat\\.mistral\\.ai$",
+   "source": "mistral",
+   "type": "ai"
+  },
+  {
+   "re": "^(you\\.com|phind\\.com|chat\\.qwen\\.ai|kimi\\.com|(www\\.)?doubao\\.com|iask\\.ai)$",
+   "source": "other_ai",
+   "type": "ai"
+  },
+  {
+   "re": "(^|\\.)google\\.[a-z.]+$",
+   "source": "google",
+   "type": "search"
+  },
+  {
+   "re": "^(www\\.)?bing\\.com$|^cn\\.bing\\.com$",
+   "source": "bing",
+   "type": "search"
+  },
+  {
+   "re": "duckduckgo\\.com$",
+   "source": "duckduckgo",
+   "type": "search"
+  },
+  {
+   "re": "(^|\\.)search\\.yahoo\\.(com|co\\.jp)$|^(www\\.)?yahoo\\.",
+   "source": "yahoo",
+   "type": "search"
+  },
+  {
+   "re": "(^|\\.)yandex\\.[a-z.]+$|^ya\\.ru$",
+   "source": "yandex",
+   "type": "search"
+  },
+  {
+   "re": "(^|\\.)baidu\\.com$",
+   "source": "baidu",
+   "type": "search"
+  },
+  {
+   "re": "(^|\\.)naver\\.com$",
+   "source": "naver",
+   "type": "search"
+  },
+  {
+   "re": "ecosia\\.org$",
+   "source": "ecosia",
+   "type": "search"
+  },
+  {
+   "re": "search\\.brave\\.com$",
+   "source": "brave",
+   "type": "search"
+  },
+  {
+   "re": "(^|\\.)daum\\.net$",
+   "source": "daum",
+   "type": "search"
+  },
+  {
+   "re": "(^|\\.)seznam\\.cz$",
+   "source": "seznam",
+   "type": "search"
+  },
+  {
+   "re": "(^|\\.)startpage\\.com$|kagi\\.com$|qwant\\.com$",
+   "source": "other_search",
+   "type": "search"
+  },
+  {
+   "re": "chatgpt\\.com$|chat\\.openai\\.com$",
+   "source": "chatgpt",
+   "type": "ai"
+  },
+  {
+   "re": "perplexity\\.ai$",
+   "source": "perplexity",
+   "type": "ai"
+  },
+  {
+   "re": "gemini\\.google\\.com$|bard\\.google\\.com$",
+   "source": "gemini",
+   "type": "ai"
+  },
+  {
+   "re": "copilot\\.microsoft\\.com$|edgeservices\\.bing\\.com$",
+   "source": "copilot",
+   "type": "ai"
+  },
+  {
+   "re": "claude\\.ai$",
+   "source": "claude",
+   "type": "ai"
+  },
+  {
+   "re": "grok\\.com$",
+   "source": "grok",
+   "type": "ai"
+  },
+  {
+   "re": "chat\\.deepseek\\.com$|you\\.com$|phind\\.com$|meta\\.ai$|chat\\.mistral\\.ai$",
+   "source": "other_ai",
+   "type": "ai"
+  },
+  {
+   "re": "(^|\\.)(facebook\\.com|fb\\.me|fb\\.com)$",
+   "source": "facebook",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)messenger\\.com$",
+   "source": "messenger",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)instagram\\.com$",
+   "source": "instagram",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)threads\\.(net|com)$",
+   "source": "threads",
+   "type": "social"
+  },
+  {
+   "re": "^t\\.co$|(^|\\.)(twitter|x)\\.com$",
+   "source": "x",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)linkedin\\.com$|^lnkd\\.in$",
+   "source": "linkedin",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)tiktok\\.com$",
+   "source": "tiktok",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)snapchat\\.com$",
+   "source": "snapchat",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)pinterest\\.[a-z.]+$|^pin\\.it$",
+   "source": "pinterest",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)reddit\\.com$|^redd\\.it$",
+   "source": "reddit",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)youtube\\.com$|^youtu\\.be$",
+   "source": "youtube",
+   "type": "video"
+  },
+  {
+   "re": "(^|\\.)twitch\\.tv$",
+   "source": "twitch",
+   "type": "video"
+  },
+  {
+   "re": "(^|\\.)kick\\.com$",
+   "source": "kick",
+   "type": "video"
+  },
+  {
+   "re": "(^|\\.)discord(app)?\\.com$",
+   "source": "discord",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)web\\.telegram\\.org$|^t\\.me$",
+   "source": "telegram",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)whatsapp\\.com$",
+   "source": "whatsapp",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)slack\\.com$|slack-redir\\.net$",
+   "source": "slack",
+   "type": "social"
+  },
+  {
+   "re": "teams\\.microsoft\\.com$|teams\\.live\\.com$",
+   "source": "teams",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)bsky\\.app$",
+   "source": "bluesky",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)tumblr\\.com$",
+   "source": "tumblr",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)quora\\.com$",
+   "source": "quora",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)nextdoor\\.[a-z.]+$",
+   "source": "nextdoor",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)(vk\\.com|vk\\.ru)$",
+   "source": "vk",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)weibo\\.(com|cn)$",
+   "source": "weibo",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)douyin\\.com$",
+   "source": "douyin",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)xiaohongshu\\.com$|^xhslink\\.com$",
+   "source": "xiaohongshu",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)line\\.me$",
+   "source": "line",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)kakao\\.com$",
+   "source": "kakaotalk",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)substack\\.com$",
+   "source": "substack",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)medium\\.com$",
+   "source": "medium",
+   "type": "social"
+  },
+  {
+   "re": "^news\\.ycombinator\\.com$",
+   "source": "hackernews",
+   "type": "social"
+  },
+  {
+   "re": "(^|\\.)producthunt\\.com$",
+   "source": "producthunt",
+   "type": "social"
+  },
+  {
+   "re": "mastodon|(^|\\.)mstdn\\.|(^|\\.)fosstodon\\.org$",
+   "source": "mastodon",
+   "type": "social"
+  },
+  {
+   "re": "mail\\.google\\.com$|outlook\\.(live|office|office365)\\.com$|mail\\.yahoo\\.com$|mail\\.proton\\.me$|(^|\\.)mail\\.(ru|aol\\.com)$|icloud\\.com$|^webmail\\.",
+   "source": "webmail",
+   "type": "email"
+  },
+  {
+   "re": "(^|\\.)(doubleclick\\.net|googlesyndication\\.com|googleadservices\\.com)$",
+   "source": "google",
+   "type": "display"
+  },
+  {
+   "re": "(^|\\.)(taboola|outbrain|criteo)\\.com$",
+   "source": "native_ads",
+   "type": "display"
+  }
+ ],
+ "bots": "bot|crawl|spider|slurp|facebookexternalhit|Facebot|meta-externalagent|Twitterbot|LinkedInBot|Slackbot|Discordbot|TelegramBot|WhatsApp/\\d|Pinterestbot|redditbot|Applebot|GPTBot|ChatGPT-User|OAI-SearchBot|PerplexityBot|Perplexity-User|ClaudeBot|Claude-User|Google-Extended|Bytespider|CCBot|Amazonbot|SkypeUriPreview|bingpreview|HeadlessChrome|python-requests|curl/|Go-http-client|okhttp",
+ "aiUserFetchers": {
+  "ChatGPT-User": "chatgpt",
+  "Perplexity-User": "perplexity",
+  "Claude-User": "claude",
+  "MistralAI-User": "other_ai"
+ },
+ "shareMarkers": [
+  {
+   "param": "si",
+   "refHost": "(youtube\\.com|youtu\\.be|spotify\\.com)$",
+   "source": "youtube_or_spotify",
+   "note": "YouTube/Spotify share",
+   "src": "Observed on first-party share links emitted by the platform's own Share dialog; the parameter name is a bare fact, independently verifiable. Not derived from ClearURLs/Neat-URL/AdGuard (copyleft).",
+   "verified": null
+  },
+  {
+   "param": "s",
+   "valueRe": "^\\d{1,3}$",
+   "source": "x",
+   "note": "X share s=20/s=46 etc; only with numeric value",
+   "src": "Observed on first-party share links emitted by the platform's own Share dialog; the parameter name is a bare fact, independently verifiable. Not derived from ClearURLs/Neat-URL/AdGuard (copyleft).",
+   "verified": null
+  },
+  {
+   "param": "t",
+   "withParam": "s",
+   "source": "x",
+   "note": "X share t=<token> alongside s=",
+   "src": "Observed on first-party share links emitted by the platform's own Share dialog; the parameter name is a bare fact, independently verifiable. Not derived from ClearURLs/Neat-URL/AdGuard (copyleft).",
+   "verified": null
+  },
+  {
+   "param": "ref_src",
+   "valueRe": "^twsrc",
+   "source": "x",
+   "note": "Twitter legacy",
+   "src": "Observed on first-party share links emitted by the platform's own Share dialog; the parameter name is a bare fact, independently verifiable. Not derived from ClearURLs/Neat-URL/AdGuard (copyleft).",
+   "verified": null
+  }
+ ],
+ "aiPathReferrers": [
+  {
+   "host": "x.com",
+   "path": "^/i/grok",
+   "source": "grok"
+  },
+  {
+   "host": "kagi.com",
+   "path": "^/assistant",
+   "source": "kagi"
+  },
+  {
+   "host": "search.brave.com",
+   "path": "^/ask",
+   "source": "brave_leo"
+  },
+  {
+   "host": "huggingface.co",
+   "path": "^/chat",
+   "source": "huggingchat"
+  }
+ ],
+ "ga4": {
+  "paidMedium": "^(.*cp.*|ppc|retargeting|paid.*)$",
+  "shoppingCampaign": "^(.*(([^a-df-z]|^)shop|shopping).*)$",
+  "display": "^(display|banner|expandable|interstitial|cpm)$",
+  "socialMedium": "^(social|social-network|social-media|sm|social network|social media)$",
+  "paidSource": "(^|[-_. ])ads?$|^adwords$",
+  "shoppingHosts": "(^|\\.)(shopping\\.google\\.[a-z.]+|amazon\\.[a-z.]+|ebay\\.[a-z.]+|etsy\\.com|walmart\\.com|temu\\.com|aliexpress\\.com|shopify\\.com|shop\\.app|igshopping)$",
+  "videoHosts": "(^|\\.)(youtube\\.com|youtu\\.be|m\\.youtube\\.com|vimeo\\.com|twitch\\.tv|kick\\.com|dailymotion\\.com|bilibili\\.com|rumble\\.com)$"
+ },
+ "_provenance": {
+  "note": "Hand-curated facts. Click-ID, wrapper and AI-host facts cross-checked against oss-survey/data/merged.json (PostHog MIT, Matomo CC0, ai.robots.txt MIT, inapp-spy MIT; Plausible AGPL and Snowplow GPLv3 cited only, not copied). GA4 regexes from Google's published default channel group definitions.",
+  "mastodon": "Instance list from Matomo Socials.yml (CC0-1.0)"
+ },
+ "mastodonInstances": [
+  "bitcoinhackers.org",
+  "botsin.space",
+  "c.im",
+  "chaos.social",
+  "cybre.space",
+  "fosstodon.org",
+  "friends.nico",
+  "front-end.social",
+  "graphics.social",
+  "hachyderm.io",
+  "indieweb.social",
+  "knzk.me",
+  "mamot.fr",
+  "mas.to",
+  "masto.ai",
+  "mastodon.art",
+  "mastodon.at",
+  "mastodon.cloud",
+  "mastodon.eus",
+  "mastodon.jalgi.eus",
+  "mastodon.nz",
+  "mastodon.online",
+  "mastodon.scot",
+  "mastodon.social",
+  "mastodon.technology",
+  "mastodon.world",
+  "mastodon.xyz",
+  "mastodonapp.uk",
+  "mastodont.cat",
+  "mstdn.io",
+  "mstdn.jp",
+  "mstdn.party",
+  "mstdn.social",
+  "newsie.social",
+  "ohai.social",
+  "org.joinmastodon.android",
+  "pawoo.net",
+  "quey.org",
+  "ro-mastodon.puyo.jp",
+  "sfba.social",
+  "social.tchncs.de",
+  "social.vivaldi.net",
+  "tkm.eus",
+  "toot.community",
+  "typo.social",
+  "universeodon.com",
+  "vis.social"
+ ]
+}

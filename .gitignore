@@ -1,0 +1,14 @@
+/target
+**/*.rs.bk
+*.pdb
+
+# Node (reference/ts has no dependencies, but keep this out of the way)
+node_modules/
+
+# oss-survey working directories: shallow clones of upstream projects and the
+# merged table built from them. Several of those projects are GPL/AGPL/LGPL, so
+# neither the clones nor the merged output may ever be committed.
+docs/oss-survey/src/
+docs/oss-survey/data/
+
+.DS_Store

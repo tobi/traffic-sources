@@ -1,0 +1,15 @@
+{
+  "name": "traffic-sources-reference",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "TypeScript reference implementation of traffic-sources. Superseded by the Rust crate at the repository root.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --experimental-strip-types --test attribution.test.ts",
+    "build-rules": "node build-oss-rules.mjs"
+  }
+}

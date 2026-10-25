@@ -1,0 +1,3081 @@
+{
+ "clickIds": [
+  {
+   "param": "gclid",
+   "source": "google",
+   "medium": "cpc",
+   "channel": "paid_search",
+   "src": "https://support.google.com/google-ads/answer/3095550",
+   "verified": "2026-10-24"
+  },
+  {
+   "param": "gbraid",
+   "source": "google",
+   "medium": "cpc",
+   "channel": "paid_search",
+   "src": "https://support.google.com/google-ads/answer/3095550",
+   "verified": "2026-10-24"
+  },
+  {
+   "param": "wbraid",
+   "source": "google",
+   "medium": "cpc",
+   "channel": "paid_search",
+   "src": "https://support.google.com/google-ads/answer/3095550",
+   "verified": "2026-10-24"
+  },
+  {
+   "param": "dclid",
+   "source": "google",
+   "medium": "display",
+   "channel": "display",
+   "src": "https://support.google.com/campaignmanager/answer/9182069",
+   "verified": null
+  },
+  {
+   "param": "msclkid",
+   "source": "bing",
+   "medium": "cpc",
+   "channel": "paid_search",
+   "src": "https://learn.microsoft.com/en-us/advertising/msa-help/hlp_ba_proc_microsoftclickid",
+   "verified": "2026-10-24"
+  },
+  {
+   "param": "yclid",
+   "source": "yandex",
+   "medium": "cpc",
+   "channel": "paid_search",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "ttclid",
+   "source": "tiktok",
+   "medium": "paid_social",
+   "channel": "paid_social",
+   "src": "https://business-api.tiktok.com/portal/docs/setup-guide-for-web/v1.3",
+   "verified": "2026-10-24"
+  },
+  {
+   "param": "ScCid",
+   "source": "snapchat",
+   "medium": "paid_social",
+   "channel": "paid_social",
+   "src": "https://businesshelp.snapchat.com/s/article/troubleshooting-click-id",
+   "verified": "2026-10-24"
+  },
+  {
+   "param": "twclid",
+   "source": "x",
+   "medium": "paid_social",
+   "channel": "paid_social",
+   "src": "https://leadtrackr.io/learn/advertising-click-ids",
+   "verified": "2026-10-24"
+  },
+  {
+   "param": "li_fat_id",
+   "source": "linkedin",
+   "medium": "paid_social",
+   "channel": "paid_social",
+   "src": "https://learn.microsoft.com/en-us/linkedin/marketing/conversions/enabling-first-party-cookies",
+   "verified": "2026-10-24"
+  },
+  {
+   "param": "epik",
+   "source": "pinterest",
+   "medium": "paid_social",
+   "channel": "paid_social",
+   "src": "https://help.pinterest.com/en/business/article/pinterest-tag-parameters-and-cookies",
+   "verified": "2026-10-24"
+  },
+  {
+   "param": "rdt_cid",
+   "source": "reddit",
+   "medium": "paid_social",
+   "channel": "paid_social",
+   "src": "https://leadtrackr.io/learn/advertising-click-ids",
+   "verified": "2026-10-24"
+  },
+  {
+   "param": "qclid",
+   "source": "quora",
+   "medium": "paid_social",
+   "channel": "paid_social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "irclickid",
+   "source": "impact",
+   "medium": "affiliate",
+   "channel": "affiliate",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "cjevent",
+   "source": "cj",
+   "medium": "affiliate",
+   "channel": "affiliate",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "ranMID",
+   "source": "rakuten",
+   "medium": "affiliate",
+   "channel": "affiliate",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "awc",
+   "source": "awin",
+   "medium": "affiliate",
+   "channel": "affiliate",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "obclid",
+   "source": "outbrain",
+   "medium": "native",
+   "channel": "display",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "tblci",
+   "source": "taboola",
+   "medium": "native",
+   "channel": "display",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "fbclid",
+   "source": "facebook",
+   "medium": "social",
+   "channel": "organic_social",
+   "weak": true,
+   "src": "https://developers.facebook.com/docs/marketing-api/conversions-api/parameters/fbp-and-fbc/",
+   "verified": "2026-10-24"
+  },
+  {
+   "param": "igshid",
+   "source": "instagram",
+   "medium": "social",
+   "channel": "organic_social",
+   "weak": true,
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "igsh",
+   "source": "instagram",
+   "medium": "social",
+   "channel": "organic_social",
+   "weak": true,
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "srsltid",
+   "source": "google",
+   "medium": "organic",
+   "channel": "organic_shopping",
+   "weak": true,
+   "src": "https://support.google.com/merchants/answer/15191080",
+   "verified": "2026-10-24"
+  },
+  {
+   "param": "mc_cid",
+   "source": "mailchimp",
+   "medium": "email",
+   "channel": "email",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "_kx",
+   "source": "klaviyo",
+   "medium": "email",
+   "channel": "email",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "_hsenc",
+   "source": "hubspot",
+   "medium": "email",
+   "channel": "email",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "gclsrc",
+   "source": "google",
+   "medium": "cpc",
+   "channel": "paid_search",
+   "src": "https://support.google.com/google-ads/answer/3095550",
+   "verified": null
+  },
+  {
+   "param": "gad_source",
+   "source": "google",
+   "medium": "cpc",
+   "channel": "paid_search",
+   "src": "https://support.google.com/google-ads/answer/16193746",
+   "verified": "2026-10-24"
+  },
+  {
+   "param": "gad_campaignid",
+   "source": "google",
+   "medium": "cpc",
+   "channel": "paid_search",
+   "src": "https://support.google.com/google-ads/answer/16193746",
+   "verified": "2026-10-24"
+  },
+  {
+   "param": "sccid",
+   "source": "snapchat",
+   "medium": "paid_social",
+   "channel": "paid_social",
+   "src": "https://businesshelp.snapchat.com/s/article/troubleshooting-click-id",
+   "verified": "2026-10-24"
+  },
+  {
+   "param": "ob_click_id",
+   "source": "outbrain",
+   "medium": "native",
+   "channel": "display",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "irclid",
+   "source": "impact",
+   "medium": "affiliate",
+   "channel": "affiliate",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "ranSiteID",
+   "source": "rakuten",
+   "medium": "affiliate",
+   "channel": "affiliate",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "mc_eid",
+   "source": "mailchimp",
+   "medium": "email",
+   "channel": "email",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "_hsmi",
+   "source": "hubspot",
+   "medium": "email",
+   "channel": "email",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "mkt_tok",
+   "source": "marketo",
+   "medium": "email",
+   "channel": "email",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "vero_id",
+   "source": "vero",
+   "medium": "email",
+   "channel": "email",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "oly_enc_id",
+   "source": "omeda",
+   "medium": "email",
+   "channel": "email",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "s_kwcid",
+   "source": "adobe",
+   "medium": "cpc",
+   "channel": "paid_search",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "ef_id",
+   "source": "adobe",
+   "medium": "cpc",
+   "channel": "paid_other",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  },
+  {
+   "param": "oppref",
+   "source": "chatgpt",
+   "medium": "cpc",
+   "channel": "paid_ai",
+   "src": "https://help.openai.com/en/articles/20001409-conversion-measurement",
+   "verified": "2026-10-24"
+  },
+  {
+   "param": "ysclid",
+   "source": "yandex",
+   "medium": "organic",
+   "channel": "organic_search",
+   "weak": true,
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) / oss-survey click_ids",
+   "verified": null
+  }
+ ],
+ "uaTokens": [
+  {
+   "re": "\\bFB[\\w_]+/(Messenger|MESSENGER)|FBAN/MessengerForiOS",
+   "source": "messenger",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "\\bInstagram \\d",
+   "source": "instagram",
+   "type": "social",
+   "src": "https://dev.to/abdullah_afzal/how-to-detect-in-app-browsers-instagram-tiktok-facebook-1a31",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "\\bBarcelona \\d",
+   "source": "threads",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "FBAN/|FB_IAB/|FBAV/|MetaIAB",
+   "source": "facebook",
+   "type": "social",
+   "src": "https://explore.whatismybrowser.com/useragents/explore/software_name/facebook-app/1",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "musical_ly|BytedanceWebview|trill_",
+   "source": "tiktok",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "\\bSnapchat/",
+   "source": "snapchat",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "Twitter for i(Phone|Pad)(/[\\d.]+)?|TwitterAndroid(/[\\d.]+)?",
+   "source": "x",
+   "type": "social",
+   "note": "X in-app browser: iOS WKWebView 'Twitter for iPhone/<ver>' (iPad builds also say iPhone); Android WebView '; wv)' + 'TwitterAndroid/<ver>'. Android may instead use Chrome Custom Tabs (no token).",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml + https://docs.uaparser.dev/info/browser/name/twitter.html",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "LinkedInApp",
+   "source": "linkedin",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "\\[Pinterest/|Pinterest for Android",
+   "source": "pinterest",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "\\bReddit/",
+   "source": "reddit",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "\\b(WAiOS|WA4A)/",
+   "source": "whatsapp",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "Telegram-Android/",
+   "source": "telegram",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "\\bLine/\\d",
+   "source": "line",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "MicroMessenger/",
+   "source": "wechat",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "KAKAOTALK",
+   "source": "kakaotalk",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "NAVER\\(inapp;",
+   "source": "naver",
+   "type": "search",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "\\bGSA/",
+   "source": "google",
+   "type": "search",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "\\bTeams/\\d",
+   "source": "teams",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "Weibo|__weibo__",
+   "source": "weibo",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "aweme|ByteDance.*Douyin",
+   "source": "douyin",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "discord",
+   "source": "discord",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "Zalo",
+   "source": "zalo",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "Viber",
+   "source": "viber",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "\\bYJApp",
+   "source": "yahoo_japan",
+   "type": "search",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "BingSapphire|BingWeb",
+   "source": "bing",
+   "type": "search",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "\\bQQ/\\d|MQQBrowser",
+   "source": "qq",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "Slack(_SSB)?/",
+   "source": "slack",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "\\bTeams/",
+   "source": "teams",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "\\btrill_\\d|ByteLocale",
+   "source": "tiktok",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "RedditAndroid|\\bReddit/",
+   "source": "reddit",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  },
+  {
+   "re": "Telegram(-Android)?/",
+   "source": "telegram",
+   "type": "social",
+   "src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml ; https://github.com/shalanah/inapp-spy",
+   "verified": null
+  }
+ ],
+ "xRequestedWith": {
+  "_src": "https://developer.android.com/jetpack/androidx/releases/webkit (1.15.0: XRW removal cancelled, header sent on all requests again); https://chromestatus.com/feature/5160086884843520",
+  "_verified": "2026-10-24",
+  "apps": {
+   "com.facebook.katana": "facebook",
+   "com.facebook.orca": "messenger",
+   "com.instagram.android": "instagram",
+   "com.instagram.barcelona": "threads",
+   "com.zhiliaoapp.musically": "tiktok",
+   "com.ss.android.ugc.trill": "tiktok",
+   "com.ss.android.ugc.aweme": "douyin",
+   "com.snapchat.android": "snapchat",
+   "com.twitter.android": "x",
+   "com.linkedin.android": "linkedin",
+   "com.pinterest": "pinterest",
+   "com.reddit.frontpage": "reddit",
+   "com.whatsapp": "whatsapp",
+   "org.telegram.messenger": "telegram",
+   "jp.naver.line.android": "line",
+   "com.tencent.mm": "wechat",
+   "com.kakao.talk": "kakaotalk",
+   "com.nhn.android.search": "naver",
+   "com.google.android.googlequicksearchbox": "google",
+   "com.google.android.gm": "gmail",
+   "com.microsoft.teams": "teams",
+   "com.Slack": "slack",
+   "com.discord": "discord",
+   "com.vkontakte.android": "vk",
+   "com.sina.weibo": "weibo",
+   "com.xingin.xhs": "xiaohongshu",
+   "com.zing.zalo": "zalo",
+   "com.viber.voip": "viber",
+   "com.microsoft.office.outlook": "outlook",
+   "com.google.android.youtube": "youtube",
+   "org.joinmastodon.android": "mastodon",
+   "xyz.blueskyweb.app": "bluesky",
+   "com.slack": "slack",
+   "com.google.android.apps.messaging": "sms",
+   "com.samsung.android.messaging": "sms"
+  }
+ },
+ "referrers": [
+  {
+   "re": "^ntp\\.msn\\.com$",
+   "source": "bing",
+   "type": "search",
+   "note": "Edge new tab page",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "^syndicatedsearch\\.goog$",
+   "source": "google",
+   "type": "search",
+   "paid": true,
+   "note": "Google AdSense for Search",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)googleadservices\\.com$",
+   "source": "google",
+   "type": "search",
+   "paid": true,
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "^l\\.threads\\.(com|net)$|(^|\\.)threads\\.(com|net)$",
+   "source": "threads",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "^out\\.reddit\\.com$",
+   "source": "reddit",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "^away\\.vk\\.com$|(^|\\.)vk\\.com$",
+   "source": "vk",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "^statics\\.teams\\.cdn\\.office\\.net$|(^|\\.)teams\\.(microsoft|live)\\.com$",
+   "source": "teams",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)officeapps\\.live\\.com$",
+   "source": "microsoft365",
+   "type": "referral",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "^(go\\.)?bsky\\.app$",
+   "source": "bluesky",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)(chatgpt\\.com|chat\\.openai\\.com)$",
+   "source": "chatgpt",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "(^|\\.)perplexity\\.ai$",
+   "source": "perplexity",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "^claude\\.ai$",
+   "source": "claude",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "^(gemini|bard|notebooklm)\\.google\\.com$",
+   "source": "gemini",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "^copilot\\.microsoft\\.com$",
+   "source": "copilot",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "^grok\\.com$",
+   "source": "grok",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "^chat\\.deepseek\\.com$",
+   "source": "deepseek",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "(^|\\.)meta\\.ai$",
+   "source": "meta_ai",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "^duck\\.ai$",
+   "source": "duck_ai",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "^poe\\.com$",
+   "source": "poe",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "^chat\\.mistral\\.ai$",
+   "source": "mistral",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "^(you\\.com|phind\\.com|chat\\.qwen\\.ai|kimi\\.com|(www\\.)?doubao\\.com|iask\\.ai)$",
+   "source": "other_ai",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "(^|\\.)google\\.[a-z.]+$",
+   "source": "google",
+   "type": "search",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "^(www\\.)?bing\\.com$|^cn\\.bing\\.com$",
+   "source": "bing",
+   "type": "search",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "duckduckgo\\.com$",
+   "source": "duckduckgo",
+   "type": "search",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)search\\.yahoo\\.(com|co\\.jp)$|^(www\\.)?yahoo\\.",
+   "source": "yahoo",
+   "type": "search",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)yandex\\.[a-z.]+$|^ya\\.ru$",
+   "source": "yandex",
+   "type": "search",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)baidu\\.com$",
+   "source": "baidu",
+   "type": "search",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)naver\\.com$",
+   "source": "naver",
+   "type": "search",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "ecosia\\.org$",
+   "source": "ecosia",
+   "type": "search",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "search\\.brave\\.com$",
+   "source": "brave",
+   "type": "search",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)daum\\.net$",
+   "source": "daum",
+   "type": "search",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)seznam\\.cz$",
+   "source": "seznam",
+   "type": "search",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)startpage\\.com$|kagi\\.com$|qwant\\.com$",
+   "source": "other_search",
+   "type": "search",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "chatgpt\\.com$|chat\\.openai\\.com$",
+   "source": "chatgpt",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "perplexity\\.ai$",
+   "source": "perplexity",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "gemini\\.google\\.com$|bard\\.google\\.com$",
+   "source": "gemini",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "copilot\\.microsoft\\.com$|edgeservices\\.bing\\.com$",
+   "source": "copilot",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "claude\\.ai$",
+   "source": "claude",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "grok\\.com$",
+   "source": "grok",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "chat\\.deepseek\\.com$|you\\.com$|phind\\.com$|meta\\.ai$|chat\\.mistral\\.ai$",
+   "source": "other_ai",
+   "type": "ai",
+   "src": "https://support.google.com/analytics/answer/9756891 (AI Assistant channel; list not published)",
+   "verified": "2026-10-24"
+  },
+  {
+   "re": "(^|\\.)(facebook\\.com|fb\\.me|fb\\.com)$",
+   "source": "facebook",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)messenger\\.com$",
+   "source": "messenger",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)instagram\\.com$",
+   "source": "instagram",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)threads\\.(net|com)$",
+   "source": "threads",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "^t\\.co$|(^|\\.)(twitter|x)\\.com$",
+   "source": "x",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)linkedin\\.com$|^lnkd\\.in$",
+   "source": "linkedin",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)tiktok\\.com$",
+   "source": "tiktok",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)snapchat\\.com$",
+   "source": "snapchat",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)pinterest\\.[a-z.]+$|^pin\\.it$",
+   "source": "pinterest",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)reddit\\.com$|^redd\\.it$",
+   "source": "reddit",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)youtube\\.com$|^youtu\\.be$",
+   "source": "youtube",
+   "type": "video",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)twitch\\.tv$",
+   "source": "twitch",
+   "type": "video",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)kick\\.com$",
+   "source": "kick",
+   "type": "video",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)discord(app)?\\.com$",
+   "source": "discord",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)web\\.telegram\\.org$|^t\\.me$",
+   "source": "telegram",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)whatsapp\\.com$",
+   "source": "whatsapp",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)slack\\.com$|slack-redir\\.net$",
+   "source": "slack",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "teams\\.microsoft\\.com$|teams\\.live\\.com$",
+   "source": "teams",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)bsky\\.app$",
+   "source": "bluesky",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)tumblr\\.com$",
+   "source": "tumblr",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)quora\\.com$",
+   "source": "quora",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)nextdoor\\.[a-z.]+$",
+   "source": "nextdoor",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)(vk\\.com|vk\\.ru)$",
+   "source": "vk",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)weibo\\.(com|cn)$",
+   "source": "weibo",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)douyin\\.com$",
+   "source": "douyin",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)xiaohongshu\\.com$|^xhslink\\.com$",
+   "source": "xiaohongshu",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)line\\.me$",
+   "source": "line",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)kakao\\.com$",
+   "source": "kakaotalk",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)substack\\.com$",
+   "source": "substack",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)medium\\.com$",
+   "source": "medium",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "^news\\.ycombinator\\.com$",
+   "source": "hackernews",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)producthunt\\.com$",
+   "source": "producthunt",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "mastodon|(^|\\.)mstdn\\.|(^|\\.)fosstodon\\.org$",
+   "source": "mastodon",
+   "type": "social",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "mail\\.google\\.com$|outlook\\.(live|office|office365)\\.com$|mail\\.yahoo\\.com$|mail\\.proton\\.me$|(^|\\.)mail\\.(ru|aol\\.com)$|icloud\\.com$|^webmail\\.",
+   "source": "webmail",
+   "type": "email",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)(doubleclick\\.net|googlesyndication\\.com|googleadservices\\.com)$",
+   "source": "google",
+   "type": "display",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  },
+  {
+   "re": "(^|\\.)(taboola|outbrain|criteo)\\.com$",
+   "source": "native_ads",
+   "type": "display",
+   "src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
+   "verified": null
+  }
+ ],
+ "shareMarkers": [
+  {
+   "param": "si",
+   "refHost": "(youtube\\.com|youtu\\.be|spotify\\.com)$",
+   "source": "youtube_or_spotify",
+   "note": "YouTube/Spotify share",
+   "src": "Observed on first-party share links emitted by the platform's own Share dialog; the parameter name is a bare fact, independently verifiable. Not derived from ClearURLs/Neat-URL/AdGuard (copyleft).",
+   "verified": null
+  },
+  {
+   "param": "s",
+   "valueRe": "^\\d{1,3}$",
+   "source": "x",
+   "note": "X share s=20/s=46 etc; only with numeric value",
+   "src": "Observed on first-party share links emitted by the platform's own Share dialog; the parameter name is a bare fact, independently verifiable. Not derived from ClearURLs/Neat-URL/AdGuard (copyleft).",
+   "verified": null
+  },
+  {
+   "param": "t",
+   "withParam": "s",
+   "source": "x",
+   "note": "X share t=<token> alongside s=",
+   "src": "Observed on first-party share links emitted by the platform's own Share dialog; the parameter name is a bare fact, independently verifiable. Not derived from ClearURLs/Neat-URL/AdGuard (copyleft).",
+   "verified": null
+  },
+  {
+   "param": "ref_src",
+   "valueRe": "^twsrc",
+   "source": "x",
+   "note": "Twitter legacy",
+   "src": "Observed on first-party share links emitted by the platform's own Share dialog; the parameter name is a bare fact, independently verifiable. Not derived from ClearURLs/Neat-URL/AdGuard (copyleft).",
+   "verified": null
+  }
+ ],
+ "aiPathReferrers": [
+  {
+   "host": "x.com",
+   "path": "^/i/grok",
+   "source": "grok",
+   "src": "curated",
+   "verified": null
+  },
+  {
+   "host": "kagi.com",
+   "path": "^/assistant",
+   "source": "kagi",
+   "src": "curated",
+   "verified": null
+  },
+  {
+   "host": "search.brave.com",
+   "path": "^/ask",
+   "source": "brave_leo",
+   "src": "curated",
+   "verified": null
+  },
+  {
+   "host": "huggingface.co",
+   "path": "^/chat",
+   "source": "huggingchat",
+   "src": "curated",
+   "verified": null
+  }
+ ],
+ "ga4": {
+  "paidMedium": "^(.*cp.*|ppc|retargeting|paid.*)$",
+  "shoppingCampaign": "^(.*(([^a-df-z]|^)shop|shopping).*)$",
+  "display": "^(display|banner|expandable|interstitial|cpm)$",
+  "socialMedium": "^(social|social-network|social-media|sm|social network|social media)$",
+  "paidSource": "(^|[-_. ])ads?$|^adwords$",
+  "shoppingHosts": "(^|\\.)(shopping\\.google\\.[a-z.]+|amazon\\.[a-z.]+|ebay\\.[a-z.]+|etsy\\.com|walmart\\.com|temu\\.com|aliexpress\\.com|shopify\\.com|shop\\.app|igshopping)$",
+  "videoHosts": "(^|\\.)(youtube\\.com|youtu\\.be|m\\.youtube\\.com|vimeo\\.com|twitch\\.tv|kick\\.com|dailymotion\\.com|bilibili\\.com|rumble\\.com)$",
+  "_src": "https://support.google.com/analytics/answer/9756891",
+  "_verified": "2026-10-24"
+ },
+ "_provenance": {
+  "note": "Hand-curated facts. Click-ID, wrapper and AI-host facts cross-checked against oss-survey/data/merged.json (PostHog MIT, Matomo CC0, ai.robots.txt MIT, inapp-spy MIT; Plausible AGPL and Snowplow GPLv3 cited only, not copied). GA4 regexes from Google's published default channel group definitions.",
+  "mastodon": "Instance list from Matomo Socials.yml (CC0-1.0)",
+  "v3": "Rules annotated with src+verified in critic loop 2026-10-24 (America/Chicago). Only CC0/MIT/Apache/Unlicense-derived data shipped.",
+  "licensing": "Shipped data is CC0/MIT/Apache-2.0/Unlicense-derived or vendor documentation only. Copyleft projects (Snowplow referer-parser GPLv3, Plausible AGPL-3.0, ClearURLs LGPL-3.0, AdGuard GPL-3.0, Neat-URL GPL-2.0, Matomo device-detector LGPL-3.0) are cited for ideas only; no data from them is copied here. Load such lists at runtime with Attributor::with_external_file."
+ },
+ "mastodonInstances": [
+  "bitcoinhackers.org",
+  "botsin.space",
+  "c.im",
+  "chaos.social",
+  "cybre.space",
+  "fosstodon.org",
+  "friends.nico",
+  "front-end.social",
+  "graphics.social",
+  "hachyderm.io",
+  "indieweb.social",
+  "knzk.me",
+  "mamot.fr",
+  "mas.to",
+  "masto.ai",
+  "mastodon.art",
+  "mastodon.at",
+  "mastodon.cloud",
+  "mastodon.eus",
+  "mastodon.jalgi.eus",
+  "mastodon.nz",
+  "mastodon.online",
+  "mastodon.scot",
+  "mastodon.social",
+  "mastodon.technology",
+  "mastodon.world",
+  "mastodon.xyz",
+  "mastodonapp.uk",
+  "mastodont.cat",
+  "mstdn.io",
+  "mstdn.jp",
+  "mstdn.party",
+  "mstdn.social",
+  "newsie.social",
+  "ohai.social",
+  "org.joinmastodon.android",
+  "pawoo.net",
+  "quey.org",
+  "ro-mastodon.puyo.jp",
+  "sfba.social",
+  "social.tchncs.de",
+  "social.vivaldi.net",
+  "tkm.eus",
+  "toot.community",
+  "typo.social",
+  "universeodon.com",
+  "vis.social"
+ ],
+ "botRules": [
+  {
+   "class": "ai_user_fetch",
+   "token": "ChatGPT-User",
+   "operator": "chatgpt",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "Claude-User",
+   "operator": "claude",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "Perplexity-User",
+   "operator": "perplexity",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "MistralAI-User",
+   "operator": "mistral",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "Meta-ExternalFetcher",
+   "operator": "meta_ai",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "DuckAssistBot",
+   "operator": "duckduckgo",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "Google-Agent",
+   "operator": "google",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "Gemini-Deep-Research",
+   "operator": "gemini",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "Google-NotebookLM",
+   "operator": "google",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "kagi-fetcher",
+   "operator": "kagi",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "Kimi-User",
+   "operator": "kimi",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "Manus-User",
+   "operator": "manus",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "AI2Bot-DeepResearchEval",
+   "operator": "ai2, a non-profit ai research institute",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "amazon-QBusiness",
+   "operator": "unclear at this time.",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "Amzn-User",
+   "operator": "amazon, used for fetching web content to answer user queries through alexa and other amazon ai services",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "bigsur.ai",
+   "operator": "big sur ai that fetches website content to enable ai-powered web agents, sales assistants, and content marketing solutions for busi\u2026",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "Diffbot-User",
+   "operator": "diffbot",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "ElevenlabsBot",
+   "operator": "unclear at this time.",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "ExaUser",
+   "operator": "unclear at this time.",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "GeistHaus-PageFetcher",
+   "operator": "geisthaus, a company developing ai systems for therapy and psychological assessment",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "GoogleAgent-URLContext",
+   "operator": "google that retrieves web content on behalf of gemini api users",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "KlaviyoAIBot",
+   "operator": "klaviyo",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "LinerBot",
+   "operator": "unclear at this time.",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "meta-externalfetcher",
+   "operator": "unclear at this time.",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "meta-webindexer",
+   "operator": "meta",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "MistralAI-User/1.0",
+   "operator": "mistral ai",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "NotebookLM",
+   "operator": "unclear at this time.",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "PhindBot",
+   "operator": "phind",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "Poggio-Citations",
+   "operator": "poggio, a company that provides ai sales enablement tools for creating tailored narratives, business cases, and account plan\u2026",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "QualifiedBot",
+   "operator": "qualified",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "Shap-User",
+   "operator": "unclear at this time.",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "TongyiBot",
+   "operator": "alibaba that fetches web content for the tongyi qianwen assistant and related qwen-generated answers",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "UseAI",
+   "operator": "unclear at this time.",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_user_fetch",
+   "token": "YiyanBot",
+   "operator": "baidu that fetches web content for the yiyan",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_search_crawler",
+   "token": "OAI-SearchBot",
+   "operator": "openai",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_search_crawler",
+   "token": "Claude-SearchBot",
+   "operator": "anthropic",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_search_crawler",
+   "token": "PerplexityBot",
+   "operator": "perplexity",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_search_crawler",
+   "token": "Meta-WebIndexer",
+   "operator": "meta",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_search_crawler",
+   "token": "Applebot",
+   "operator": "apple",
+   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "GPTBot",
+   "operator": "openai",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "ClaudeBot",
+   "operator": "anthropic",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "meta-externalagent",
+   "operator": "meta",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "FacebookBot",
+   "operator": "meta",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Bytespider",
+   "operator": "bytedance",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "CCBot",
+   "operator": "commoncrawl",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Amazonbot",
+   "operator": "amazon",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Google-CloudVertexBot",
+   "operator": "google",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Applebot-Extended",
+   "operator": "apple",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "AddSearchBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "AgentDataBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "AgentTimes",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "AGI Agent",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "AI2Bot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Ai2Bot-Dolma",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "aiHitBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "AIWebIndex",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "amazon-kendra",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "AmazonBuyForMe",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Amzn-SearchBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Andibot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Anomura",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "anthropic-ai",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "ApifyBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "ApifyWebsiteContentCrawler",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Aranet-SearchBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "atlassian-bot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Awario",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "AzureAI-SearchBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "bedrockbot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "BixelBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Bravebot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Brightbot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Brightbot 1.0",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "BuddyBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "CartAI Agentic Commerce",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Channel3Bot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "ChatGLM-Spider",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "ChatGPT Agent",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Claude-Code",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Claude-Web",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "CledaraBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Cloudflare-AutoRAG",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "CloudflareBrowserRenderingCrawler",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "CloudVertexBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Code",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Codex",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "cohere-ai",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "cohere-training-data-crawler",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Cotoyogi",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "CragCrawler",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Crawl4AI",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Crawlspace",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Cursor",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Datenbank Crawler",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "DeepSeekBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Devin",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Diffbot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Dot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "DoubaoBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Echobot Bot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "EchoboxBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "ERNIEBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "ExaBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "ExaSearchBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Factset_spyderbot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "FirecrawlAgent",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "FriendlyCrawler",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Google-Extended",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Google-Firebase",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Google-Gemini-CLI",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "GoogleAgent-Mariner",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "GoogleOther",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "GoogleOther-Image",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "GoogleOther-Video",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Grok Bot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "GrokAppAndroid",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "GrokBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "HarkBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "HenkBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Hunyuan",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "iAskBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "iaskspider",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "iaskspider/2.0",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "ICC-Crawler",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "ImagesiftBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "imageSpider",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "img2dataset",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Instinct",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "ISSCyberRiskCrawler",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Kangaroo Bot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "KeenableBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Kimi-Agent",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Kimi-SearchBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "KimiBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "KunatoCrawler",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "laion-huggingface-processor",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "LAIONDownloader",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "LCC",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Lightpanda",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Linguee Bot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "LinkupBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Meta-ExternalAgent",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "MistralAI-Index",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "MistralAI-Training",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "MoonshotBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Mozilla-Tabstack",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Muse",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "MyCentralAIScraperBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "NagetBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "nbot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "netEstate Imprint Crawler",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "newsai",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "NovaAct",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "omgili",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "omgilibot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "OpenAI",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "opencode",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Operator",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "PanguBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Panscient",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "panscient.com",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Payhawk Invoice Fetching Agent",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Poseidon Research Crawler",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "qodercli",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Querit-SearchBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "QueritBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "QuillBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "quillbot.com",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "QwenBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Reflectionbot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "SBIntuitionsBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Scrapy",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "SemrushBot-OCOB",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "SemrushBot-SWA",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "ShapBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Sidetrade indexer bot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Spider",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "TavilyBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Terra Cotta",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "TerraCotta",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Thinkbot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "TikTokSpider",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Timpibot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Trae",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "TwinAgent",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "VelenPublicWebCrawler",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "WARDBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "Webzio-Extended",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "webzio-extended",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "wpbot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "WRTNBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "xAI-Grok",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "YaK",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "YandexAdditional",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "YandexAdditionalBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "YiBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "YouBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ai_crawler",
+   "token": "ZanistaBot",
+   "operator": "other",
+   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ad_verifier",
+   "token": "OAI-AdsBot",
+   "operator": "openai",
+   "src": "https://developers.openai.com/api/docs/bots ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ad_verifier",
+   "token": "Meta-ExternalAds",
+   "operator": "meta",
+   "src": "https://developers.openai.com/api/docs/bots ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ad_verifier",
+   "token": "AdsBot-Google",
+   "operator": "google",
+   "src": "https://developers.openai.com/api/docs/bots ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "link_preview",
+   "token": "facebookexternalhit",
+   "operator": "facebook",
+   "src": "https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "link_preview",
+   "token": "Facebot",
+   "operator": "facebook",
+   "src": "https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "link_preview",
+   "token": "Twitterbot",
+   "operator": "x",
+   "src": "https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "link_preview",
+   "token": "LinkedInBot",
+   "operator": "linkedin",
+   "src": "https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "link_preview",
+   "token": "Slackbot",
+   "operator": "slack",
+   "src": "https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "link_preview",
+   "token": "Discordbot",
+   "operator": "discord",
+   "src": "https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "link_preview",
+   "token": "TelegramBot",
+   "operator": "telegram",
+   "src": "https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "link_preview",
+   "token": "WhatsApp/",
+   "operator": "whatsapp",
+   "src": "https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "link_preview",
+   "token": "Pinterestbot",
+   "operator": "pinterest",
+   "src": "https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "link_preview",
+   "token": "redditbot",
+   "operator": "reddit",
+   "src": "https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "link_preview",
+   "token": "SkypeUriPreview",
+   "operator": "skype",
+   "src": "https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "link_preview",
+   "token": "bingpreview",
+   "operator": "bing",
+   "src": "https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "link_preview",
+   "token": "Iframely",
+   "operator": "iframely",
+   "src": "https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "link_preview",
+   "token": "Embedly",
+   "operator": "embedly",
+   "src": "https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "search_crawler",
+   "token": "Googlebot",
+   "operator": "google",
+   "src": "https://developers.google.com/crawling/docs/crawlers-fetchers/overview-google-crawlers ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "search_crawler",
+   "token": "bingbot",
+   "operator": "bing",
+   "src": "https://developers.google.com/crawling/docs/crawlers-fetchers/overview-google-crawlers ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "search_crawler",
+   "token": "YandexBot",
+   "operator": "yandex",
+   "src": "https://developers.google.com/crawling/docs/crawlers-fetchers/overview-google-crawlers ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "search_crawler",
+   "token": "Baiduspider",
+   "operator": "baidu",
+   "src": "https://developers.google.com/crawling/docs/crawlers-fetchers/overview-google-crawlers ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "search_crawler",
+   "token": "DuckDuckBot",
+   "operator": "duckduckgo",
+   "src": "https://developers.google.com/crawling/docs/crawlers-fetchers/overview-google-crawlers ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "search_crawler",
+   "token": "Slurp",
+   "operator": "yahoo",
+   "src": "https://developers.google.com/crawling/docs/crawlers-fetchers/overview-google-crawlers ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "search_crawler",
+   "token": "SeznamBot",
+   "operator": "seznam",
+   "src": "https://developers.google.com/crawling/docs/crawlers-fetchers/overview-google-crawlers ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "search_crawler",
+   "token": "Naverbot",
+   "operator": "naver",
+   "src": "https://developers.google.com/crawling/docs/crawlers-fetchers/overview-google-crawlers ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "search_crawler",
+   "token": "Yeti/",
+   "operator": "naver",
+   "src": "https://developers.google.com/crawling/docs/crawlers-fetchers/overview-google-crawlers ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "search_crawler",
+   "token": "Sogou",
+   "operator": "sogou",
+   "src": "https://developers.google.com/crawling/docs/crawlers-fetchers/overview-google-crawlers ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "search_crawler",
+   "token": "PetalBot",
+   "operator": "huawei",
+   "src": "https://developers.google.com/crawling/docs/crawlers-fetchers/overview-google-crawlers ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "seo_tool",
+   "token": "AhrefsBot",
+   "operator": "ahrefs",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "seo_tool",
+   "token": "SemrushBot",
+   "operator": "semrush",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "seo_tool",
+   "token": "MJ12bot",
+   "operator": "majestic",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "seo_tool",
+   "token": "DotBot",
+   "operator": "moz",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "seo_tool",
+   "token": "rogerbot",
+   "operator": "moz",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "seo_tool",
+   "token": "Screaming Frog",
+   "operator": "screamingfrog",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "seo_tool",
+   "token": "serpstatbot",
+   "operator": "serpstat",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "seo_tool",
+   "token": "DataForSeoBot",
+   "operator": "dataforseo",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "monitoring",
+   "token": "UptimeRobot",
+   "operator": "uptimerobot",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "monitoring",
+   "token": "Pingdom",
+   "operator": "pingdom",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "monitoring",
+   "token": "StatusCake",
+   "operator": "statuscake",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "monitoring",
+   "token": "Site24x7",
+   "operator": "site24x7",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "monitoring",
+   "token": "Better Uptime",
+   "operator": "betterstack",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "monitoring",
+   "token": "Datadog",
+   "operator": "datadog",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "monitoring",
+   "token": "NewRelicPinger",
+   "operator": "newrelic",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "monitoring",
+   "token": "GoogleStackdriverMonitoring",
+   "operator": "google",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "monitoring",
+   "token": "Checkly",
+   "operator": "checkly",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "automation",
+   "token": "HeadlessChrome",
+   "operator": "headless",
+   "src": "https://github.com/omrilotan/isbot (Unlicense)",
+   "verified": null
+  },
+  {
+   "class": "automation",
+   "token": "python-requests",
+   "operator": "python",
+   "src": "https://github.com/omrilotan/isbot (Unlicense)",
+   "verified": null
+  },
+  {
+   "class": "automation",
+   "token": "curl/",
+   "operator": "curl",
+   "src": "https://github.com/omrilotan/isbot (Unlicense)",
+   "verified": null
+  },
+  {
+   "class": "automation",
+   "token": "Go-http-client",
+   "operator": "go",
+   "src": "https://github.com/omrilotan/isbot (Unlicense)",
+   "verified": null
+  },
+  {
+   "class": "automation",
+   "token": "okhttp",
+   "operator": "okhttp",
+   "src": "https://github.com/omrilotan/isbot (Unlicense)",
+   "verified": null
+  },
+  {
+   "class": "automation",
+   "token": "Wget",
+   "operator": "wget",
+   "src": "https://github.com/omrilotan/isbot (Unlicense)",
+   "verified": null
+  },
+  {
+   "class": "automation",
+   "token": "axios/",
+   "operator": "axios",
+   "src": "https://github.com/omrilotan/isbot (Unlicense)",
+   "verified": null
+  },
+  {
+   "class": "automation",
+   "token": "node-fetch",
+   "operator": "node",
+   "src": "https://github.com/omrilotan/isbot (Unlicense)",
+   "verified": null
+  },
+  {
+   "class": "automation",
+   "token": "PhantomJS",
+   "operator": "phantomjs",
+   "src": "https://github.com/omrilotan/isbot (Unlicense)",
+   "verified": null
+  },
+  {
+   "class": "automation",
+   "token": "Lighthouse",
+   "operator": "lighthouse",
+   "src": "https://github.com/omrilotan/isbot (Unlicense)",
+   "verified": null
+  }
+ ],
+ "botHeaders": [
+  {
+   "header": "signature-agent",
+   "contains": "chatgpt.com",
+   "class": "ai_user_fetch",
+   "operator": "chatgpt",
+   "src": "https://momenticmarketing.com/blog/ai-search-crawlers-bots (OpenAI Web Bot Auth, Signature-Agent \"https://chatgpt.com\")",
+   "verified": "2026-10-24"
+  },
+  {
+   "header": "sec-purpose",
+   "contains": "prefetch",
+   "class": "prefetch",
+   "operator": "browser",
+   "src": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Purpose",
+   "verified": "2026-10-24"
+  },
+  {
+   "header": "purpose",
+   "contains": "prefetch",
+   "class": "prefetch",
+   "operator": "browser",
+   "src": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Purpose",
+   "verified": "2026-10-24"
+  },
+  {
+   "header": "x-moz",
+   "contains": "prefetch",
+   "class": "prefetch",
+   "operator": "firefox",
+   "src": "https://developer.mozilla.org/en-US/docs/Glossary/Prefetch",
+   "verified": null
+  }
+ ]
+}

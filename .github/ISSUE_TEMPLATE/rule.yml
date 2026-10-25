@@ -1,0 +1,40 @@
+name: Rule correction or addition
+description: A click ID, referrer host, in-app browser token, device or bot is wrong or missing.
+labels: ["rules"]
+body:
+  - type: textarea
+    id: rule
+    attributes:
+      label: What should change
+      description: The signal involved, and what it should be attributed to.
+      placeholder: |
+        `foo_click_id` on example.com is a paid search click ID, but it is not recognised and the
+        request falls through to `direct`.
+    validations:
+      required: true
+  - type: input
+    id: src
+    attributes:
+      label: Source URL
+      description: >
+        Documentation that establishes the fact. Vendor docs are best. Data copied into rules/ must
+        be CC0, MIT, Apache-2.0, Unlicense or vendor documentation — see CONTRIBUTING.md.
+      placeholder: https://support.example.com/answer/12345
+    validations:
+      required: true
+  - type: input
+    id: verified
+    attributes:
+      label: Date verified
+      description: The date you opened that URL and confirmed it still says this (YYYY-MM-DD).
+      placeholder: "2026-10-24"
+    validations:
+      required: true
+  - type: textarea
+    id: sample
+    attributes:
+      label: Sample request
+      description: >
+        A real URL / Referer / User-Agent, copied verbatim. Please do not invent or edit a user
+        agent string.
+      render: text

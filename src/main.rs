@@ -1,6 +1,7 @@
 //! CLI: reads NDJSON `Request` objects or combined-log lines on stdin, writes NDJSON `Attribution`s.
 //! Usage: traffic-sources [--host example.com] [--external rules.json] [--top]
 use std::io::{BufRead, Write};
+use traffic_sources::json::ObjectWriter;
 use traffic_sources::{parse_combined_log, Attributor, Request};
 
 fn main() {
@@ -26,32 +27,48 @@ fn main() {
     }
     let stdin = std::io::stdin();
     let mut out = std::io::BufWriter::new(std::io::stdout());
+    let mut buf = String::new();
     for line in stdin.lock().lines().map_while(Result::ok) {
         let t = line.trim();
         if t.is_empty() {
             continue;
         }
-        let req: Option<Request> = if t.starts_with('{') {
-            serde_json::from_str::<Request>(t).ok().map(|mut r| {
-                if r.self_hosts.is_empty() && !r.url.starts_with("http") {
-                    r.self_hosts.push(host.clone());
-                }
-                r
-            })
+        let req: Result<Request, String> = if t.starts_with('{') {
+            Request::from_json(t)
+                .map(|mut r| {
+                    if r.self_hosts.is_empty() && !r.url.starts_with("http") {
+                        r.self_hosts.push(host.clone());
+                    }
+                    r
+                })
+                .map_err(|e| e.to_string())
         } else {
-            parse_combined_log(t, &host)
+            parse_combined_log(t, &host).ok_or_else(|| "not a combined log line".to_string())
         };
-        let v = match req {
-            Some(r) => {
+        buf.clear();
+        match req {
+            Ok(r) => {
                 let a = eng.attribute(&r);
+                let o = ObjectWriter::new(&mut buf).field("url", &r.url);
                 if top {
-                    serde_json::json!({"url": r.url, "top": a.top(), "client": a.client, "bot": a.bot})
+                    o.field("top", &a.top())
+                        .field("client", &a.client)
+                        .field("bot", &a.bot)
+                        .finish();
                 } else {
-                    serde_json::json!({"url": r.url, "attribution": a})
+                    o.field("attribution", &a).finish();
                 }
             }
-            None => serde_json::json!({"error": "unparseable", "line": t}),
-        };
-        let _ = writeln!(out, "{v}");
+            Err(reason) => ObjectWriter::new(&mut buf)
+                .field("error", "unparseable")
+                .field("reason", &reason)
+                .field("line", t)
+                .finish(),
+        }
+        buf.push('\n');
+        if out.write_all(buf.as_bytes()).is_err() {
+            // stdout closed (e.g. piped into `head`): stop quietly.
+            return;
+        }
     }
 }

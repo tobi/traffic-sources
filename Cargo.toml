@@ -11,7 +11,7 @@ documentation = "https://docs.rs/traffic-sources"
 readme = "README.md"
 keywords = ["attribution", "analytics", "referrer", "user-agent", "utm"]
 categories = ["web-programming", "parser-implementations", "command-line-utilities"]
-exclude = ["/docs", "/reference", "/.github"]
+exclude = ["/docs", "/reference", "/.github", "/tests/golden", "/tests/golden.rs"]
 
 [lib]
 name = "traffic_sources"
@@ -20,9 +20,3 @@ path = "src/lib.rs"
 [[bin]]
 name = "traffic-sources"
 path = "src/main.rs"
-
-[dependencies]
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-regex = "1"
-url = "2"

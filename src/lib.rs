@@ -41,18 +41,21 @@
 //! assert!(a.candidates.iter().any(|c| c.channel.as_str() == "organic_social"));
 //! ```
 
-use regex::{Regex, RegexBuilder, RegexSet, RegexSetBuilder};
-use serde::{Deserialize, Serialize};
-use serde_json::Value;
+pub mod json;
+mod pattern;
+mod url;
+
+use json::{ObjectWriter, ToJson, Value};
+use pattern::{Haystack, Regex, Screen};
 use std::collections::{BTreeMap, HashMap, HashSet};
+use std::sync::OnceLock;
 use url::Url;
 
 /// Compile a literal regex once.
 macro_rules! re {
     ($p:expr) => {{
-        static R: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
-        #[allow(clippy::regex_creation_in_loops)]
-        R.get_or_init(|| Regex::new($p).unwrap())
+        static R: OnceLock<Regex> = OnceLock::new();
+        R.get_or_init(|| Regex::new($p).expect("built-in pattern"))
     }};
 }
 
@@ -62,17 +65,50 @@ const OSS: &str = include_str!("../rules/oss-referrers.json");
 
 // ---------------------------------------------------------------- taxonomy
 
+/// `OrganicSearch` → `organic_search`.
+fn snake_case(camel: &str) -> String {
+    let mut out = String::with_capacity(camel.len() + 4);
+    for (i, c) in camel.chars().enumerate() {
+        if c.is_ascii_uppercase() {
+            if i > 0 {
+                out.push('_');
+            }
+            out.push(c.to_ascii_lowercase());
+        } else {
+            out.push(c);
+        }
+    }
+    out
+}
+
 macro_rules! str_enum {
     ($(#[$m:meta])* $name:ident { $($v:ident),* $(,)? }) => {
         $(#[$m])*
-        #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize)]
-        #[serde(rename_all = "snake_case")]
+        #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
         pub enum $name { $($v),* }
         impl $name {
-            /// snake_case name as serialised.
-            pub fn as_str(&self) -> String { serde_json::to_value(self).ok().and_then(|v| v.as_str().map(String::from)).unwrap_or_default() }
+            /// Every variant, in declaration order.
+            pub const ALL: &'static [$name] = &[$($name::$v),*];
+            /// snake_case name, as used in JSON.
+            pub fn as_str(&self) -> &'static str {
+                static NAMES: OnceLock<Vec<String>> = OnceLock::new();
+                &NAMES.get_or_init(|| [$(stringify!($v)),*].iter().map(|n| snake_case(n)).collect())
+                    [*self as usize]
+            }
             /// Parse a snake_case name.
-            pub fn parse(s: &str) -> Option<Self> { serde_json::from_value(Value::String(s.to_string())).ok() }
+            pub fn parse(s: &str) -> Option<Self> {
+                Self::ALL.iter().copied().find(|v| v.as_str() == s)
+            }
+        }
+        impl std::fmt::Display for $name {
+            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                f.write_str(self.as_str())
+            }
+        }
+        impl ToJson for $name {
+            fn write_json(&self, out: &mut String) {
+                self.as_str().write_json(out);
+            }
         }
     };
 }
@@ -124,51 +160,41 @@ str_enum!(
 // ---------------------------------------------------------------- public I/O types
 
 /// One request. Header names are matched case-insensitively.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default)]
 pub struct Request {
     /// Absolute URL, or path (then `host` header / `self_hosts[0]` is used).
     pub url: String,
-    #[serde(default)]
     pub referer: Option<String>,
-    #[serde(default)]
     pub user_agent: Option<String>,
-    #[serde(default)]
     pub headers: BTreeMap<String, String>,
     /// Your own hostnames (subdomains included). Defaults to the URL host.
-    #[serde(default)]
     pub self_hosts: Vec<String>,
     /// Your own Android package names (TWA detection).
-    #[serde(default)]
     pub self_android_packages: Vec<String>,
 }
 
 /// One signal with its documented source.
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Evidence {
     pub kind: SignalKind,
     /// e.g. `click_id:gclid`, `ua_token:instagram`.
     pub signal: String,
     /// Likelihood weight in 0..1 used in the noisy-OR.
     pub weight: f64,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub channel: Option<Channel>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub source: Option<String>,
     /// Documentation URL of the rule.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub rule_src: Option<String>,
     /// Date the rule was verified against `rule_src` (None = unverified).
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub verified: Option<String>,
 }
 
 /// A ranked attribution hypothesis.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct Candidate {
     pub channel: Channel,
     pub source: String,
     pub medium: String,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub campaign: Option<String>,
     pub paid: Paid,
     pub interaction: Interaction,
@@ -181,48 +207,41 @@ pub struct Candidate {
 }
 
 /// Client taxonomy.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct Client {
     pub os: Os,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub os_version: Option<String>,
     /// UA-reduction froze the version (macOS 10_15_7, Android "K" model).
     pub os_version_frozen: bool,
     pub form_factor: FormFactor,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub device: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub browser: Option<String>,
     pub surface: Surface,
     /// Host app for in-app browsers / referring app.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub app: Option<String>,
     pub client_hints_used: bool,
     pub confidence: f64,
     /// Documentation of the device rule that matched.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub rule_src: Option<String>,
 }
 
 /// Bot verdict.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct Bot {
     pub class: BotClass,
     pub token: String,
     pub operator: String,
     /// True if the request should be excluded from human analytics.
     pub exclude: bool,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub rule_src: Option<String>,
 }
 
 /// Full result.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct Attribution {
     /// All candidates, highest confidence first. Never empty.
     pub candidates: Vec<Candidate>,
     pub client: Client,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub bot: Option<Bot>,
     pub is_prefetch: bool,
     /// Starts a new session/touch (false for internal, bots, prefetch).
@@ -234,6 +253,189 @@ impl Attribution {
     /// Highest-ranked candidate.
     pub fn top(&self) -> &Candidate {
         &self.candidates[0]
+    }
+}
+
+// ---------------------------------------------------------------- JSON
+
+/// A [`Request`] that could not be read from JSON.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RequestError(pub String);
+impl std::fmt::Display for RequestError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "invalid request: {}", self.0)
+    }
+}
+impl std::error::Error for RequestError {}
+
+impl Request {
+    /// Read a request object: `url` is required; `referer` and `user_agent` may be strings or
+    /// null; `headers` is an object of strings; `self_hosts` and `self_android_packages` are
+    /// arrays of strings. Unknown members are ignored.
+    pub fn from_json(text: &str) -> Result<Request, RequestError> {
+        let v = Value::parse(text).map_err(|e| RequestError(e.to_string()))?;
+        Self::from_owned_json(v)
+    }
+
+    /// [`Self::from_json`] for an already parsed value.
+    pub fn from_json_value(v: &Value) -> Result<Request, RequestError> {
+        Self::from_owned_json(v.clone())
+    }
+
+    fn from_owned_json(v: Value) -> Result<Request, RequestError> {
+        const KEYS: [&str; 6] = [
+            "url",
+            "referer",
+            "user_agent",
+            "headers",
+            "self_hosts",
+            "self_android_packages",
+        ];
+        let bad = |k: &str, want: &str| RequestError(format!("`{k}` must be {want}"));
+        let Value::Object(members) = v else {
+            return Err(RequestError("expected a JSON object".into()));
+        };
+        // The last occurrence of a duplicated member wins, as for `Value` lookups.
+        let mut slots: [Value; 6] = Default::default();
+        for (k, x) in members {
+            if let Some(i) = KEYS.iter().position(|&want| want == k) {
+                slots[i] = x;
+            }
+        }
+        let [url, referer, user_agent, headers, self_hosts, self_android_packages] = slots;
+        let opt_str = |k: &str, x: Value| match x {
+            Value::Null => Ok(None),
+            Value::String(s) => Ok(Some(s)),
+            _ => Err(bad(k, "a string or null")),
+        };
+        let strings = |k: &str, x: Value| match x {
+            Value::Null => Ok(Vec::new()),
+            Value::Array(a) => a
+                .into_iter()
+                .map(|x| match x {
+                    Value::String(s) => Ok(s),
+                    _ => Err(bad(k, "an array of strings")),
+                })
+                .collect(),
+            _ => Err(bad(k, "an array of strings")),
+        };
+        let headers = match headers {
+            Value::Null => BTreeMap::new(),
+            Value::Object(m) => m
+                .into_iter()
+                .map(|(k, x)| match x {
+                    Value::String(s) => Ok((k, s)),
+                    _ => Err(bad("headers", "an object of strings")),
+                })
+                .collect::<Result<_, _>>()?,
+            _ => return Err(bad("headers", "an object of strings")),
+        };
+        Ok(Request {
+            url: opt_str("url", url)?.ok_or_else(|| bad("url", "a string"))?,
+            referer: opt_str("referer", referer)?,
+            user_agent: opt_str("user_agent", user_agent)?,
+            headers,
+            self_hosts: strings("self_hosts", self_hosts)?,
+            self_android_packages: strings("self_android_packages", self_android_packages)?,
+        })
+    }
+}
+
+impl ToJson for Request {
+    fn write_json(&self, out: &mut String) {
+        ObjectWriter::new(out)
+            .field("url", &self.url)
+            .field("referer", &self.referer)
+            .field("user_agent", &self.user_agent)
+            .field("headers", &HeaderMap(&self.headers))
+            .field("self_hosts", &self.self_hosts)
+            .field("self_android_packages", &self.self_android_packages)
+            .finish();
+    }
+}
+
+struct HeaderMap<'a>(&'a BTreeMap<String, String>);
+
+impl ToJson for HeaderMap<'_> {
+    fn write_json(&self, out: &mut String) {
+        let mut o = ObjectWriter::new(out);
+        for (k, v) in self.0 {
+            o = o.field(k, v);
+        }
+        o.finish();
+    }
+}
+
+impl ToJson for Evidence {
+    fn write_json(&self, out: &mut String) {
+        ObjectWriter::new(out)
+            .field("kind", &self.kind)
+            .field("signal", &self.signal)
+            .field("weight", &self.weight)
+            .opt("channel", self.channel.as_ref())
+            .opt("source", self.source.as_ref())
+            .opt("rule_src", self.rule_src.as_ref())
+            .opt("verified", self.verified.as_ref())
+            .finish();
+    }
+}
+
+impl ToJson for Candidate {
+    fn write_json(&self, out: &mut String) {
+        ObjectWriter::new(out)
+            .field("channel", &self.channel)
+            .field("source", &self.source)
+            .field("medium", &self.medium)
+            .opt("campaign", self.campaign.as_ref())
+            .field("paid", &self.paid)
+            .field("interaction", &self.interaction)
+            .field("confidence", &self.confidence)
+            .field("share", &self.share)
+            .field("evidence", &self.evidence)
+            .finish();
+    }
+}
+
+impl ToJson for Client {
+    fn write_json(&self, out: &mut String) {
+        ObjectWriter::new(out)
+            .field("os", &self.os)
+            .opt("os_version", self.os_version.as_ref())
+            .field("os_version_frozen", &self.os_version_frozen)
+            .field("form_factor", &self.form_factor)
+            .opt("device", self.device.as_ref())
+            .opt("browser", self.browser.as_ref())
+            .field("surface", &self.surface)
+            .opt("app", self.app.as_ref())
+            .field("client_hints_used", &self.client_hints_used)
+            .field("confidence", &self.confidence)
+            .opt("rule_src", self.rule_src.as_ref())
+            .finish();
+    }
+}
+
+impl ToJson for Bot {
+    fn write_json(&self, out: &mut String) {
+        ObjectWriter::new(out)
+            .field("class", &self.class)
+            .field("token", &self.token)
+            .field("operator", &self.operator)
+            .field("exclude", &self.exclude)
+            .opt("rule_src", self.rule_src.as_ref())
+            .finish();
+    }
+}
+
+impl ToJson for Attribution {
+    fn write_json(&self, out: &mut String) {
+        ObjectWriter::new(out)
+            .field("candidates", &self.candidates)
+            .field("client", &self.client)
+            .opt("bot", self.bot.as_ref())
+            .field("is_prefetch", &self.is_prefetch)
+            .field("new_touch", &self.new_touch)
+            .field("evidence", &self.evidence)
+            .finish();
     }
 }
 
@@ -281,84 +483,69 @@ pub mod weights {
 
 // ---------------------------------------------------------------- rules
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone)]
 struct ClickIdRule {
     param: String,
     source: String,
     medium: String,
-    channel: String,
-    #[serde(default)]
+    channel: Channel,
     weak: bool,
     src: Option<String>,
     verified: Option<String>,
 }
-#[derive(Debug, Clone, Deserialize)]
-struct UaTokenRaw {
-    re: String,
+#[derive(Debug, Clone)]
+struct UaTokenRule {
     source: String,
-    #[serde(rename = "type")]
     kind: String,
     src: Option<String>,
     verified: Option<String>,
 }
-#[derive(Debug, Clone, Deserialize)]
-struct RefRaw {
-    re: String,
+#[derive(Debug, Clone)]
+struct RefRule {
     source: String,
-    #[serde(rename = "type")]
     kind: String,
-    #[serde(default)]
     paid: bool,
     src: Option<String>,
     verified: Option<String>,
 }
-#[derive(Debug, Clone, Deserialize)]
-struct BotRaw {
-    class: String,
+#[derive(Debug, Clone)]
+struct BotRule {
+    class: BotClass,
     token: String,
     operator: String,
     src: Option<String>,
     verified: Option<String>,
 }
-#[derive(Debug, Clone, Deserialize)]
-struct BotHeaderRaw {
+#[derive(Debug, Clone)]
+struct BotHeaderRule {
     header: String,
+    /// Lowercase; compared against the lowercased header value.
     contains: String,
-    class: String,
+    class: BotClass,
     operator: String,
     src: Option<String>,
 }
-#[derive(Debug, Clone, Deserialize)]
-struct DeviceRaw {
-    re: String,
-    os: String,
-    form_factor: Option<String>,
+#[derive(Debug, Clone)]
+struct DeviceRule {
+    os: Os,
+    form_factor: Option<FormFactor>,
     device: Option<String>,
-    src: Option<String>,
-    verified: Option<String>,
-}
-#[derive(Debug, Clone, Deserialize)]
-struct ShareMarkerRaw {
-    param: String,
-    source: String,
-    /// Only fires when the value matches.
-    #[serde(rename = "valueRe")]
-    value_re: Option<String>,
-    /// Only fires when the referrer host matches.
-    #[serde(rename = "refHost")]
-    ref_host: Option<String>,
-    /// Only fires when this other parameter is also present.
-    #[serde(rename = "withParam")]
-    with_param: Option<String>,
     src: Option<String>,
     verified: Option<String>,
 }
 /// A share marker with its patterns compiled once at load time.
 #[derive(Debug)]
 struct ShareMarker {
-    r: ShareMarkerRaw,
+    param: String,
+    source: String,
+    /// Only fires when the value matches.
     value_rx: Option<Regex>,
+    /// Only fires when the referrer host matches.
     ref_host_rx: Option<Regex>,
+    /// Only fires when this other parameter is also present.
+    with_param: Option<String>,
+    src: Option<String>,
+    verified: Option<String>,
 }
 
 #[derive(Debug)]
@@ -367,11 +554,161 @@ struct Compiled<T> {
     r: T,
 }
 
-fn rx(p: &str, ci: bool) -> Result<Regex, RuleError> {
-    RegexBuilder::new(p)
-        .case_insensitive(ci)
-        .build()
-        .map_err(|e| RuleError(format!("{p}: {e}")))
+trait HasPattern {
+    fn rx(&self) -> &Regex;
+}
+impl<T> HasPattern for Compiled<T> {
+    fn rx(&self) -> &Regex {
+        &self.rx
+    }
+}
+impl HasPattern for (Regex, String) {
+    fn rx(&self) -> &Regex {
+        &self.0
+    }
+}
+
+/// Rules tried in order against one string, after a single-pass [`Screen`] over all of them.
+#[derive(Debug)]
+struct RuleList<T> {
+    items: Vec<T>,
+    screen: Screen,
+}
+
+impl<T: HasPattern> RuleList<T> {
+    fn new(items: Vec<T>) -> Self {
+        let screen = Screen::new(items.iter().map(HasPattern::rx));
+        RuleList { items, screen }
+    }
+    /// The rules whose pattern matches `h`, in list order.
+    fn matching<'a>(&'a self, h: &'a Haystack<'a>) -> impl Iterator<Item = &'a T> + 'a {
+        self.screen
+            .candidates(h)
+            .into_indices()
+            .map(|i| &self.items[i])
+            .filter(move |t| t.rx().is_match_in(h))
+    }
+    fn first(&self, s: &str) -> Option<&T> {
+        let h = Haystack::new(s);
+        let mut hits = self.screen.candidates(&h).into_indices();
+        hits.find_map(|i| Some(&self.items[i]).filter(|t| t.rx().is_match_in(&h)))
+    }
+}
+
+/// Source categories a `type` field may name.
+const KINDS: [&str; 8] = [
+    "search", "social", "video", "email", "ai", "display", "shopping", "referral",
+];
+
+/// One object of a rule file, with its location for error messages.
+struct Rec<'a> {
+    v: &'a Value,
+    at: String,
+}
+
+impl<'a> Rec<'a> {
+    fn new(v: &'a Value, at: impl Into<String>) -> Result<Self, RuleError> {
+        let at = at.into();
+        if v.as_object().is_none() {
+            return Err(RuleError(format!("{at}: expected an object")));
+        }
+        Ok(Rec { v, at })
+    }
+    fn err(&self, k: &str, what: impl std::fmt::Display) -> RuleError {
+        RuleError(format!("{}.{k}: {what}", self.at))
+    }
+    fn str(&self, k: &str) -> Result<String, RuleError> {
+        self.v[k]
+            .as_str()
+            .map(String::from)
+            .ok_or_else(|| self.err(k, "expected a string"))
+    }
+    /// Absent and `null` are both `None`.
+    fn opt(&self, k: &str) -> Result<Option<String>, RuleError> {
+        match &self.v[k] {
+            Value::Null => Ok(None),
+            Value::String(s) => Ok(Some(s.clone())),
+            _ => Err(self.err(k, "expected a string or null")),
+        }
+    }
+    fn flag(&self, k: &str) -> Result<bool, RuleError> {
+        match &self.v[k] {
+            Value::Null => Ok(false),
+            Value::Bool(b) => Ok(*b),
+            _ => Err(self.err(k, "expected a boolean")),
+        }
+    }
+    fn regex(&self, k: &str, ci: bool) -> Result<Regex, RuleError> {
+        Regex::build(&self.str(k)?, ci).map_err(|e| self.err(k, e))
+    }
+    fn opt_regex(&self, k: &str, ci: bool) -> Result<Option<Regex>, RuleError> {
+        self.opt(k)?
+            .map(|p| Regex::build(&p, ci).map_err(|e| self.err(k, e)))
+            .transpose()
+    }
+    fn parsed<T>(&self, k: &str, parse: impl Fn(&str) -> Option<T>) -> Result<T, RuleError> {
+        let s = self.str(k)?;
+        parse(&s).ok_or_else(|| self.err(k, format!("unknown {k} {s:?}")))
+    }
+    fn kind(&self) -> Result<String, RuleError> {
+        self.parsed("type", |s| KINDS.contains(&s).then(|| s.to_string()))
+    }
+    fn src(&self) -> Result<(Option<String>, Option<String>), RuleError> {
+        Ok((self.opt("src")?, self.opt("verified")?))
+    }
+}
+
+/// The objects of the array `v[key]`; an absent array is empty only when `optional`.
+fn records<'a>(v: &'a Value, key: &str, optional: bool) -> Result<Vec<Rec<'a>>, RuleError> {
+    match &v[key] {
+        Value::Null if optional => Ok(Vec::new()),
+        Value::Array(a) => a
+            .iter()
+            .enumerate()
+            .map(|(i, x)| Rec::new(x, format!("{key}[{i}]")))
+            .collect(),
+        _ => Err(RuleError(format!("{key}: expected an array"))),
+    }
+}
+
+fn string_map(v: &Value, at: &str) -> Result<HashMap<String, String>, RuleError> {
+    v.as_object()
+        .ok_or_else(|| RuleError(format!("{at}: expected an object")))?
+        .iter()
+        .map(|(k, x)| match x.as_str() {
+            Some(s) => Ok((k.clone(), s.to_string())),
+            None => Err(RuleError(format!("{at}.{k}: expected a string"))),
+        })
+        .collect()
+}
+
+fn string_list(v: &Value, at: &str) -> Result<Vec<String>, RuleError> {
+    v.as_array()
+        .ok_or_else(|| RuleError(format!("{at}: expected an array")))?
+        .iter()
+        .enumerate()
+        .map(|(i, x)| {
+            x.as_str()
+                .map(String::from)
+                .ok_or_else(|| RuleError(format!("{at}[{i}]: expected a string")))
+        })
+        .collect()
+}
+
+fn parse_json(text: &str, what: &str) -> Result<Value, RuleError> {
+    Value::parse(text).map_err(|e| RuleError(format!("{what}: {e}")))
+}
+
+/// Regex-escape a literal.
+fn escape(lit: &str) -> String {
+    let mut out = String::with_capacity(lit.len() + 4);
+    for c in lit.chars() {
+        if "\\.+*?()|[]{}^$#&-~".contains(c) {
+            out.push('\\');
+        }
+        out.push(c);
+    }
+    out
 }
 
 /// Key of the query parameter named `param`, compared case-insensitively, as it appeared in the
@@ -395,10 +732,9 @@ fn first_ci_duplicate<'a>(it: impl Iterator<Item = &'a str>) -> Option<String> {
 }
 
 /// External referrer entry (e.g. GPL-licensed lists you load yourself; never shipped).
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ExternalReferrer {
     pub source: String,
-    #[serde(default)]
     pub medium: Option<String>,
 }
 
@@ -406,18 +742,17 @@ pub struct ExternalReferrer {
 #[derive(Debug)]
 pub struct Attributor {
     click_ids: Vec<ClickIdRule>,
-    ua_tokens: Vec<Compiled<UaTokenRaw>>,
+    ua_tokens: RuleList<Compiled<UaTokenRule>>,
     xrw_apps: HashMap<String, String>,
     xrw_src: String,
-    referrers: Vec<Compiled<RefRaw>>,
+    referrers: RuleList<Compiled<RefRule>>,
     ai_paths: Vec<(String, Regex, String)>,
     share_markers: Vec<ShareMarker>,
     mastodon: HashSet<String>,
-    bots: Vec<BotRaw>,
-    bot_set: RegexSet,
-    bot_headers: Vec<BotHeaderRaw>,
-    devices: Vec<Compiled<DeviceRaw>>,
-    browsers: Vec<(Regex, String)>,
+    bots: RuleList<Compiled<BotRule>>,
+    bot_headers: Vec<BotHeaderRule>,
+    devices: RuleList<Compiled<DeviceRule>>,
+    browsers: RuleList<(Regex, String)>,
     ch_platform: HashMap<String, String>,
     ch_form: HashMap<String, String>,
     ga4: Ga4,
@@ -438,10 +773,6 @@ struct Ga4 {
     video_host: Regex,
 }
 
-fn s(v: &Value, k: &str) -> String {
-    v.get(k).and_then(|x| x.as_str()).unwrap_or("").to_string()
-}
-
 impl Default for Attributor {
     fn default() -> Self {
         Self::new()
@@ -455,13 +786,30 @@ impl Attributor {
     }
 
     /// Build from rule JSON strings (same schema as `rules/*.json`).
+    ///
+    /// Every field is checked: a missing or mistyped field, an unknown enum name or `type`, a
+    /// pattern that does not compile, or two rules that would match the same input is an error
+    /// naming the offending entry, never a silent default.
     pub fn from_json(rules: &str, devices: &str, oss: &str) -> Result<Self, RuleError> {
-        let e = |x: serde_json::Error| RuleError(x.to_string());
-        let r: Value = serde_json::from_str(rules).map_err(e)?;
-        let d: Value = serde_json::from_str(devices).map_err(e)?;
-        let o: Value = serde_json::from_str(oss).map_err(e)?;
-        let click_ids: Vec<ClickIdRule> =
-            serde_json::from_value(r["clickIds"].clone()).map_err(e)?;
+        let r = parse_json(rules, "rules")?;
+        let d = parse_json(devices, "devices")?;
+        let o = parse_json(oss, "oss")?;
+
+        let click_ids = records(&r, "clickIds", false)?
+            .iter()
+            .map(|x| {
+                let (src, verified) = x.src()?;
+                Ok(ClickIdRule {
+                    param: x.str("param")?,
+                    source: x.str("source")?,
+                    medium: x.str("medium")?,
+                    channel: x.parsed("channel", Channel::parse)?,
+                    weak: x.flag("weak")?,
+                    src,
+                    verified,
+                })
+            })
+            .collect::<Result<Vec<_>, RuleError>>()?;
         // Parameters are matched case-insensitively, so two rules differing only in case would
         // both fire on one parameter and double-count it in the noisy-OR.
         if let Some(d) = first_ci_duplicate(click_ids.iter().map(|c| c.param.as_str())) {
@@ -469,163 +817,224 @@ impl Attributor {
                 "clickIds: duplicate parameter (case-insensitive): {d}"
             )));
         }
-        for c in &click_ids {
-            if Channel::parse(&c.channel).is_none() {
-                return Err(RuleError(format!(
-                    "clickIds[{}]: unknown channel {:?}",
-                    c.param, c.channel
-                )));
-            }
-        }
-        let ua_tokens = serde_json::from_value::<Vec<UaTokenRaw>>(r["uaTokens"].clone())
-            .map_err(e)?
-            .into_iter()
-            .map(|t| {
+        let ua_tokens = records(&r, "uaTokens", false)?
+            .iter()
+            .map(|x| {
+                let (src, verified) = x.src()?;
                 Ok(Compiled {
-                    rx: rx(&t.re, true)?,
-                    r: t,
+                    rx: x.regex("re", true)?,
+                    r: UaTokenRule {
+                        source: x.str("source")?,
+                        kind: x.kind()?,
+                        src,
+                        verified,
+                    },
                 })
             })
             .collect::<Result<Vec<_>, RuleError>>()?;
-        let xrw_apps: HashMap<String, String> =
-            serde_json::from_value(r["xRequestedWith"]["apps"].clone()).map_err(e)?;
-        let referrers = serde_json::from_value::<Vec<RefRaw>>(r["referrers"].clone())
-            .map_err(e)?
-            .into_iter()
-            .map(|t| {
+        let xrw = Rec::new(&r["xRequestedWith"], "xRequestedWith")?;
+        let xrw_apps = string_map(&xrw.v["apps"], "xRequestedWith.apps")?;
+        let referrers = records(&r, "referrers", false)?
+            .iter()
+            .map(|x| {
+                let (src, verified) = x.src()?;
                 Ok(Compiled {
-                    rx: rx(&t.re, true)?,
-                    r: t,
+                    rx: x.regex("re", true)?,
+                    r: RefRule {
+                        source: x.str("source")?,
+                        kind: x.kind()?,
+                        paid: x.flag("paid")?,
+                        src,
+                        verified,
+                    },
                 })
             })
             .collect::<Result<Vec<_>, RuleError>>()?;
-        let ai_paths = r["aiPathReferrers"]
-            .as_array()
-            .cloned()
-            .unwrap_or_default()
+        let ai_paths = records(&r, "aiPathReferrers", true)?
             .iter()
-            .map(|a| Ok((s(a, "host"), rx(&s(a, "path"), false)?, s(a, "source"))))
+            .map(|x| Ok((x.str("host")?, x.regex("path", false)?, x.str("source")?)))
             .collect::<Result<Vec<_>, RuleError>>()?;
-        let bots: Vec<BotRaw> = serde_json::from_value(r["botRules"].clone()).map_err(e)?;
-        // Tokens are matched case-insensitively. Two rules differing only in case both match, and
-        // the winner was decided by JSON order — which silently flipped `exclude` when the two
-        // disagreed about the class.
-        if let Some(d) = first_ci_duplicate(bots.iter().map(|b| b.token.as_str())) {
-            return Err(RuleError(format!(
-                "botRules: duplicate token (case-insensitive): {d}"
-            )));
-        }
-        for b in &bots {
-            if BotClass::parse(&b.class).is_none() {
-                return Err(RuleError(format!(
-                    "botRules[{}]: unknown class {:?}",
-                    b.token, b.class
-                )));
-            }
-        }
-        let pats: Vec<String> = bots
+        let share_markers = records(&r, "shareMarkers", false)?
             .iter()
-            .map(|b| {
-                let t = regex::escape(&b.token);
-                let tail = if b.token.ends_with(|c: char| c.is_alphanumeric()) {
+            .map(|x| {
+                let (src, verified) = x.src()?;
+                Ok(ShareMarker {
+                    param: x.str("param")?,
+                    source: x.str("source")?,
+                    value_rx: x.opt_regex("valueRe", false)?,
+                    ref_host_rx: x.opt_regex("refHost", true)?,
+                    with_param: x.opt("withParam")?,
+                    src,
+                    verified,
+                })
+            })
+            .collect::<Result<Vec<_>, RuleError>>()?;
+        let mastodon = match &r["mastodonInstances"] {
+            Value::Null => HashSet::new(),
+            v => string_list(v, "mastodonInstances")?.into_iter().collect(),
+        };
+
+        let bots = records(&r, "botRules", false)?
+            .iter()
+            .map(|x| {
+                let (src, verified) = x.src()?;
+                let token = x.str("token")?;
+                // A boundary on each side, except after a token that ends in punctuation (e.g.
+                // `Mozilla/5.0 (compatible; Foo`), where `\b` would demand a word character next.
+                let tail = if token.ends_with(|c: char| c.is_alphanumeric()) {
                     "\\b"
                 } else {
                     ""
                 };
-                format!("\\b{t}{tail}")
-            })
-            .collect();
-        let bot_set = RegexSetBuilder::new(&pats)
-            .case_insensitive(true)
-            .build()
-            .map_err(|x| RuleError(x.to_string()))?;
-        let g = &r["ga4"];
-        let ga4 = Ga4 {
-            paid_medium: rx(&s(g, "paidMedium"), false)?,
-            shop_camp: rx(&s(g, "shoppingCampaign"), false)?,
-            display: rx(&s(g, "display"), false)?,
-            social_medium: rx(&s(g, "socialMedium"), false)?,
-            paid_source: rx(&s(g, "paidSource"), true)?,
-            shop_host: rx(&s(g, "shoppingHosts"), true)?,
-            video_host: rx(&s(g, "videoHosts"), true)?,
-        };
-        let devices = serde_json::from_value::<Vec<DeviceRaw>>(d["devices"].clone())
-            .map_err(e)?
-            .into_iter()
-            .map(|t| {
+                let rx = Regex::case_insensitive(&format!("\\b{}{tail}", escape(&token)))
+                    .map_err(|e| x.err("token", e))?;
                 Ok(Compiled {
-                    rx: rx(&t.re, false)?,
-                    r: t,
+                    rx,
+                    r: BotRule {
+                        class: x.parsed("class", BotClass::parse)?,
+                        token,
+                        operator: x.str("operator")?,
+                        src,
+                        verified,
+                    },
                 })
             })
             .collect::<Result<Vec<_>, RuleError>>()?;
-        let browsers = d["browsers"]
-            .as_array()
-            .cloned()
-            .unwrap_or_default()
+        // Tokens are matched case-insensitively. Two rules differing only in case both match, and
+        // the winner was decided by JSON order — which silently flipped `exclude` when the two
+        // disagreed about the class.
+        if let Some(d) = first_ci_duplicate(bots.iter().map(|b| b.r.token.as_str())) {
+            return Err(RuleError(format!(
+                "botRules: duplicate token (case-insensitive): {d}"
+            )));
+        }
+        let bot_headers = records(&r, "botHeaders", false)?
             .iter()
-            .map(|b| Ok((rx(&s(b, "re"), false)?, s(b, "name"))))
-            .collect::<Result<Vec<_>, RuleError>>()?;
-        // Compiled once here; these used to be rebuilt for every marker on every request.
-        let share_markers =
-            serde_json::from_value::<Vec<ShareMarkerRaw>>(r["shareMarkers"].clone())
-                .map_err(e)?
-                .into_iter()
-                .map(|m| {
-                    Ok(ShareMarker {
-                        value_rx: m.value_re.as_deref().map(|p| rx(p, false)).transpose()?,
-                        ref_host_rx: m.ref_host.as_deref().map(|p| rx(p, true)).transpose()?,
-                        r: m,
-                    })
+            .map(|x| {
+                Ok(BotHeaderRule {
+                    header: x.str("header")?.to_ascii_lowercase(),
+                    contains: x.str("contains")?.to_ascii_lowercase(),
+                    class: x.parsed("class", BotClass::parse)?,
+                    operator: x.str("operator")?,
+                    src: x.opt("src")?,
                 })
-                .collect::<Result<Vec<_>, RuleError>>()?;
-        let mut oss = HashMap::new();
-        if let Some(h) = o["hosts"].as_object() {
-            for (k, v) in h {
-                oss.insert(
-                    k.clone(),
-                    (
-                        s(v, "name"),
-                        s(v, "type"),
-                        v["prefix"].as_bool().unwrap_or(false),
-                    ),
-                );
+            })
+            .collect::<Result<Vec<_>, RuleError>>()?;
+
+        let g = Rec::new(&r["ga4"], "ga4")?;
+        let ga4 = Ga4 {
+            paid_medium: g.regex("paidMedium", false)?,
+            shop_camp: g.regex("shoppingCampaign", false)?,
+            display: g.regex("display", false)?,
+            social_medium: g.regex("socialMedium", false)?,
+            paid_source: g.regex("paidSource", true)?,
+            shop_host: g.regex("shoppingHosts", true)?,
+            video_host: g.regex("videoHosts", true)?,
+        };
+
+        let devices = records(&d, "devices", false)?
+            .iter()
+            .map(|x| {
+                let (src, verified) = x.src()?;
+                let form_factor = match x.opt("form_factor")? {
+                    None => None,
+                    Some(_) => Some(x.parsed("form_factor", FormFactor::parse)?),
+                };
+                Ok(Compiled {
+                    rx: x.regex("re", false)?,
+                    r: DeviceRule {
+                        os: x.parsed("os", Os::parse)?,
+                        form_factor,
+                        device: x.opt("device")?,
+                        src,
+                        verified,
+                    },
+                })
+            })
+            .collect::<Result<Vec<_>, RuleError>>()?;
+        let browsers = records(&d, "browsers", true)?
+            .iter()
+            .map(|x| Ok((x.regex("re", false)?, x.str("name")?)))
+            .collect::<Result<Vec<_>, RuleError>>()?;
+        let ch = Rec::new(&d["clientHints"], "clientHints")?;
+        let ch_platform = string_map(&ch.v["platform_map"], "clientHints.platform_map")?;
+        let ch_form = string_map(&ch.v["form_factor_map"], "clientHints.form_factor_map")?;
+        for (k, os) in &ch_platform {
+            if Os::parse(os).is_none() {
+                return Err(RuleError(format!(
+                    "clientHints.platform_map.{k}: unknown os {os:?}"
+                )));
             }
         }
+        for (k, ff) in &ch_form {
+            if FormFactor::parse(ff).is_none() {
+                return Err(RuleError(format!(
+                    "clientHints.form_factor_map.{k}: unknown form_factor {ff:?}"
+                )));
+            }
+        }
+
+        let hosts = o["hosts"]
+            .as_object()
+            .ok_or_else(|| RuleError("hosts: expected an object".into()))?;
+        let mut oss = HashMap::with_capacity(hosts.len());
+        for (k, v) in hosts {
+            let x = Rec::new(v, format!("hosts.{k}"))?;
+            oss.insert(k.clone(), (x.str("name")?, x.kind()?, x.flag("prefix")?));
+        }
+        let keyword_params = match o["keywordParams"].as_object() {
+            None if o["keywordParams"].is_null() => HashMap::new(),
+            None => return Err(RuleError("keywordParams: expected an object".into())),
+            Some(m) => m
+                .iter()
+                .map(|(k, v)| Ok((k.clone(), string_list(v, &format!("keywordParams.{k}"))?)))
+                .collect::<Result<_, RuleError>>()?,
+        };
+
         Ok(Self {
             click_ids,
-            ua_tokens,
+            ua_tokens: RuleList::new(ua_tokens),
             xrw_apps,
-            xrw_src: s(&r["xRequestedWith"], "_src"),
-            referrers,
+            xrw_src: xrw.str("_src")?,
+            referrers: RuleList::new(referrers),
             ai_paths,
             share_markers,
-            mastodon: serde_json::from_value(r["mastodonInstances"].clone()).unwrap_or_default(),
-            bots,
-            bot_set,
-            bot_headers: serde_json::from_value(r["botHeaders"].clone()).map_err(e)?,
-            devices,
-            browsers,
-            ch_platform: serde_json::from_value(d["clientHints"]["platform_map"].clone())
-                .map_err(e)?,
-            ch_form: serde_json::from_value(d["clientHints"]["form_factor_map"].clone())
-                .map_err(e)?,
+            mastodon,
+            bots: RuleList::new(bots),
+            bot_headers,
+            devices: RuleList::new(devices),
+            browsers: RuleList::new(browsers),
+            ch_platform,
+            ch_form,
             ga4,
             oss,
-            keyword_params: serde_json::from_value(o["keywordParams"].clone()).unwrap_or_default(),
+            keyword_params,
             external: HashMap::new(),
-            ga4_src: s(g, "_src"),
+            ga4_src: g.str("_src")?,
         })
     }
 
     /// Add an external referrer list `{host: {source, medium}}` or `{"referrers": {...}}`.
     /// Use this for GPL/AGPL/LGPL-derived lists, which this crate does not ship.
     pub fn with_external_referrers(mut self, json: &str) -> Result<Self, RuleError> {
-        let v: Value = serde_json::from_str(json).map_err(|x| RuleError(x.to_string()))?;
-        let m = v.get("referrers").cloned().unwrap_or(v);
-        let map: HashMap<String, ExternalReferrer> =
-            serde_json::from_value(m).map_err(|x| RuleError(x.to_string()))?;
-        self.external.extend(map);
+        let v = parse_json(json, "external referrers")?;
+        let m = match v.get("referrers") {
+            Some(inner) => inner,
+            None => &v,
+        };
+        let entries = m
+            .as_object()
+            .ok_or_else(|| RuleError("external referrers: expected an object".into()))?;
+        for (host, e) in entries {
+            let x = Rec::new(e, host.as_str())?;
+            self.external.insert(
+                host.clone(),
+                ExternalReferrer {
+                    source: x.str("source")?,
+                    medium: x.opt("medium")?,
+                },
+            );
+        }
         Ok(self)
     }
 
@@ -654,13 +1063,10 @@ impl Attributor {
             confidence: 0.5,
             rule_src: None,
         };
-        if let Some(d) = self.devices.iter().find(|d| d.rx.is_match(ua)) {
-            c.os = Os::parse(&d.r.os).unwrap_or(Os::Unknown);
-            c.form_factor =
-                d.r.form_factor
-                    .as_deref()
-                    .and_then(FormFactor::parse)
-                    .unwrap_or(FormFactor::Unknown);
+        let hua = Haystack::new(ua);
+        if let Some(d) = self.devices.matching(&hua).next() {
+            c.os = d.r.os;
+            c.form_factor = d.r.form_factor.unwrap_or(FormFactor::Unknown);
             c.device = d.r.device.clone();
             c.rule_src = d.r.src.clone();
             c.confidence = if d.r.verified.is_some() { 0.85 } else { 0.6 };
@@ -765,13 +1171,9 @@ impl Attributor {
         if c.client_hints_used {
             c.confidence = (c.confidence + 0.1).min(0.95);
         }
-        c.browser = self
-            .browsers
-            .iter()
-            .find(|(r, _)| r.is_match(ua))
-            .map(|(_, n)| n.clone());
+        c.browser = self.browsers.matching(&hua).next().map(|(_, n)| n.clone());
         // surface
-        let iab = self.ua_tokens.iter().find(|t| t.rx.is_match(ua));
+        let iab = self.ua_tokens.matching(&hua).next();
         let xrw = h.get("x-requested-with").filter(|x| !is_browser_pkg(x));
         let (ascheme, ahost, _) = parse_ref(h.referer());
         c.surface = if let Some(t) = iab {
@@ -809,22 +1211,29 @@ impl Attributor {
         for b in &self.bot_headers {
             if h.get(&b.header)
                 .is_some_and(|v| v.to_ascii_lowercase().contains(&b.contains))
-                && b.class != "prefetch"
+                && b.class != BotClass::Prefetch
             {
-                return Some(mk_bot(&b.class, &b.header, &b.operator, b.src.clone()));
+                return Some(mk_bot(b.class, &b.header, &b.operator, b.src.clone()));
             }
         }
         let ua = h.ua();
         if ua.is_empty() {
-            return Some(mk_bot("automation", "(empty user-agent)", "unknown", None));
+            return Some(mk_bot(
+                BotClass::Automation,
+                "(empty user-agent)",
+                "unknown",
+                None,
+            ));
         }
-        let hits: Vec<usize> = self.bot_set.matches(ua).into_iter().collect();
-        // prefer the longest token (Applebot-Extended over Applebot), and documented classes
-        let best = hits
-            .into_iter()
-            .max_by_key(|&i| (self.bots[i].verified.is_some(), self.bots[i].token.len()))?;
-        let b = &self.bots[best];
-        Some(mk_bot(&b.class, &b.token, &b.operator, b.src.clone()))
+        let hua = Haystack::new(ua);
+        // prefer documented rules, then the longest token (Applebot-Extended over Applebot);
+        // `max_by_key` keeps the last of equal keys, so ties go to the later rule.
+        let b = &self
+            .bots
+            .matching(&hua)
+            .max_by_key(|b| (b.r.verified.is_some(), b.r.token.len()))?
+            .r;
+        Some(mk_bot(b.class, &b.token, &b.operator, b.src.clone()))
     }
 
     // ------------------------------------------------------------ main entry
@@ -893,7 +1302,7 @@ impl Attributor {
             };
             meta.insert(
                 (Channel::Bot, norm_source(&b.operator)),
-                (b.class.as_str(), None, inter),
+                (b.class.as_str().to_string(), None, inter),
             );
             if b.class != BotClass::AiUserFetch {
                 return self.finish(ev, meta, client, bot, is_prefetch, false);
@@ -917,14 +1326,7 @@ impl Attributor {
         }
 
         let url = parse_url(req, &h);
-        let q: Vec<(String, String)> = url
-            .as_ref()
-            .map(|u| {
-                u.query_pairs()
-                    .map(|(a, b)| (a.into_owned(), b.into_owned()))
-                    .collect()
-            })
-            .unwrap_or_default();
+        let q: Vec<(String, String)> = url.as_ref().map(|u| u.query_pairs()).unwrap_or_default();
         let qget = |k: &str| q.iter().find(|(a, _)| a == k).map(|(_, b)| b.as_str());
         let qget_ci = |k: &str| {
             q.iter()
@@ -1004,7 +1406,7 @@ impl Attributor {
             if internal {
                 continue;
             }
-            let mut ch = Channel::parse(&c.channel).unwrap_or(Channel::PaidOther);
+            let mut ch = c.channel;
             let mut source = c.source.clone();
             if c.source == "google" && rhost.contains("youtube") && !c.weak {
                 ch = Channel::PaidVideo;
@@ -1044,7 +1446,8 @@ impl Attributor {
         // 3. in-app UA token / X-Requested-With / android-app referrer
         let ua = h.ua();
         if !internal {
-            if let Some(t) = self.ua_tokens.iter().find(|t| t.rx.is_match(ua)) {
+            let hua = Haystack::new(ua);
+            if let Some(t) = self.ua_tokens.matching(&hua).next() {
                 push(
                     &mut ev,
                     SignalKind::UaToken,
@@ -1092,7 +1495,7 @@ impl Attributor {
         // 4. share markers (organic social)
         if !internal {
             for m in &self.share_markers {
-                let p = m.r.param.as_str();
+                let p = m.param.as_str();
                 let Some(v) = qget(p) else { continue };
                 if m.value_rx.as_ref().is_some_and(|r| !r.is_match(v)) {
                     continue;
@@ -1102,10 +1505,10 @@ impl Attributor {
                 }
                 // `withParam` makes this marker conditional on a sibling parameter; `t` alone is
                 // far too common to mean anything, so it only counts alongside `s`.
-                if m.r.with_param.as_deref().is_some_and(|w| qget(w).is_none()) {
+                if m.with_param.as_deref().is_some_and(|w| qget(w).is_none()) {
                     continue;
                 }
-                if p == "t" && m.r.with_param.is_none() {
+                if p == "t" && m.with_param.is_none() {
                     continue;
                 }
                 if p == "s"
@@ -1114,7 +1517,7 @@ impl Attributor {
                 {
                     continue;
                 }
-                let src = match m.r.source.as_str() {
+                let src = match m.source.as_str() {
                     "youtube_or_spotify" => {
                         if rhost.contains("spotify") {
                             "spotify".to_string()
@@ -1131,8 +1534,8 @@ impl Attributor {
                     weights::SHARE_MARKER,
                     Some(Channel::OrganicSocial),
                     Some(src.clone()),
-                    m.r.src.clone(),
-                    m.r.verified.clone(),
+                    m.src.clone(),
+                    m.verified.clone(),
                 );
                 meta.entry((Channel::OrganicSocial, norm_source(&src)))
                     .or_insert(("social".into(), None, Interaction::Share));
@@ -1359,7 +1762,7 @@ impl Attributor {
             );
             return;
         }
-        if let Some(r) = self.referrers.iter().find(|r| r.rx.is_match(rhost)) {
+        if let Some(r) = self.referrers.first(rhost) {
             let r = &r.r;
             if r.source == "google" && re!(r"^(mail|docs|drive)\.").is_match(rhost) {
                 let mail = rhost.starts_with("mail");
@@ -1490,7 +1893,7 @@ impl Attributor {
             if let Some(v) = self.oss.get(&h) {
                 return Some(v.clone());
             }
-            let base = tld.replace(&h, "").to_string();
+            let base = tld.replace_first(&h, "");
             if let Some(v) = self.oss.get(&base).filter(|v| v.2) {
                 return Some(v.clone());
             }
@@ -1633,7 +2036,7 @@ impl Attributor {
         let stripped = if s == "adwords" {
             "google".to_string()
         } else if ps {
-            re!(r"[-_. ]?ads?$").replace(&s, "").to_string()
+            re!(r"[-_. ]?ads?$").replace_first(&s, "")
         } else {
             s.clone()
         };
@@ -1722,17 +2125,13 @@ impl Attributor {
         if self.ga4.video_host.is_match(s) || re!(r"^(youtube|yt|vimeo|twitch|kick)$").is_match(s) {
             return "video".into();
         }
-        let r = self
-            .referrers
-            .iter()
-            .find(|x| x.rx.is_match(s))
-            .or_else(|| {
-                if ref_host.is_empty() {
-                    None
-                } else {
-                    self.referrers.iter().find(|x| x.rx.is_match(ref_host))
-                }
-            });
+        let r = self.referrers.first(s).or_else(|| {
+            if ref_host.is_empty() {
+                None
+            } else {
+                self.referrers.first(ref_host)
+            }
+        });
         if search_src(s) || r.is_some_and(|r| r.r.kind == "search") {
             return "search".into();
         }
@@ -1791,19 +2190,19 @@ impl<'a> Headers<'a> {
 }
 
 fn parse_url(req: &Request, h: &Headers) -> Option<Url> {
-    Url::parse(&req.url).ok().or_else(|| {
+    Url::parse(&req.url).or_else(|| {
         let host = h
             .get("host")
             .map(String::from)
             .or_else(|| req.self_hosts.first().cloned())
             .unwrap_or_else(|| "localhost".into());
-        Url::parse(&format!("https://{host}{}", req.url)).ok()
+        Url::parse(&format!("https://{host}{}", req.url))
     })
 }
 
 fn parse_ref(r: &str) -> (String, String, String) {
     match Url::parse(r) {
-        Ok(u) => {
+        Some(u) => {
             let path = format!(
                 "{}{}",
                 u.path(),
@@ -1815,12 +2214,11 @@ fn parse_ref(r: &str) -> (String, String, String) {
                 path,
             )
         }
-        Err(_) => (String::new(), String::new(), String::new()),
+        None => (String::new(), String::new(), String::new()),
     }
 }
 
-fn mk_bot(class: &str, token: &str, op: &str, src: Option<String>) -> Bot {
-    let class = BotClass::parse(class).unwrap_or(BotClass::Automation);
+fn mk_bot(class: BotClass, token: &str, op: &str, src: Option<String>) -> Bot {
     Bot {
         class,
         token: token.to_string(),

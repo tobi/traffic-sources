@@ -312,7 +312,7 @@ fn ga4_waterfall() {
 fn combined_log_parse_and_all_rules_annotated() {
     let r = parse_combined_log(r#"1.2.3.4 - - [24/Oct/2026:10:00:00 -0500] "GET /x?gclid=1 HTTP/1.1" 200 5 "https://www.google.com/" "Roku/DVP-5.0 (025.00E08043A)""#, "s.example").unwrap();
     assert_eq!(r.url, "https://s.example/x?gclid=1");
-    let v: serde_json::Value = serde_json::from_str(include_str!("../rules/rules.json")).unwrap();
+    let v = traffic_sources::json::Value::parse(include_str!("../rules/rules.json")).unwrap();
     for k in ["clickIds", "uaTokens", "referrers", "botRules"] {
         for x in v[k].as_array().unwrap() {
             assert!(

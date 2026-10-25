@@ -147,7 +147,12 @@ export function attribute(req: Req): Attribution {
 
   // 1. UTM
   const us = q.get("utm_source"), um = q.get("utm_medium"), uc = q.get("utm_campaign") ?? undefined;
-  const ids = (R.clickIds as any[]).filter(c => q.has(c.param));
+  // Case-insensitive: vendors are inconsistent (Snapchat documents `ScCid` but emits `sccid`).
+  // The signal reports the parameter as it appeared in the URL, not as the rule spells it.
+  const qLower = new Map([...q.keys()].map(k => [k.toLowerCase(), k]));
+  const ids = (R.clickIds as any[])
+    .filter(c => qLower.has(c.param.toLowerCase()))
+    .map(c => ({ ...c, param: qLower.get(c.param.toLowerCase()) }));
   const strongId = ids.find(c => !c.weak);
   if (us || um) {
     sig.push(`utm:${us ?? ""}/${um ?? ""}`);

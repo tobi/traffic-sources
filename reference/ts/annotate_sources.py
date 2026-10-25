@@ -4,7 +4,7 @@
 #
 # Attach {src, verified} to every rule. verified = date checked against the cited doc in this critic loop;
 # null = not re-checked against a primary doc (status "unverified").
-import json, os
+import json, os, re
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "..", "rules")
 V="2026-10-24"
@@ -56,9 +56,24 @@ BOTS={
  "monitoring":{"UptimeRobot":"uptimerobot","Pingdom":"pingdom","StatusCake":"statuscake","Site24x7":"site24x7","Better Uptime":"betterstack","Datadog":"datadog","NewRelicPinger":"newrelic","GoogleStackdriverMonitoring":"google","Checkly":"checkly"},
  "automation":{"HeadlessChrome":"headless","python-requests":"python","curl/":"curl","Go-http-client":"go","okhttp":"okhttp","Wget":"wget","axios/":"axios","node-fetch":"node","PhantomJS":"phantomjs","Lighthouse":"lighthouse"},
 }
-for tok,src in AIB.get("userFetchers",{}).items(): BOTS["ai_user_fetch"].setdefault(tok,str(src).lower())
+# ai.robots.txt's `operator` is free text ("unclear at this time.", "google that retrieves web
+# content on behalf of gemini api users"). The engine emits the operator as the attribution
+# `source`, so keep only a short slug and fall back to the bot's own name.
+OPERATOR_OVERRIDE={"AI2Bot-DeepResearchEval":"ai2","amazon-QBusiness":"amazon","Amzn-User":"amazon",
+ "bigsur.ai":"bigsur_ai","ElevenlabsBot":"elevenlabs","ExaUser":"exa","GeistHaus-PageFetcher":"geisthaus",
+ "GoogleAgent-URLContext":"google","LinerBot":"liner","MistralAI-User/1.0":"mistral","NotebookLM":"google",
+ "Poggio-Citations":"poggio","Shap-User":"shap","TongyiBot":"alibaba","UseAI":"useai","YiyanBot":"baidu",
+ "Webzio-Extended":"webz_io"}
+def slug(tok,op):
+    if tok in OPERATOR_OVERRIDE: return OPERATOR_OVERRIDE[tok]
+    op=str(op).strip().lower()
+    return op if re.fullmatch(r"[a-z0-9][a-z0-9_.-]{0,20}",op) else "other"
+for tok,src in AIB.get("userFetchers",{}).items(): BOTS["ai_user_fetch"].setdefault(tok,slug(tok,src))
 known=set().union(*[set(v) for v in BOTS.values()])
-BOTS["ai_crawler"].update({c:"other" for c in AIB.get("crawlers",[]) if c not in known})
+# Tokens are matched case-insensitively by the engine, so a bulk entry that differs from a curated
+# one only in case would double-match and let JSON order decide the class. Keep the curated one.
+known_ci={k.lower() for k in known}
+BOTS["ai_crawler"].update({c:slug(c,"other") for c in AIB.get("crawlers",[]) if c.lower() not in known_ci})
 BSRC={"ai_user_fetch":"https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
  "ai_search_crawler":"https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers",
  "ai_crawler":"https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",

@@ -119,7 +119,7 @@ str_enum!(
 str_enum!(
     /// Kind of signal behind an [`Evidence`].
     SignalKind { Utm, ClickId, WeakClickId, UaToken, XRequestedWith, ClientHint, ShareMarker, AndroidAppReferrer,
-    Referrer, AiPathReferrer, ExternalList, OssList, SecFetch, NoReferrer, BotUa, BotHeader, Prefetch, Internal });
+    Referrer, SearchKeyword, AiPathReferrer, ExternalList, OssList, SecFetch, NoReferrer, BotUa, BotHeader, Prefetch, Internal });
 
 // ---------------------------------------------------------------- public I/O types
 
@@ -261,6 +261,9 @@ pub mod weights {
     pub const SHARE_MARKER: f64 = 0.70;
     pub const ANDROID_APP_REF: f64 = 0.80;
     pub const REFERRER: f64 = 0.75;
+    /// The referrer carries the engine's documented search-keyword parameter, so it is a results
+    /// page rather than the engine's home page. Source-only: it does not imply paid or organic.
+    pub const SEARCH_KEYWORD: f64 = 0.70;
     pub const AI_PATH: f64 = 0.80;
     pub const OSS_LIST: f64 = 0.65;
     pub const EXTERNAL_LIST: f64 = 0.60;
@@ -324,7 +327,6 @@ struct BotHeaderRaw {
     class: String,
     operator: String,
     src: Option<String>,
-    verified: Option<String>,
 }
 #[derive(Debug, Clone, Deserialize)]
 struct DeviceRaw {
@@ -335,7 +337,31 @@ struct DeviceRaw {
     src: Option<String>,
     verified: Option<String>,
 }
+#[derive(Debug, Clone, Deserialize)]
+struct ShareMarkerRaw {
+    param: String,
+    source: String,
+    /// Only fires when the value matches.
+    #[serde(rename = "valueRe")]
+    value_re: Option<String>,
+    /// Only fires when the referrer host matches.
+    #[serde(rename = "refHost")]
+    ref_host: Option<String>,
+    /// Only fires when this other parameter is also present.
+    #[serde(rename = "withParam")]
+    with_param: Option<String>,
+    src: Option<String>,
+    verified: Option<String>,
+}
+/// A share marker with its patterns compiled once at load time.
+#[derive(Debug)]
+struct ShareMarker {
+    r: ShareMarkerRaw,
+    value_rx: Option<Regex>,
+    ref_host_rx: Option<Regex>,
+}
 
+#[derive(Debug)]
 struct Compiled<T> {
     rx: Regex,
     r: T,
@@ -348,6 +374,26 @@ fn rx(p: &str, ci: bool) -> Result<Regex, RuleError> {
         .map_err(|e| RuleError(format!("{p}: {e}")))
 }
 
+/// Key of the query parameter named `param`, compared case-insensitively, as it appeared in the
+/// URL.
+fn qkey_ci<'a>(q: &'a [(String, String)], param: &str) -> Option<&'a str> {
+    q.iter()
+        .find(|(k, _)| k.eq_ignore_ascii_case(param))
+        .map(|(k, _)| k.as_str())
+}
+
+/// First value that appears twice ignoring case, if any. Used to reject rule sets whose entries
+/// would both match the same input and be counted twice.
+fn first_ci_duplicate<'a>(it: impl Iterator<Item = &'a str>) -> Option<String> {
+    let mut seen = HashSet::new();
+    for v in it {
+        if !seen.insert(v.to_ascii_lowercase()) {
+            return Some(v.to_string());
+        }
+    }
+    None
+}
+
 /// External referrer entry (e.g. GPL-licensed lists you load yourself; never shipped).
 #[derive(Debug, Clone, Deserialize)]
 pub struct ExternalReferrer {
@@ -357,6 +403,7 @@ pub struct ExternalReferrer {
 }
 
 /// The attribution engine. Construct once, reuse (it is `Send + Sync`).
+#[derive(Debug)]
 pub struct Attributor {
     click_ids: Vec<ClickIdRule>,
     ua_tokens: Vec<Compiled<UaTokenRaw>>,
@@ -364,7 +411,7 @@ pub struct Attributor {
     xrw_src: String,
     referrers: Vec<Compiled<RefRaw>>,
     ai_paths: Vec<(String, Regex, String)>,
-    share_markers: Vec<Value>,
+    share_markers: Vec<ShareMarker>,
     mastodon: HashSet<String>,
     bots: Vec<BotRaw>,
     bot_set: RegexSet,
@@ -380,6 +427,7 @@ pub struct Attributor {
     ga4_src: String,
 }
 
+#[derive(Debug)]
 struct Ga4 {
     paid_medium: Regex,
     shop_camp: Regex,
@@ -414,6 +462,21 @@ impl Attributor {
         let o: Value = serde_json::from_str(oss).map_err(e)?;
         let click_ids: Vec<ClickIdRule> =
             serde_json::from_value(r["clickIds"].clone()).map_err(e)?;
+        // Parameters are matched case-insensitively, so two rules differing only in case would
+        // both fire on one parameter and double-count it in the noisy-OR.
+        if let Some(d) = first_ci_duplicate(click_ids.iter().map(|c| c.param.as_str())) {
+            return Err(RuleError(format!(
+                "clickIds: duplicate parameter (case-insensitive): {d}"
+            )));
+        }
+        for c in &click_ids {
+            if Channel::parse(&c.channel).is_none() {
+                return Err(RuleError(format!(
+                    "clickIds[{}]: unknown channel {:?}",
+                    c.param, c.channel
+                )));
+            }
+        }
         let ua_tokens = serde_json::from_value::<Vec<UaTokenRaw>>(r["uaTokens"].clone())
             .map_err(e)?
             .into_iter()
@@ -444,6 +507,22 @@ impl Attributor {
             .map(|a| Ok((s(a, "host"), rx(&s(a, "path"), false)?, s(a, "source"))))
             .collect::<Result<Vec<_>, RuleError>>()?;
         let bots: Vec<BotRaw> = serde_json::from_value(r["botRules"].clone()).map_err(e)?;
+        // Tokens are matched case-insensitively. Two rules differing only in case both match, and
+        // the winner was decided by JSON order — which silently flipped `exclude` when the two
+        // disagreed about the class.
+        if let Some(d) = first_ci_duplicate(bots.iter().map(|b| b.token.as_str())) {
+            return Err(RuleError(format!(
+                "botRules: duplicate token (case-insensitive): {d}"
+            )));
+        }
+        for b in &bots {
+            if BotClass::parse(&b.class).is_none() {
+                return Err(RuleError(format!(
+                    "botRules[{}]: unknown class {:?}",
+                    b.token, b.class
+                )));
+            }
+        }
         let pats: Vec<String> = bots
             .iter()
             .map(|b| {
@@ -487,6 +566,19 @@ impl Attributor {
             .iter()
             .map(|b| Ok((rx(&s(b, "re"), false)?, s(b, "name"))))
             .collect::<Result<Vec<_>, RuleError>>()?;
+        // Compiled once here; these used to be rebuilt for every marker on every request.
+        let share_markers =
+            serde_json::from_value::<Vec<ShareMarkerRaw>>(r["shareMarkers"].clone())
+                .map_err(e)?
+                .into_iter()
+                .map(|m| {
+                    Ok(ShareMarker {
+                        value_rx: m.value_re.as_deref().map(|p| rx(p, false)).transpose()?,
+                        ref_host_rx: m.ref_host.as_deref().map(|p| rx(p, true)).transpose()?,
+                        r: m,
+                    })
+                })
+                .collect::<Result<Vec<_>, RuleError>>()?;
         let mut oss = HashMap::new();
         if let Some(h) = o["hosts"].as_object() {
             for (k, v) in h {
@@ -507,7 +599,7 @@ impl Attributor {
             xrw_src: s(&r["xRequestedWith"], "_src"),
             referrers,
             ai_paths,
-            share_markers: r["shareMarkers"].as_array().cloned().unwrap_or_default(),
+            share_markers,
             mastodon: serde_json::from_value(r["mastodonInstances"].clone()).unwrap_or_default(),
             bots,
             bot_set,
@@ -719,7 +811,6 @@ impl Attributor {
                 .is_some_and(|v| v.to_ascii_lowercase().contains(&b.contains))
                 && b.class != "prefetch"
             {
-                let _ = &b.verified;
                 return Some(mk_bot(&b.class, &b.header, &b.operator, b.src.clone()));
             }
         }
@@ -901,14 +992,16 @@ impl Attributor {
                 ),
             );
         }
-        // 2. click IDs
+        // 2. click IDs. Matched case-insensitively: vendors are inconsistent about casing
+        // (Snapchat documents `ScCid` but emits `sccid`), and the loader rejects rules that
+        // would collide under that comparison.
         for c in &self.click_ids {
-            let present = if c.param == "ScCid" {
-                qget_ci("sccid").is_some()
-            } else {
-                qget(&c.param).is_some()
+            // The signal reports the parameter as it appeared in the URL, not as the rule spells
+            // it, so the evidence describes the request.
+            let Some(seen) = qkey_ci(&q, &c.param) else {
+                continue;
             };
-            if !present || internal {
+            if internal {
                 continue;
             }
             let mut ch = Channel::parse(&c.channel).unwrap_or(Channel::PaidOther);
@@ -931,7 +1024,7 @@ impl Attributor {
             push(
                 &mut ev,
                 kind,
-                format!("click_id:{}", c.param),
+                format!("click_id:{seen}"),
                 w,
                 chan,
                 Some(source.clone()),
@@ -999,26 +1092,29 @@ impl Attributor {
         // 4. share markers (organic social)
         if !internal {
             for m in &self.share_markers {
-                let p = s(m, "param");
-                let Some(v) = qget(&p) else { continue };
-                if let Some(vr) = m.get("valueRe").and_then(|x| x.as_str()) {
-                    if !Regex::new(vr).map(|r| r.is_match(v)).unwrap_or(false) {
-                        continue;
-                    }
+                let p = m.r.param.as_str();
+                let Some(v) = qget(p) else { continue };
+                if m.value_rx.as_ref().is_some_and(|r| !r.is_match(v)) {
+                    continue;
                 }
-                if let Some(rh) = m.get("refHost").and_then(|x| x.as_str()) {
-                    if !Regex::new(rh).map(|r| r.is_match(&rhost)).unwrap_or(false) {
-                        continue;
-                    }
+                if m.ref_host_rx.as_ref().is_some_and(|r| !r.is_match(&rhost)) {
+                    continue;
                 }
-                if p == "t"
-                    || (p == "s"
-                        && qget("t").is_none()
-                        && !re!(r"(^|\.)(t\.co|x\.com|twitter\.com)$").is_match(&rhost))
+                // `withParam` makes this marker conditional on a sibling parameter; `t` alone is
+                // far too common to mean anything, so it only counts alongside `s`.
+                if m.r.with_param.as_deref().is_some_and(|w| qget(w).is_none()) {
+                    continue;
+                }
+                if p == "t" && m.r.with_param.is_none() {
+                    continue;
+                }
+                if p == "s"
+                    && qget("t").is_none()
+                    && !re!(r"(^|\.)(t\.co|x\.com|twitter\.com)$").is_match(&rhost)
                 {
                     continue;
                 }
-                let src = match s(m, "source").as_str() {
+                let src = match m.r.source.as_str() {
                     "youtube_or_spotify" => {
                         if rhost.contains("spotify") {
                             "spotify".to_string()
@@ -1035,8 +1131,8 @@ impl Attributor {
                     weights::SHARE_MARKER,
                     Some(Channel::OrganicSocial),
                     Some(src.clone()),
-                    m.get("src").and_then(|x| x.as_str()).map(String::from),
-                    None,
+                    m.r.src.clone(),
+                    m.r.verified.clone(),
                 );
                 meta.entry((Channel::OrganicSocial, norm_source(&src)))
                     .or_insert(("social".into(), None, Interaction::Share));
@@ -1081,7 +1177,9 @@ impl Attributor {
             );
         } else if !rhost.is_empty() {
             self.referrer_evidence(&rhost, &rpath, &mut ev, &mut meta);
-        } else if ev.is_empty() {
+        } else if ev.iter().all(|e| e.weight <= 0.0) {
+            // Zero-weight evidence (the prefetch marker) carries no attribution, so it must not
+            // suppress this branch — a prefetched cross-site navigation is still dark social.
             // 6. no referrer, no params
             let site = h.get("sec-fetch-site").unwrap_or("").to_ascii_lowercase();
             let mdn = Some("https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Fetch-Site".to_string());
@@ -1301,8 +1399,21 @@ impl Attributor {
                 r.src.clone(),
                 r.verified.clone(),
             );
-            if let Some(kws) = self.keyword_params.get(bare) {
-                let _ = kws; // keyword presence is informational only (search engines strip it)
+            if let Some(p) = self.search_keyword_param(rhost, bare, rpath) {
+                // Confirms the referrer is a results page for this engine rather than its home
+                // page. It says nothing about paid vs organic — an ad is clicked from the same
+                // results page — so it is source-only evidence, like an organic referrer.
+                ev.push(Evidence {
+                    kind: SignalKind::SearchKeyword,
+                    signal: format!("search_keyword:{p}"),
+                    weight: weights::SEARCH_KEYWORD,
+                    channel: None,
+                    source: Some(norm_source(&r.source)),
+                    rule_src: Some(
+                        "https://github.com/matomo-org/searchengine-and-social-list (CC0)".into(),
+                    ),
+                    verified: None,
+                });
             }
             return;
         }
@@ -1348,6 +1459,28 @@ impl Attributor {
             None,
             None,
         );
+    }
+
+    /// Name of the engine's documented search-keyword parameter, if the referrer carries it with a
+    /// non-empty value. Only the parameter name is returned: the query itself is the visitor's, and
+    /// this crate does not put it in its output.
+    fn search_keyword_param(&self, rhost: &str, bare: &str, rpath: &str) -> Option<&str> {
+        let query = rpath.split_once('?')?.1;
+        let params = self
+            .keyword_params
+            .get(bare)
+            .or_else(|| self.keyword_params.get(rhost))?;
+        let present: HashSet<&str> = query
+            .split('&')
+            .filter_map(|kv| {
+                let (k, v) = kv.split_once('=')?;
+                (!v.is_empty()).then_some(k)
+            })
+            .collect();
+        params
+            .iter()
+            .find(|p| present.contains(p.as_str()))
+            .map(|p| p.as_str())
     }
 
     fn oss_lookup(&self, host: &str) -> Option<(String, String, bool)> {
@@ -1458,11 +1591,12 @@ impl Attributor {
             });
         }
         cands.sort_by(|a, b| {
+            // total_cmp, not partial_cmp().unwrap(): ordering must never panic on a result.
             b.confidence
-                .partial_cmp(&a.confidence)
-                .unwrap()
+                .total_cmp(&a.confidence)
                 .then(a.paid.cmp(&b.paid))
                 .then(a.channel.cmp(&b.channel))
+                .then_with(|| a.source.cmp(&b.source))
         });
         let total: f64 = cands.iter().map(|c| c.confidence).sum();
         for c in &mut cands {
@@ -1492,14 +1626,18 @@ impl Attributor {
             medium.to_lowercase(),
             campaign.to_lowercase(),
         );
-        let stripped = if s == "adwords" {
-            "google".to_string()
-        } else {
-            re!(r"[-_. ]?ads?$").replace(&s, "").to_string()
-        };
-        let cat = self.source_category(&stripped, ref_host);
         let pm = self.ga4.paid_medium.is_match(&m);
         let ps = self.ga4.paid_source.is_match(&s);
+        // Strip the ad suffix only from a source that is actually an ad source. Stripping
+        // unconditionally turned `threads` into `thre` and lost the social category with it.
+        let stripped = if s == "adwords" {
+            "google".to_string()
+        } else if ps {
+            re!(r"[-_. ]?ads?$").replace(&s, "").to_string()
+        } else {
+            s.clone()
+        };
+        let cat = self.source_category(&stripped, ref_host);
         let paid = pm || ps;
         use Channel::*;
         let r = |c: Channel| (c, c.paid() == Paid::Paid);
@@ -1794,28 +1932,456 @@ fn family(s: &str) -> Option<&'static str> {
         _ => None,
     }
 }
+/// Quantise a score to three decimals in `0.0..=1.0`. NaN becomes 0.0 rather than propagating:
+/// a NaN would serialise as JSON `null` and silently break every consumer downstream.
 fn round(x: f64) -> f64 {
-    ((x.clamp(0.0, 1.0)) * 1000.0).round() / 1000.0
+    if x.is_nan() {
+        return 0.0;
+    }
+    (x.clamp(0.0, 1.0) * 1000.0).round() / 1000.0
 }
 
 // ---------------------------------------------------------------- log parsing
 
 /// Parse one Apache/Nginx *combined* log line into a [`Request`] (host taken from `default_host`).
+///
+/// `"-"` in the referer or user-agent field is the servers' "not present" placeholder and becomes
+/// `None`, so a line logged without a user agent is treated the same as a request that arrives
+/// without one (and is therefore classed as automation, not as a human visit).
 pub fn parse_combined_log(line: &str, default_host: &str) -> Option<Request> {
-    let re = Regex::new(r#"^\S+ \S+ \S+ \[[^\]]+\] "(?:[A-Z]+) (\S+)[^"]*" \d{3} \S+ "((?:[^"\\]|\\.)*)" "((?:[^"\\]|\\.)*)""#).unwrap();
-    let c = re.captures(line)?;
+    let c = re!(
+        r#"^\S+ \S+ \S+ \[[^\]]+\] "(?:[A-Z]+) (\S+)[^"]*" \d{3} \S+ "((?:[^"\\]|\\.)*)" "((?:[^"\\]|\\.)*)""#
+    )
+    .captures(line)?;
     let path = c[1].to_string();
     let url = if path.starts_with("http") {
         path
     } else {
         format!("https://{default_host}{path}")
     };
-    let referer = Some(c[2].to_string()).filter(|r| r != "-" && !r.is_empty());
+    let unlog = |s: &str| Some(s.replace("\\\"", "\"")).filter(|v| v != "-" && !v.is_empty());
     Some(Request {
         url,
-        referer,
-        user_agent: Some(c[3].replace("\\\"", "\"")),
+        referer: unlog(&c[2]),
+        user_agent: unlog(&c[3]),
         self_hosts: vec![default_host.to_string()],
         ..Default::default()
     })
+}
+
+// ---------------------------------------------------------------- unit tests
+//
+// Integration tests in `tests/` exercise the public surface. These cover the private helpers and
+// the loader's validation, which are not reachable from outside the crate.
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn eng() -> &'static Attributor {
+        static E: std::sync::OnceLock<Attributor> = std::sync::OnceLock::new();
+        E.get_or_init(Attributor::new)
+    }
+
+    // ------------------------------------------------------------ enums
+
+    #[test]
+    fn enum_names_round_trip_through_serde() {
+        macro_rules! round_trip {
+            ($($t:ty: [$($v:expr),*]),* $(,)?) => {$($(
+                let name = <$t>::as_str(&$v);
+                assert!(!name.is_empty(), "{:?} serialises to an empty string", $v);
+                assert_eq!(<$t>::parse(&name), Some($v), "{name} did not parse back");
+                assert!(
+                    name.chars().all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '_'),
+                    "{name} is not snake_case"
+                );
+            )*)*};
+        }
+        round_trip!(
+            Channel: [Channel::Direct, Channel::OrganicSearch, Channel::PaidAi, Channel::DarkSocial, Channel::Unknown],
+            Paid: [Paid::Paid, Paid::Organic, Paid::Unknown],
+            Interaction: [Interaction::Click, Interaction::AdClick, Interaction::AiUserFetch, Interaction::PreviewUnfurl],
+            Surface: [Surface::StandaloneBrowser, Surface::WebviewIab, Surface::AmpCache, Surface::Twa],
+            Os: [Os::Ios, Os::MetaHorizonOs, Os::NintendoSwitch, Os::Unknown],
+            FormFactor: [FormFactor::Phone, FormFactor::XrHeadset, FormFactor::EReader],
+            BotClass: [BotClass::AiCrawler, BotClass::AiUserFetch, BotClass::SearchCrawler],
+            SignalKind: [SignalKind::Utm, SignalKind::SearchKeyword, SignalKind::NoReferrer],
+        );
+    }
+
+    #[test]
+    fn unknown_enum_name_does_not_parse() {
+        assert_eq!(Channel::parse("not_a_channel"), None);
+        assert_eq!(
+            Channel::parse("OrganicSearch"),
+            None,
+            "parse takes snake_case"
+        );
+        assert_eq!(Os::parse(""), None);
+    }
+
+    #[test]
+    fn paid_classification_matches_the_channel_name() {
+        for (ch, want) in [
+            (Channel::PaidSearch, Paid::Paid),
+            (Channel::PaidSocial, Paid::Paid),
+            (Channel::PaidAi, Paid::Paid),
+            (Channel::PaidShopping, Paid::Paid),
+            (Channel::PaidVideo, Paid::Paid),
+            (Channel::PaidOther, Paid::Paid),
+            (Channel::Display, Paid::Paid),
+            (Channel::CrossNetwork, Paid::Paid),
+            (Channel::OrganicSearch, Paid::Organic),
+            (Channel::Direct, Paid::Organic),
+            (Channel::Bot, Paid::Unknown),
+            (Channel::Unknown, Paid::Unknown),
+        ] {
+            assert_eq!(ch.paid(), want, "{}", ch.as_str());
+        }
+        // every channel whose name starts with "paid_" must report Paid
+        for ch in [
+            Channel::PaidSearch,
+            Channel::PaidSocial,
+            Channel::PaidVideo,
+            Channel::PaidShopping,
+            Channel::PaidOther,
+            Channel::PaidAi,
+        ] {
+            assert!(ch.as_str().starts_with("paid_") && ch.paid() == Paid::Paid);
+        }
+    }
+
+    // ------------------------------------------------------------ pure helpers
+
+    #[test]
+    fn norm_source_folds_aliases_and_lowercases() {
+        for (input, want) in [
+            ("FaceBook.com", "facebook"),
+            ("l.facebook.com", "facebook"),
+            ("fb", "facebook"),
+            ("IG", "instagram"),
+            ("t.co", "x"),
+            ("Twitter", "x"),
+            ("x.com", "x"),
+            ("chatgpt.com", "chatgpt"),
+            ("SomeBrand", "somebrand"),
+        ] {
+            assert_eq!(norm_source(input), want, "{input}");
+        }
+    }
+
+    #[test]
+    fn norm_source_is_idempotent() {
+        for s in ["fb", "t.co", "chatgpt.com", "x.com", "anything"] {
+            assert_eq!(norm_source(&norm_source(s)), norm_source(s), "{s}");
+        }
+    }
+
+    #[test]
+    fn family_groups_are_symmetric_and_disjoint() {
+        assert_eq!(family("instagram"), family("facebook"));
+        assert_eq!(family("youtube"), family("google"));
+        assert_eq!(family("grok"), family("x"));
+        assert_ne!(family("google"), family("openai"));
+        assert_eq!(family("some_unknown_source"), None);
+        // a source is never in two families
+        for s in ["facebook", "google", "chatgpt", "bing", "tiktok", "x"] {
+            assert!(family(s).is_some(), "{s}");
+        }
+    }
+
+    #[test]
+    fn type_channel_and_medium_agree_on_paid() {
+        for kind in ["search", "social", "video", "shopping"] {
+            assert_eq!(type_channel(kind, false).paid(), Paid::Organic, "{kind}");
+            assert_eq!(type_channel(kind, true).paid(), Paid::Paid, "{kind}");
+        }
+        assert_eq!(type_channel("email", true), Channel::Email);
+        assert_eq!(type_channel("display", false), Channel::Display);
+        assert_eq!(type_channel("anything else", false), Channel::Referral);
+        assert_eq!(medium_for("search"), "organic");
+        assert_eq!(medium_for("ai"), "ai-assistant");
+        assert_eq!(medium_for("mystery"), "referral");
+    }
+
+    #[test]
+    fn round_clamps_and_quantises() {
+        assert_eq!(round(0.123_456), 0.123);
+        assert_eq!(round(1.7), 1.0, "clamped to 1");
+        assert_eq!(round(-0.4), 0.0, "clamped to 0");
+        assert_eq!(round(f64::NAN), 0.0, "NaN must not escape into a score");
+        assert_eq!(round(f64::INFINITY), 1.0);
+        for x in [0.0, 0.0005, 0.5, 0.9999, 1.0] {
+            assert!((0.0..=1.0).contains(&round(x)), "{x}");
+        }
+    }
+
+    #[test]
+    fn parse_ref_splits_scheme_host_and_path() {
+        assert_eq!(
+            parse_ref("https://WWW.Example.com/a/b?q=1"),
+            ("https".into(), "www.example.com".into(), "/a/b?q=1".into()),
+            "host is lowercased, query is kept on the path"
+        );
+        assert_eq!(
+            parse_ref("android-app://com.reddit.frontpage"),
+            (
+                "android-app".into(),
+                "com.reddit.frontpage".into(),
+                "".into()
+            )
+        );
+        for junk in ["", "-", "not a url", "/relative/path", "://", "http://"] {
+            assert_eq!(
+                parse_ref(junk),
+                (String::new(), String::new(), String::new()),
+                "{junk:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn parse_url_falls_back_to_the_host_header_then_self_hosts() {
+        let abs = Request {
+            url: "https://a.example/p".into(),
+            ..Default::default()
+        };
+        assert_eq!(
+            parse_url(&abs, &Headers::new(&abs)).unwrap().host_str(),
+            Some("a.example")
+        );
+
+        let mut rel = Request {
+            url: "/p?x=1".into(),
+            ..Default::default()
+        };
+        rel.headers.insert("Host".into(), "b.example".into());
+        assert_eq!(
+            parse_url(&rel, &Headers::new(&rel)).unwrap().host_str(),
+            Some("b.example")
+        );
+
+        let self_host = Request {
+            url: "/p".into(),
+            self_hosts: vec!["c.example".into()],
+            ..Default::default()
+        };
+        assert_eq!(
+            parse_url(&self_host, &Headers::new(&self_host))
+                .unwrap()
+                .host_str(),
+            Some("c.example")
+        );
+
+        let bare = Request {
+            url: "/p".into(),
+            ..Default::default()
+        };
+        assert_eq!(
+            parse_url(&bare, &Headers::new(&bare)).unwrap().host_str(),
+            Some("localhost")
+        );
+    }
+
+    #[test]
+    fn package_name_helpers() {
+        assert!(is_browser_pkg("com.android.chrome"));
+        assert!(is_browser_pkg("org.mozilla.firefox"));
+        assert!(!is_browser_pkg("com.twitter.android"));
+        assert!(
+            !is_browser_pkg("com.android.chrome.evil"),
+            "anchored at both ends"
+        );
+        assert!(is_mail_pkg("com.google.android.gm"));
+        assert!(!is_mail_pkg("com.google.android.gm.extra"));
+    }
+
+    #[test]
+    fn source_predicates() {
+        assert!(search_src("google") && search_src("duckduckgo"));
+        assert!(!search_src("Google"), "callers normalise first");
+        assert!(social_src("instagram") && social_src("bluesky"));
+        assert!(ai_src("chatgpt") && ai_src("chatgpt.com") && ai_src("perplexity"));
+        assert!(!ai_src("chatgpt.com.evil.example"), "anchored");
+        assert!(!ai_src("notchatgpt"));
+    }
+
+    #[test]
+    fn first_ci_duplicate_finds_case_only_collisions() {
+        assert_eq!(first_ci_duplicate(["a", "b", "c"].into_iter()), None);
+        assert_eq!(
+            first_ci_duplicate(["ScCid", "x", "sccid"].into_iter()),
+            Some("sccid".into())
+        );
+        assert_eq!(first_ci_duplicate([].into_iter()), None);
+    }
+
+    #[test]
+    fn qkey_ci_returns_the_key_as_written() {
+        let q = vec![("ScCid".to_string(), "v".to_string())];
+        assert_eq!(qkey_ci(&q, "sccid"), Some("ScCid"));
+        assert_eq!(qkey_ci(&q, "SCCID"), Some("ScCid"));
+        assert_eq!(qkey_ci(&q, "other"), None);
+    }
+
+    // ------------------------------------------------------------ headers
+
+    #[test]
+    fn headers_are_case_insensitive_and_treat_empty_as_absent() {
+        let mut r = Request {
+            url: "https://a.example/".into(),
+            ..Default::default()
+        };
+        r.headers.insert("User-Agent".into(), "UA".into());
+        r.headers.insert("X-Empty".into(), String::new());
+        let h = Headers::new(&r);
+        assert_eq!(h.get("user-agent"), Some("UA"));
+        assert_eq!(
+            h.get("x-empty"),
+            None,
+            "an empty header value is not a value"
+        );
+        assert_eq!(h.ua(), "UA");
+    }
+
+    #[test]
+    fn explicit_fields_win_over_headers_and_dashes_are_dropped() {
+        let mut r = Request {
+            url: "https://a.example/".into(),
+            user_agent: Some("explicit".into()),
+            referer: Some("-".into()),
+            ..Default::default()
+        };
+        r.headers.insert("user-agent".into(), "from-header".into());
+        r.headers
+            .insert("referrer".into(), "https://b.example/".into());
+        let h = Headers::new(&r);
+        assert_eq!(h.ua(), "explicit");
+        assert_eq!(h.referer(), "", "\"-\" is the log placeholder for absent");
+
+        // the US spelling is accepted as a fallback
+        let r2 = Request {
+            url: "https://a.example/".into(),
+            ..Default::default()
+        };
+        let mut r2 = r2;
+        r2.headers
+            .insert("referrer".into(), "https://b.example/".into());
+        assert_eq!(Headers::new(&r2).referer(), "https://b.example/");
+    }
+
+    // ------------------------------------------------------------ loader validation
+
+    #[test]
+    fn embedded_rules_load() {
+        Attributor::from_json(RULES, DEVICES, OSS).expect("embedded rules must be valid");
+    }
+
+    #[test]
+    fn loader_rejects_click_ids_that_collide_case_insensitively() {
+        let rules = RULES.replace(r#""param": "twclid""#, r#""param": "GCLID""#);
+        let err = Attributor::from_json(&rules, DEVICES, OSS).unwrap_err();
+        assert!(err.to_string().contains("duplicate parameter"), "{err}");
+    }
+
+    #[test]
+    fn loader_rejects_bot_tokens_that_collide_case_insensitively() {
+        let rules = RULES.replace(r#""token": "GPTBot""#, r#""token": "gptbot""#);
+        // the replacement itself creates no duplicate; add one
+        let rules = rules.replacen(r#""token": "CCBot""#, r#""token": "GPTBOT""#, 1);
+        let err = Attributor::from_json(&rules, DEVICES, OSS).unwrap_err();
+        assert!(err.to_string().contains("duplicate token"), "{err}");
+    }
+
+    #[test]
+    fn loader_rejects_an_unknown_channel_rather_than_defaulting() {
+        let rules = RULES.replace(r#""channel": "paid_search""#, r#""channel": "pad_search""#);
+        let err = Attributor::from_json(&rules, DEVICES, OSS).unwrap_err();
+        assert!(err.to_string().contains("unknown channel"), "{err}");
+    }
+
+    #[test]
+    fn loader_rejects_an_unknown_bot_class() {
+        let rules = RULES.replace(r#""class": "ai_crawler""#, r#""class": "ai_crawlers""#);
+        let err = Attributor::from_json(&rules, DEVICES, OSS).unwrap_err();
+        assert!(err.to_string().contains("unknown class"), "{err}");
+    }
+
+    #[test]
+    fn loader_rejects_an_uncompilable_regex_rather_than_ignoring_it() {
+        let devices = DEVICES.replace(r#""re": "OculusBrowser"#, r#""re": "([unclosed"#);
+        let err = Attributor::from_json(RULES, &devices, OSS).unwrap_err();
+        assert!(
+            err.to_string().contains("regex") || err.to_string().contains("unclosed"),
+            "{err}"
+        );
+    }
+
+    #[test]
+    fn loader_reports_malformed_json() {
+        let err = Attributor::from_json("{", DEVICES, OSS).unwrap_err();
+        assert!(err.to_string().starts_with("rule error:"), "{err}");
+    }
+
+    #[test]
+    fn external_referrers_accept_both_shapes_and_reject_junk() {
+        let flat = r#"{"a.example": {"source": "A", "medium": "social"}}"#;
+        let wrapped = r#"{"referrers": {"a.example": {"source": "A", "medium": "social"}}}"#;
+        for j in [flat, wrapped] {
+            Attributor::new().with_external_referrers(j).expect(j);
+        }
+        // extra keys are ignored, a missing `source` is not
+        Attributor::new()
+            .with_external_referrers(r#"{"a.example":{"source":"A","medium":null,"from":["x"]}}"#)
+            .unwrap();
+        assert!(Attributor::new()
+            .with_external_referrers(r#"{"a.example": {"medium": "social"}}"#)
+            .is_err());
+        assert!(Attributor::new()
+            .with_external_file("/no/such/file")
+            .is_err());
+    }
+
+    // ------------------------------------------------------------ search keyword lookup
+
+    #[test]
+    fn search_keyword_param_needs_a_non_empty_value() {
+        let e = eng();
+        assert_eq!(
+            e.search_keyword_param("www.google.com", "google.com", "/search?q=shoes"),
+            Some("q")
+        );
+        assert_eq!(
+            e.search_keyword_param("www.google.com", "google.com", "/search?q="),
+            None
+        );
+        assert_eq!(
+            e.search_keyword_param("www.google.com", "google.com", "/search"),
+            None
+        );
+        assert_eq!(
+            e.search_keyword_param("www.google.com", "google.com", "/"),
+            None
+        );
+        assert_eq!(
+            e.search_keyword_param("nope.example", "nope.example", "/?q=x"),
+            None
+        );
+    }
+
+    #[test]
+    fn oss_lookup_walks_up_the_domain() {
+        let e = eng();
+        assert!(e.oss_lookup("facebook.com").is_some());
+        assert!(e.oss_lookup("www.facebook.com").is_some());
+        assert!(e.oss_lookup("some.deep.sub.facebook.com").is_some());
+        assert!(e
+            .oss_lookup("definitely-not-a-known-host.invalid")
+            .is_none());
+        // must terminate on pathological input
+        assert!(e.oss_lookup("").is_none());
+        assert!(e.oss_lookup(".").is_none());
+        assert!(e.oss_lookup(&".".repeat(200)).is_none());
+    }
 }

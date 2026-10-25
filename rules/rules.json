@@ -237,14 +237,6 @@
    "verified": "2026-10-24"
   },
   {
-   "param": "sccid",
-   "source": "snapchat",
-   "medium": "paid_social",
-   "channel": "paid_social",
-   "src": "https://businesshelp.snapchat.com/s/article/troubleshooting-click-id",
-   "verified": "2026-10-24"
-  },
-  {
    "param": "ob_click_id",
    "source": "outbrain",
    "medium": "native",
@@ -1359,28 +1351,28 @@
   {
    "class": "ai_user_fetch",
    "token": "AI2Bot-DeepResearchEval",
-   "operator": "ai2, a non-profit ai research institute",
+   "operator": "ai2",
    "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_user_fetch",
    "token": "amazon-QBusiness",
-   "operator": "unclear at this time.",
+   "operator": "amazon",
    "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_user_fetch",
    "token": "Amzn-User",
-   "operator": "amazon, used for fetching web content to answer user queries through alexa and other amazon ai services",
+   "operator": "amazon",
    "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_user_fetch",
    "token": "bigsur.ai",
-   "operator": "big sur ai that fetches website content to enable ai-powered web agents, sales assistants, and content marketing solutions for busi\u2026",
+   "operator": "bigsur_ai",
    "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
    "verified": "2026-10-24"
   },
@@ -1394,28 +1386,28 @@
   {
    "class": "ai_user_fetch",
    "token": "ElevenlabsBot",
-   "operator": "unclear at this time.",
+   "operator": "elevenlabs",
    "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_user_fetch",
    "token": "ExaUser",
-   "operator": "unclear at this time.",
+   "operator": "exa",
    "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_user_fetch",
    "token": "GeistHaus-PageFetcher",
-   "operator": "geisthaus, a company developing ai systems for therapy and psychological assessment",
+   "operator": "geisthaus",
    "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_user_fetch",
    "token": "GoogleAgent-URLContext",
-   "operator": "google that retrieves web content on behalf of gemini api users",
+   "operator": "google",
    "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
    "verified": "2026-10-24"
   },
@@ -1429,35 +1421,21 @@
   {
    "class": "ai_user_fetch",
    "token": "LinerBot",
-   "operator": "unclear at this time.",
-   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
-   "verified": "2026-10-24"
-  },
-  {
-   "class": "ai_user_fetch",
-   "token": "meta-externalfetcher",
-   "operator": "unclear at this time.",
-   "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
-   "verified": "2026-10-24"
-  },
-  {
-   "class": "ai_user_fetch",
-   "token": "meta-webindexer",
-   "operator": "meta",
+   "operator": "liner",
    "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_user_fetch",
    "token": "MistralAI-User/1.0",
-   "operator": "mistral ai",
+   "operator": "mistral",
    "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_user_fetch",
    "token": "NotebookLM",
-   "operator": "unclear at this time.",
+   "operator": "google",
    "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
    "verified": "2026-10-24"
   },
@@ -1471,7 +1449,7 @@
   {
    "class": "ai_user_fetch",
    "token": "Poggio-Citations",
-   "operator": "poggio, a company that provides ai sales enablement tools for creating tailored narratives, business cases, and account plan\u2026",
+   "operator": "poggio",
    "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
    "verified": "2026-10-24"
   },
@@ -1485,28 +1463,28 @@
   {
    "class": "ai_user_fetch",
    "token": "Shap-User",
-   "operator": "unclear at this time.",
+   "operator": "shap",
    "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_user_fetch",
    "token": "TongyiBot",
-   "operator": "alibaba that fetches web content for the tongyi qianwen assistant and related qwen-generated answers",
+   "operator": "alibaba",
    "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_user_fetch",
    "token": "UseAI",
-   "operator": "unclear at this time.",
+   "operator": "useai",
    "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_user_fetch",
    "token": "YiyanBot",
-   "operator": "baidu that fetches web content for the yiyan",
+   "operator": "baidu",
    "src": "https://developers.openai.com/api/docs/bots ; https://support.claude.com/en/articles/8896518 ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://developers.google.com/crawling/docs/crawlers-fetchers/google-user-triggered-fetchers ; https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/ai-robots-txt/ai.robots.txt (MIT)",
    "verified": "2026-10-24"
   },
@@ -2261,13 +2239,6 @@
   },
   {
    "class": "ai_crawler",
-   "token": "Meta-ExternalAgent",
-   "operator": "other",
-   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
-   "verified": "2026-10-24"
-  },
-  {
-   "class": "ai_crawler",
    "token": "MistralAI-Index",
    "operator": "other",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
@@ -2584,14 +2555,7 @@
   {
    "class": "ai_crawler",
    "token": "Webzio-Extended",
-   "operator": "other",
-   "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
-   "verified": "2026-10-24"
-  },
-  {
-   "class": "ai_crawler",
-   "token": "webzio-extended",
-   "operator": "other",
+   "operator": "webz_io",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },

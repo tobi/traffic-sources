@@ -64,5 +64,15 @@ vendored** into `rules/`. It exists so the merged table can be produced locally 
 
 ## Rust dependencies
 
-`serde`, `serde_json`, `regex` and `url` are all MIT OR Apache-2.0. Run `cargo tree` or
-[`cargo-deny`](https://github.com/EmbarkStudios/cargo-deny) for the full transitive list.
+None. The published crate has no dependencies, so there is no transitive licence to audit:
+`cargo tree` lists `traffic-sources` alone.
+
+The regex engine (`src/pattern.rs`), URL parser (`src/url.rs`) and JSON module (`src/json.rs`) are
+original code written for this crate. The URL parser implements a subset of the
+[WHATWG URL Standard](https://url.spec.whatwg.org/) (CC BY 4.0) and the punycode algorithm of
+[RFC 3492](https://www.rfc-editor.org/rfc/rfc3492); the regex syntax follows the conventions of the
+`regex` crate. Specifications are followed, not copied.
+
+The unpublished [`difftest/`](difftest/) crate uses [`regex`](https://crates.io/crates/regex) and
+[`url`](https://crates.io/crates/url) (both MIT OR Apache-2.0) as reference implementations in
+tests. They are never linked into the published crate.

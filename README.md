@@ -7,7 +7,8 @@
 
 Work out where a web request actually came from, using only what the request itself carries: the
 URL, the `Referer`, the `User-Agent`, and a handful of other headers. No cookies, no JavaScript, no
-network calls — so it works on raw access logs after the fact, as well as inline.
+network calls — so it works on raw access logs after the fact, as well as inline. It has **no
+dependencies**: the regex engine, URL parser and JSON reader/writer it needs are part of the crate.
 
 Three things set it apart from a typical referrer parser:
 
@@ -137,8 +138,10 @@ pub fn parse_combined_log(line: &str, default_host: &str) -> Option<Request>;
 | `new_touch` | Whether this starts a session. False for internal, bot and prefetch traffic. |
 | `evidence: Vec<Evidence>` | Every signal found, with weight, `rule_src` and `verified`. Candidates index into this. |
 
-Everything serialises to snake_case JSON via serde, so the CLI output and the Rust types are the
-same thing.
+Every result type implements [`json::ToJson`](src/json.rs): `to_json()` gives compact snake_case
+JSON with members in field order and absent optionals omitted, which is exactly what the CLI prints.
+`Request::from_json` reads the same request objects the CLI accepts, and `json::Value` is there if
+you want to inspect a result without bringing in a JSON library.
 
 ## Taxonomy
 
@@ -282,9 +285,14 @@ documentation.
 ```text
 Cargo.toml             the crate: traffic-sources (lib traffic_sources, bin traffic-sources)
 src/lib.rs             attribution engine, taxonomy, confidence model
+src/pattern.rs         linear-time regex engine for the rule patterns (internal)
+src/url.rs             WHATWG URL parsing subset (internal)
+src/json.rs            JSON value, parser and writer (public as traffic_sources::json)
 src/main.rs            CLI
 rules/*.json           all rule data, embedded at build time
 tests/sourced.rs       integration tests; every user agent is copied verbatim from a cited source
+tests/golden.rs        golden test: a hash of every field of every result over ~5,900 inputs
+difftest/              differential tests of src/pattern.rs and src/url.rs against regex and url
 examples/basic.rs      library quick start
 docs/API.md            full API reference
 docs/CRITIQUE.md       self-review: what was fixed, what is still unverified

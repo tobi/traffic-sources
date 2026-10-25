@@ -17,9 +17,43 @@ If you touched `reference/ts/`:
 cd reference/ts && node --experimental-strip-types --test attribution.test.ts
 ```
 
+If you touched `src/pattern.rs` (the regex engine) or `src/url.rs` (the URL parser), also run the
+differential tests, which compare both against the `regex` and `url` crates over the rule patterns,
+the golden corpus and a seeded fuzz run:
+
+```console
+cargo test --release --manifest-path difftest/Cargo.toml
+```
+
 CI runs exactly these, plus a build on the MSRV (currently **1.88**, declared as `rust-version` in
 `Cargo.toml`). If you need a newer language feature, raise `rust-version` in the same PR and say so
 in the description.
+
+### The golden test
+
+`tests/golden.rs` hashes every field of every result over ~5,900 inputs. A PR that changes
+behaviour on purpose regenerates it and shows the reviewer what moved:
+
+```console
+UPDATE_GOLDEN=1 cargo test --test golden
+git diff tests/golden/expected.txt
+```
+
+A PR that is not meant to change behaviour (a refactor, a performance change) must leave
+`expected.txt` untouched.
+
+## No dependencies
+
+The crate has no dependencies, and that is a feature: it can be vendored or audited without
+reviewing anyone else's code or licence. Please don't add one. If you need something a dependency
+would provide, extend `src/pattern.rs`, `src/url.rs` or `src/json.rs` instead, with tests; and if
+that is genuinely unreasonable, open an issue to discuss it first. Test-only reference crates belong
+in `difftest/`, which is never published.
+
+The regex engine supports the syntax the rules use and rejects the rest with an error at load time.
+Notably, there is no look-around and no backreferences, so every match runs in time linear in the
+input. `(?i)` folds ASCII letters only; `\w`, `\b` and `\s` also cover non-ASCII letters, digits and
+spaces.
 
 ## Adding or changing a rule
 

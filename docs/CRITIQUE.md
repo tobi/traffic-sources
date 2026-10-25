@@ -33,6 +33,68 @@ Each rule in `rules/rules.json` and `rules/devices.json` carries `src` (doc URL)
 | 5 | Weak IDs (fbclid) asserted organic | fbclid is now source-only: Meta docs say it's on ads *and* organic outbound links |
 | 6 | Licences | shipped: Matomo (CC0), ai.robots.txt (MIT), uap-core-derived tokens (Apache-2.0), crawler-user-agents (MIT), isbot (Unlicense). GPL/AGPL/LGPL lists only via `--external` |
 
+## Pass 3: reading the engine end to end
+Found by reading `src/lib.rs` in full and probing each path with hand-built requests; each fix has a
+regression test, and `tests/golden.rs` now pins every field of every result over 5,812 generated
+requests and 45 log lines.
+
+| # | Finding | Fix |
+|---|---|---|
+| 1 | `parse_combined_log` compiled its regex on every call, and share markers compiled two regexes per marker per request: 20k log lines took 5.5 s | compiled once; 134 ms (41×) |
+| 2 | `sccid` double-counted: both `ScCid` and `sccid` rules fired, inflating 0.93 to 0.995 | click IDs match case-insensitively, duplicate removed, loader rejects case-insensitive collisions |
+| 3 | Four bot tokens listed twice under different casing, so JSON order decided the class (and `exclude` for Meta-WebIndexer) | duplicates removed, loader rejects collisions |
+| 4 | Seventeen bot operators were prose from ai.robots.txt ("unclear at this time.") and surfaced as `source` | slugs; the generator slugifies future imports |
+| 5 | A prefetch marker suppressed the no-referrer analysis, so a prefetched cross-site navigation was `direct` (0.3) | the no-referrer analysis runs for prefetches too |
+| 6 | `parse_combined_log` kept a `-` user agent, so UA-less log lines counted as human | `-` becomes `None` → automation |
+| 7 | `utm_source` values ending in "ad"/"ads" were stripped before the category lookup: `threads` became `thre` → referral | the suffix is stripped only from sources that match the paid-source regex |
+| 8 | The shipped search keyword table was never used | source-only `search_keyword` signal |
+| 9 | Unknown channel / bot-class names in rules silently defaulted | loader error |
+
+## Pass 4: zero dependencies
+`serde`, `serde_json`, `regex` and `url` were replaced with code in the crate: a linear-time regex
+engine (`src/pattern.rs`), a WHATWG URL subset (`src/url.rs`) and a JSON module (`src/json.rs`).
+The bar was *identical results*, checked three ways:
+
+- **Golden digest.** The human-readable digest of all ~5,900 golden results is byte-identical before
+  and after, and `expected.txt` did not change.
+- **Differential tests** (`difftest/`, run in CI). Every built-in pattern against the `regex` crate
+  (`is_match`, `find` and every capture group) over the golden corpus plus edge cases, every
+  golden and edge-case URL against the `url` crate, and a seeded fuzz run of 200,000 URLs and
+  20,000 haystacks. They found five differences in the new URL parser before it landed: `^` must
+  not be percent-encoded in paths; `file:` drive letters (`C|` → `C:`, the drive displacing the
+  host, leading empty segments); fullwidth host characters; `xn--` labels must be valid punycode
+  with an ASCII-only basic part; percent-decoded hosts that are not UTF-8 must fail. All are fixed
+  and covered by unit tests.
+- **CLI output** over 20k NDJSON requests and 20k log lines, compared as parsed JSON: identical
+  apart from the new `reason` field on unparseable lines.
+
+**Accepted differences** (asserted precisely by the fuzz test, so any new one fails CI):
+
+| Input | `url` crate | This crate | Why |
+|---|---|---|---|
+| Non-special scheme with credentials and no host (`android-app://@`), or a non-numeric port (`foo://h:\`) | parses | rejects | The URL Standard says these are failures. |
+| `xn--` labels that are valid punycode but not valid IDNA (`xn--1fban`), or the reverse | per UTS #46 tables | punycode check only | Full IDNA mapping and validity tables would be most of the crate. No real referrer host is affected. |
+
+Also: `(?i)` folds ASCII only (no rule needs Unicode case folding), and patterns using look-around,
+backreferences or `\p{…}` are rejected at load time rather than half-supported.
+
+**Performance** (release build, 20k requests, same machine):
+
+| | before | after |
+|---|---|---|
+| `Attributor::new` | 47 ms | 4 ms |
+| `attribute` (NDJSON corpus) | 231 ms | 118 ms |
+| `attribute` (access-log corpus) | 118 ms | 89 ms |
+| `classify_bot` | 57 ms | 8 ms |
+| `classify_client` | 67 ms | 42 ms |
+| serialise results | 40 ms | 41 ms |
+| parse NDJSON requests | 6 ms | 11 ms |
+
+The gains come from a single Aho–Corasick pass over each rule list's required literals, which leaves
+only the few rules that can possibly match to the matcher (the bot list alone has 249 entries).
+After that come a bounded backtracker with a first-byte skip table, and the ASCII-lowercased
+haystack being computed once per request rather than once per pattern.
+
 ## Still unverified (verified = null in data)
 - UA tokens: Pico browser, Android Automotive, Wear OS, Echo Show (AEO*), current Tesla browser (only legacy QtCarBrowser sample), ChatGPT iOS in-app browser token.
 - Vision Pro: Safari sends a Mac UA; not separable (enum value exists, never emitted).

@@ -1,6 +1,6 @@
-# traffic-sources — API (v0.3.0)
+# traffic-sources — API
 
-Crate: `traffic-sources` (lib `traffic_sources`, bin `traffic-sources`). Rust 2021, deps: serde, serde_json, regex, url.
+Crate: `traffic-sources` (lib `traffic_sources`, bin `traffic-sources`). Rust 2021, MSRV 1.88, no dependencies.
 
 ## Functions
 
@@ -16,7 +16,15 @@ impl Attributor {
     pub fn ga4_channel(&self, source: &str, medium: &str, campaign: &str, ref_host: &str) -> (Channel, bool);
 }
 impl Attribution { pub fn top(&self) -> &Candidate; }
+impl Request {
+    pub fn from_json(text: &str) -> Result<Request, RequestError>;   // the CLI's NDJSON request object
+    pub fn from_json_value(v: &json::Value) -> Result<Request, RequestError>;
+}
 pub fn parse_combined_log(line: &str, default_host: &str) -> Option<Request>;
+// Every enum: ALL, as_str() -> &'static str, parse(&str) -> Option<Self>, Display (all snake_case).
+// Request, Attribution, Candidate, Evidence, Client, Bot and every enum implement json::ToJson:
+pub trait ToJson { fn write_json(&self, out: &mut String); fn to_json(&self) -> String; fn to_json_value(&self) -> Value; }
+pub mod json { Value, Error, ToJson, ObjectWriter }  // Value::parse, get / as_str / as_f64 / Index, Display
 pub mod weights { UTM_FULL=0.95, UTM_PARTIAL=0.80, CLICK_ID=0.93, WEAK_CLICK_ID=0.70, UA_TOKEN=0.85,
   X_REQUESTED_WITH=0.85, SHARE_MARKER=0.70, ANDROID_APP_REF=0.80, REFERRER=0.75, AI_PATH=0.80,
   OSS_LIST=0.65, EXTERNAL_LIST=0.60, UNKNOWN_REFERRER=0.60, INTERNAL=0.90, DIRECT=0.50,
@@ -53,87 +61,90 @@ for each explicit UTM/click-ID item tagging the same source with a different cha
 ```
 traffic-sources [--host shop.example] [--external merged.json] [--top] < access.log > out.ndjson
 ```
-stdin: combined log lines or NDJSON `Request`; stdout: one JSON object per line (`{"url","attribution"}` or with --top `{"url","top","client","bot"}`).
+stdin: combined log lines or NDJSON `Request`; stdout: one JSON object per line (`{"url","attribution"}` or with --top `{"url","top","client","bot"}`, where `bot` is `null` for humans). A line that cannot be read becomes `{"error":"unparseable","reason","line"}`.
+
+JSON output: members in struct field order; optional fields are omitted when absent (except
+`Request.referer` / `user_agent`, written as `null`); integral numbers have no fraction (`1`, not `1.0`).
 
 ## Example
 Input:
 ```json
 {"url":"https://shop.example/p?twclid=abc","referer":"https://t.co/","user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 18_6_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22G100 Twitter for iPhone/12.31.2"}
 ```
-Output:
+Output (pretty-printed here; the CLI writes one line, members in field order):
 ```json
 {
-    "attribution": {
-        "candidates": [
-            {
-                "channel": "paid_social",
-                "confidence": 0.997,
-                "evidence": [
-                    0,
-                    1,
-                    2
-                ],
-                "interaction": "ad_click",
-                "medium": "paid_social",
-                "paid": "paid",
-                "share": 0.659,
-                "source": "x"
-            },
-            {
-                "channel": "organic_social",
-                "confidence": 0.515,
-                "evidence": [
-                    1,
-                    2
-                ],
-                "interaction": "click",
-                "medium": "social",
-                "paid": "organic",
-                "share": 0.341,
-                "source": "x"
-            }
-        ],
-        "client": {
-            "app": "x",
-            "client_hints_used": false,
-            "confidence": 0.85,
-            "device": "Apple",
-            "form_factor": "phone",
-            "os": "ios",
-            "os_version": "18.6.2",
-            "os_version_frozen": false,
-            "rule_src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)",
-            "surface": "webview_iab"
-        },
+  "url": "https://shop.example/p?twclid=abc",
+  "attribution": {
+    "candidates": [
+      {
+        "channel": "paid_social",
+        "source": "x",
+        "medium": "paid_social",
+        "paid": "paid",
+        "interaction": "ad_click",
+        "confidence": 0.997,
+        "share": 0.659,
         "evidence": [
-            {
-                "channel": "paid_social",
-                "kind": "click_id",
-                "rule_src": "https://leadtrackr.io/learn/advertising-click-ids",
-                "signal": "click_id:twclid",
-                "source": "x",
-                "verified": "2026-10-24",
-                "weight": 0.93
-            },
-            {
-                "kind": "ua_token",
-                "rule_src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml + https://docs.uaparser.dev/info/browser/name/twitter.html",
-                "signal": "ua_token:x",
-                "source": "x",
-                "verified": "2026-10-24",
-                "weight": 0.85
-            },
-            {
-                "kind": "referrer",
-                "rule_src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated",
-                "signal": "referer:t.co",
-                "source": "x",
-                "weight": 0.75
-            }
-        ],
-        "is_prefetch": false,
-        "new_touch": true
+          0,
+          1,
+          2
+        ]
+      },
+      {
+        "channel": "organic_social",
+        "source": "x",
+        "medium": "social",
+        "paid": "organic",
+        "interaction": "click",
+        "confidence": 0.515,
+        "share": 0.341,
+        "evidence": [
+          1,
+          2
+        ]
+      }
+    ],
+    "client": {
+      "os": "ios",
+      "os_version": "18.6.2",
+      "os_version_frozen": false,
+      "form_factor": "phone",
+      "device": "Apple",
+      "surface": "webview_iab",
+      "app": "x",
+      "client_hints_used": false,
+      "confidence": 0.85,
+      "rule_src": "https://github.com/ua-parser/uap-core/tree/master/tests (Apache-2.0)"
     },
-    "url": "https://shop.example/p?twclid=abc"
+    "is_prefetch": false,
+    "new_touch": true,
+    "evidence": [
+      {
+        "kind": "click_id",
+        "signal": "click_id:twclid",
+        "weight": 0.93,
+        "channel": "paid_social",
+        "source": "x",
+        "rule_src": "https://leadtrackr.io/learn/advertising-click-ids",
+        "verified": "2026-10-24"
+      },
+      {
+        "kind": "ua_token",
+        "signal": "ua_token:x",
+        "weight": 0.85,
+        "source": "x",
+        "rule_src": "https://github.com/ua-parser/uap-core/blob/master/regexes.yaml + https://docs.uaparser.dev/info/browser/name/twitter.html",
+        "verified": "2026-10-24"
+      },
+      {
+        "kind": "referrer",
+        "signal": "referer:t.co",
+        "weight": 0.75,
+        "source": "x",
+        "rule_src": "https://github.com/matomo-org/searchengine-and-social-list (CC0) + curated"
+      }
+    ]
+  }
 }
 ```

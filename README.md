@@ -159,6 +159,12 @@ acquisition channel that GA4 folds into Referral; `oppref` (OpenAI's ads click I
 referrer — a messaging-app WebView, or a `Sec-Fetch-Site: cross-site` navigation with nothing else
 to go on.
 
+Fetch Metadata outranks the user agent, because page script cannot forge it. A frame
+(`Sec-Fetch-Dest: iframe`, `frame`, `embed`, `object`) is interaction `embed`, and any other
+non-document destination is `subresource`. Neither is ever a `new_touch`. A cross-site frame with no
+referrer is `referral` / `(embedding page)`, not direct. A `same-origin`/`same-site` request with no
+referrer is `internal`, even inside X's or Facebook's in-app browser.
+
 **Surface** — `standalone_browser`, `webview_iab`, `custom_tab`, `pwa`, `twa`, `amp_cache`,
 `email_client`, `webmail`, `bot`, and so on. Four values (`safari_view_controller`, `app_clip`,
 `instant_app`, `native_app`) exist in the enum but are **never emitted**, because the headers do not
@@ -191,9 +197,10 @@ source it points at:
 | Curated referrer host | 0.75 |
 | Weak click ID (`fbclid`, `igshid`, `srsltid`), share marker | 0.70 |
 | Matomo OSS host table | 0.65 |
-| Externally loaded list | 0.60 |
+| Externally loaded list, mail-client UA with no referrer | 0.60 |
 | Direct | 0.50 |
 | Dark social from `Sec-Fetch` / WebView only | 0.45 / 0.35 |
+| Cross-site frame with no referrer (embedding page) | 0.45 |
 
 A candidate `(channel, source)` collects every compatible evidence item and combines them with a
 noisy-OR:

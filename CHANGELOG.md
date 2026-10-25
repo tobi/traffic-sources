@@ -27,6 +27,22 @@ this project uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
 - The four share-marker rules (`si`, `s`, `t`, `ref_src`) no longer cite ClearURLs (LGPL-3.0) as
   their derivation. They are bare parameter names observed on first-party share links, and are now
   annotated as such, so no shipped rule traces to a copyleft source.
+- **Breaking:** `Interaction` gains `Embed` and `Subresource`. `Sec-Fetch-Dest` is now read:
+  frames (`iframe`, `frame`, `embed`, `object`) and subresources are never new touches. A
+  cross-site frame with no referrer is `referral` / `(embedding page)` at 0.45 (new weight
+  `EMBED_NO_REFERRER`). A same-site one is `internal`. See Pass 5 in
+  [docs/CRITIQUE.md](docs/CRITIQUE.md).
+- `Sec-Fetch-Site: same-origin`/`same-site` with no referrer is `internal`, even inside an in-app
+  browser. A page view inside X is no longer a fresh social click.
+- UTM categorisation follows GA4: `utm_source` decides, and the referrer is used only when it is
+  missing. `utm_medium=email` with a t.co referrer is email, and `utm_source=facebook` with a google
+  referrer is social.
+- Client Hints are used only when the UA is Chromium or missing. Hints no longer override a Safari,
+  Firefox, KaiOS or console UA.
+- Outlook and Thunderbird UAs with no referrer are `email` at 0.60 (new weight
+  `EMAIL_CLIENT_NO_REFERRER`). Gmail's source is `gmail`, not `mail.google.com`.
+- Bots get surface `bot` and no `app`.
+- 53 AI-crawler operators are named vendors instead of `other`.
 
 ### Added
 
@@ -40,6 +56,12 @@ this project uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
 - `LICENSE` (MIT), [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md), [`CONTRIBUTING.md`](CONTRIBUTING.md),
   full `Cargo.toml` metadata, and GitHub Actions CI (fmt, clippy, test on stable and MSRV 1.88,
   rustdoc, `cargo package`, a CLI smoke test, and the TypeScript tests on Node 22).
+- `tests/adversarial.rs` (46 tests: frames, X's in-app browser, unfurlers, conflicting signals,
+  wrapper chains, prefetch, Client Hints, android-app, malformed input, devices) and
+  `tests/invariants.rs` (10 seeded property tests). The golden corpus grows to 8,227 requests with
+  a Fetch Metadata grid.
+- Bot rules: vkShare, BlueskyPreviewBot, Mastodon, Google-InspectionTool and SnapchatAds, and bare
+  `WhatsApp` (the rule required `WhatsApp/`).
 - `examples/basic.rs` and a crate-level doctest, so the README quick start is compiled and run by CI.
 - A `licensing` note in `rules/rules.json` → `_provenance` stating the CC0/MIT/Apache/Unlicense-only
   policy for shipped data.
@@ -57,6 +79,15 @@ this project uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
 - `utm_source=threads` lost its last letters to the ad-suffix strip and fell through to referral.
 - `parse_combined_log` and the share markers compiled regexes per call (41× slower on logs).
 - Candidate ordering is fully deterministic, and NaN can no longer reach a confidence.
+- Whitespace-only or junk `X-Requested-With` values became app names. XRW must now be a package
+  name.
+- UTM and header values are trimmed. `utm_source=%20facebook%20` was `paid_other`.
+- Self referrers with a trailing dot, or apex vs `www.`, were referrals.
+- An empty `android-app://` referrer was a custom tab with app `""`. The Gmail app's referrer with
+  `utm_medium=email` was organic search.
+- With only `utm_medium`, the source came inconsistently from the referrer host or the app.
+- GPTBot's operator was `other` because a shorter `OpenAI` token matched first. Bot ties now break
+  on verified status, then token length, then position.
 
 ### Removed
 

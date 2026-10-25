@@ -95,7 +95,93 @@ only the few rules that can possibly match to the matcher (the bot list alone ha
 After that come a bounded backtracker with a first-byte skip table, and the ASCII-lowercased
 haystack being computed once per request rather than once per pattern.
 
+## Pass 5: adversarial requests
+The starting question was what happens to "direct" traffic (no `Referer`, no UTM, no click ID) when
+the request carries frame headers or X's in-app user agent. From there the pass widened to conflicting
+signals, wrapper chains, self-referrals, prefetch, contradictory Client Hints, android-app referrers,
+malformed input and unusual devices. The new tests are:
+
+- `tests/adversarial.rs`: 46 tests, with sourced user agents and a citation above each constant.
+- `tests/invariants.rs`: 10 seeded property tests, 3,000 cases by default (`INVARIANT_CASES`). They
+  passed at 200,000.
+- The golden corpus gains a Fetch Metadata grid of 2,400 rows (dest × site × mode/user × client ×
+  referrer), for 8,227 requests in total.
+
+### Decisions
+**Frames.** `Sec-Fetch-Dest` and `Sec-Fetch-Site` are set by the browser and cannot be changed by
+page script, so they are trusted over the user agent.
+
+- An `iframe`/`frame`/`embed`/`object` load is not a visit. It is never a new touch.
+- With no referrer, a cross-site frame is `referral` / `(embedding page)` at 0.45. Someone else's page
+  embeds ours, and the referrer was withheld by `referrerpolicy` or `Referrer-Policy`.
+- A `same-site`/`same-origin` frame is `internal` / `(self)` at 0.6.
+- `none` or a missing site is `referral` at 0.3, because there is little to go on.
+- None of these are `direct` or `dark_social`. Those describe a person arriving, and an embedded frame
+  is not a person arriving.
+- `Sec-Fetch-Mode` and `Sec-Fetch-User` do not change the result. Mode is `navigate` for frames anyway.
+  `Sec-Fetch-User` says that a person activated the navigation. It says nothing about where the
+  navigation came from.
+- Other non-document destinations (`script`, `image` and so on) are `subresource` and are not touches.
+
+**X's in-app browser.** The `Twitter for iPhone`/`Twitter for iPad` tokens, `TwitterAndroid` with
+`; wv`, and `X-Requested-With: com.twitter.android` are first-party app markers. X opens links
+without a referrer, so with no other evidence the visit is `organic_social` / `x` at 0.85, a click
+and a new touch, on surface `webview_iab`. UA plus XRW is 0.978.
+
+The app tells us where the person is, not that the site was not reached from within the app.
+Fetch Metadata still wins:
+
+- `same-origin` is `internal`, because the person is already browsing our site inside X.
+- An iframe keeps `x` first, but as an `embed` that is not a touch.
+
+When a full facebook UTM set sits on a link opened in X, facebook ranks first and x second. The UTM
+names the campaign, and the app is most likely where a copied link was pasted. With only
+`utm_source=facebook`, x stays first.
+
+**Unfurlers.** Twitterbot, facebookexternalhit, Slackbot and the others are `bot` / `link_preview`,
+with `exclude` set and surface `bot`, whatever else the request carries. A preview fetch with frame
+or UTM headers is still a preview fetch.
+
+### Findings and fixes
+| # | Finding | Fix |
+|---|---|---|
+| 1 | `Sec-Fetch-Dest` was ignored: a cross-site iframe with no referrer was dark social and a new touch | `Interaction::Embed`; referral `(embedding page)` 0.45 cross-site, internal 0.6 same-site, never a touch |
+| 2 | An in-app UA token or XRW overrode `Sec-Fetch-Site: same-origin`, so every page view inside X was a fresh social click | same-origin/same-site with no referrer is internal and wins |
+| 3 | `new_touch` was true for same-origin requests with no referrer | touch requires a cross-site or unknown page load |
+| 4 | Subresource requests (`script`, `image`, …) counted as visits | `Interaction::Subresource`, not a touch |
+| 5 | Bots never got surface `bot` (Discordbot was `webview_iab`, from its UA's in-app token) | a bot match sets surface `bot` and clears `app` |
+| 6 | Same-origin requests also carried a meaningless `direct` 0.3 candidate | dropped |
+| 7 | Whitespace-only XRW became `organic_social` / `" "`; quote and junk values became app names | XRW must be a package name (`a.b[.c]`) and not a browser package |
+| 8 | UTM values were not trimmed: `utm_source=%20facebook%20` was `paid_other` | values trimmed, and blank counts as absent; header values are trimmed too |
+| 9 | A self referrer with a trailing dot (`shop.example.`) was a referral | host's trailing dot dropped |
+| 10 | Apex vs `www.` self host was a referral | self hosts compared without `www.` |
+| 11 | `utm_medium=email` with a t.co referrer was `organic_social`: the referrer's category overrode the UTM | GA4 order: `utm_source` decides, and the referrer stands in only when it is missing |
+| 12 | `utm_source=facebook` with a google referrer was `organic_search` / facebook | same fix |
+| 13 | An empty `android-app://` referrer produced a custom tab with app `""` | android-app hosts must be package names |
+| 14 | The Gmail app (`android-app://com.google.android.gm`) with `utm_medium=email` was `organic_search` | the referrer's mapped app name (gmail) is categorised, not the package's host |
+| 15 | With only `utm_medium`, the source was the raw referrer host or app at random (`mastodon.social` vs `mastodon`; outlook vs facebook) | one resolution order: utm_source, then the referrer's rule name, then the app |
+| 16 | Chromium Client Hints overrode Safari, Firefox, KaiOS and console UAs (a spoofing extension or proxy sends both) | hints are used only when the UA is empty or Chromium |
+| 17 | Mail-client UAs (Outlook, Thunderbird) with no referrer were plain direct | `email` 0.60 (`EMAIL_CLIENT_NO_REFERRER`); app set |
+| 18 | Gmail's source was `mail.google.com` | `gmail` |
+| 19 | GPTBot got operator `other` (the `OpenAI` token matched the URL inside its UA first); Claude Code was misclassified | tie-break on verified, token length, then earliest match position |
+| 20 | 53 AI-crawler operators were `other` | named vendors |
+| 21 | Missing bots: bare `WhatsApp` (the rule required `WhatsApp/`), vkShare, BlueskyPreviewBot, Mastodon, Google-InspectionTool, SnapchatAds | added |
+
+### Known limitations (pinned by tests, not fixed)
+- A bare `Viber` preview UA collides with Viber's in-app token and is read as the in-app browser.
+- X's native API client UA (`TwitterAndroid/2.0`, no `Mozilla/`) is reported as `webview_iab`. It
+  never loads pages, so this only matters for logs.
+- A `same-origin` request with UTM still ranks the UTM channel first, but is not a new touch. GA4
+  would start a new session.
+- A forged referrer that contradicts `Sec-Fetch-Site` keeps the referrer. A self referrer with
+  `cross-site` is a payment-provider round trip, so `internal` is correct there.
+- Bot `src` citations are per class (every vendor doc behind the class), not per rule. Twitterbot's
+  list does not include X's own documentation.
+
 ## Still unverified (verified = null in data)
+- New bot rules: vkShare, BlueskyPreviewBot, Mastodon and SnapchatAds. The tokens come from
+  crawler-user-agents (MIT) and have not been checked against each vendor's docs.
+- iMessage's link-preview UA (a Facebook + Twitter UA pair); Viber's preview UA.
 - UA tokens: Pico browser, Android Automotive, Wear OS, Echo Show (AEO*), current Tesla browser (only legacy QtCarBrowser sample), ChatGPT iOS in-app browser token.
 - Vision Pro: Safari sends a Mac UA; not separable (enum value exists, never emitted).
 - SFSafariViewController, App Clips, Instant Apps: indistinguishable from Safari/Chrome by headers.

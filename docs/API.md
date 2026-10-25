@@ -28,10 +28,14 @@ pub mod json { Value, Error, ToJson, ObjectWriter }  // Value::parse, get / as_s
 pub mod weights { UTM_FULL=0.95, UTM_PARTIAL=0.80, CLICK_ID=0.93, WEAK_CLICK_ID=0.70, UA_TOKEN=0.85,
   X_REQUESTED_WITH=0.85, SHARE_MARKER=0.70, ANDROID_APP_REF=0.80, REFERRER=0.75, AI_PATH=0.80,
   OSS_LIST=0.65, EXTERNAL_LIST=0.60, UNKNOWN_REFERRER=0.60, INTERNAL=0.90, DIRECT=0.50,
-  DARK_SOCIAL_SECFETCH=0.45, DARK_SOCIAL_WEBVIEW=0.35, BOT_DOCUMENTED=0.97, BOT_GENERIC=0.85,
+  DARK_SOCIAL_SECFETCH=0.45, DARK_SOCIAL_WEBVIEW=0.35, EMBED_NO_REFERRER=0.45,
+  EMAIL_CLIENT_NO_REFERRER=0.60, BOT_DOCUMENTED=0.97, BOT_GENERIC=0.85,
   FAMILY_FACTOR=0.80, CONFLICT_FACTOR=0.50 }
 ```
 `Attributor` is `Send + Sync`; build once.
+
+`ga4_channel` follows GA4's order. `source` (the `utm_source`) decides the category, and `ref_host`
+is categorised only when `source` is empty.
 
 ## Types
 - `Request { url, referer?, user_agent?, headers: BTreeMap (case-insensitive), self_hosts[], self_android_packages[] }`
@@ -44,7 +48,7 @@ pub mod weights { UTM_FULL=0.95, UTM_PARTIAL=0.80, CLICK_ID=0.93, WEAK_CLICK_ID=
 ## Taxonomy (snake_case in JSON)
 - **Channel**: direct, organic_search, paid_search, organic_social, paid_social, organic_video, paid_video, organic_shopping, paid_shopping, display, cross_network, paid_other, ai_assistant, paid_ai, email, affiliate, referral, audio, sms, mobile_push, internal, dark_social, bot, unknown
 - **Paid**: paid, organic, unknown
-- **Interaction**: click, share, ad_click, navigation, internal, prefetch, preview_unfurl, ai_user_fetch, crawl, ad_verification, monitoring, automation, unknown
+- **Interaction**: click, share, ad_click, navigation, internal, prefetch, preview_unfurl, ai_user_fetch, crawl, ad_verification, monitoring, automation, embed, subresource, unknown (embed = `Sec-Fetch-Dest` iframe/frame/fencedframe/embed/object, subresource = any other non-document destination; neither is a `new_touch`)
 - **Surface**: standalone_browser, webview_iab, safari_view_controller*, custom_tab, pwa, twa, app_clip*, instant_app*, amp_cache, email_client, webmail, native_app*, bot, unknown  (*= in the enum but not detectable from headers; SFSafariViewController sends Safari's UA)
 - **Os**: ios, ipados, android, windows, macos, linux, chromeos, harmonyos, kaios, tvos, tizen, webos, fire_os, roku, android_tv, cast_os, playstation, xbox, nintendo_switch, steamos, meta_horizon_os, visionos*, pico_os, wear_os, watchos, android_automotive, tesla, fuchsia, unknown
 - **FormFactor**: phone, tablet, desktop, tv, console, xr_headset, wearable, car, e_reader, smart_display, embedded, unknown

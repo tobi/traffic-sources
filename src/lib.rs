@@ -135,8 +135,10 @@ impl Channel {
 
 str_enum!(/** Paid vs organic. */ Paid { Paid, Organic, Unknown });
 str_enum!(
-    /// What kind of interaction produced the request.
-    Interaction { Click, Share, AdClick, Navigation, Internal, Prefetch, PreviewUnfurl, AiUserFetch, Crawl, AdVerification, Monitoring, Automation, Unknown });
+    /// What kind of interaction produced the request. `embed` is a document loaded into a frame,
+    /// embed or object inside another page; `subresource` is an image, script, fetch or other
+    /// non-document request. Neither is a visit, so neither starts a new touch.
+    Interaction { Click, Share, AdClick, Navigation, Internal, Prefetch, PreviewUnfurl, AiUserFetch, Crawl, AdVerification, Monitoring, Automation, Embed, Subresource, Unknown });
 str_enum!(
     /// Where the page is rendered.
     Surface { StandaloneBrowser, WebviewIab, SafariViewController, CustomTab, Pwa, Twa, AppClip, InstantApp,
@@ -474,6 +476,13 @@ pub mod weights {
     pub const DIRECT: f64 = 0.50;
     pub const DARK_SOCIAL_SECFETCH: f64 = 0.45;
     pub const DARK_SOCIAL_WEBVIEW: f64 = 0.35;
+    /// A desktop mail client's own user agent (Outlook, Thunderbird) with no referrer: the mail
+    /// client made the request, so it came out of email, though not which message. Above
+    /// `DIRECT` because the UA names the origin; below `REFERRER` because it is only the client.
+    pub const EMAIL_CLIENT_NO_REFERRER: f64 = 0.60;
+    /// A frame, embed or subresource request from another site with its referrer stripped: some
+    /// page embeds this one, but which page is unknown.
+    pub const EMBED_NO_REFERRER: f64 = 0.45;
     pub const BOT_DOCUMENTED: f64 = 0.97;
     pub const BOT_GENERIC: f64 = 0.85;
     pub const FAMILY_FACTOR: f64 = 0.80;
@@ -1097,8 +1106,17 @@ impl Attributor {
         if c.os == Os::Harmonyos && c.form_factor == FormFactor::Unknown && ua.contains("Mobile") {
             c.form_factor = FormFactor::Phone;
         }
-        // Client hints override UA (MDN Client hints; WICG UA-CH)
+        // Client hints override UA (MDN Client hints; WICG UA-CH), but only Chromium sends them:
+        // WebKit (Safari, every iOS browser) and Gecko do not implement UA-CH, so hints beside
+        // such a UA were added by something else (a proxy, an extension, a spoofer) and the UA
+        // is the better witness. developer.mozilla.org/en-US/docs/Web/API/User-Agent_Client_Hints_API#browser_compatibility
         let unq = |x: &str| x.trim().trim_matches('"').to_string();
+        let ch_capable = ua.is_empty() || ua.contains("Chrome/") || ua.contains("Chromium/");
+        let h = if ch_capable {
+            h
+        } else {
+            Headers::without_client_hints(req)
+        };
         if let Some(p) = h.get("sec-ch-ua-platform") {
             if let Some(os) = self.ch_platform.get(&unq(p)).and_then(|o| Os::parse(o)) {
                 // keep specific platforms (TV/console/XR) found in the UA
@@ -1174,7 +1192,7 @@ impl Attributor {
         c.browser = self.browsers.matching(&hua).next().map(|(_, n)| n.clone());
         // surface
         let iab = self.ua_tokens.matching(&hua).next();
-        let xrw = h.get("x-requested-with").filter(|x| !is_browser_pkg(x));
+        let xrw = h.get("x-requested-with").filter(|x| is_app_pkg(x));
         let (ascheme, ahost, _) = parse_ref(h.referer());
         c.surface = if let Some(t) = iab {
             c.app = Some(t.r.source.clone());
@@ -1184,12 +1202,18 @@ impl Attributor {
             if is_mail_pkg(x) { Surface::EmailClient } else { Surface::WebviewIab }
         } else if ua.contains("; wv)") {
             Surface::WebviewIab
-        } else if ascheme == "android-app" {
+        } else if ascheme == "android-app" && !ahost.is_empty() {
             c.app = Some(self.xrw_apps.get(&ahost).cloned().unwrap_or_else(|| ahost.clone()));
             if req.self_android_packages.iter().any(|p| p == &ahost) { Surface::Twa } else { Surface::CustomTab }
         } else if ahost.ends_with(".cdn.ampproject.org") || ahost.ends_with("ampproject.net") {
             Surface::AmpCache
-        } else if re!(r"(?i)Microsoft Outlook|Thunderbird/|Lotus-Notes|Airmail").is_match(ua) {
+        } else if let Some(m) = re!(r"(?i)Microsoft Outlook|Thunderbird/|Lotus-Notes|Airmail").find(ua) {
+            let name = ua[m.0..m.1].to_ascii_lowercase();
+            c.app = Some(match name.as_str() {
+                "microsoft outlook" => "outlook".into(),
+                "thunderbird/" => "thunderbird".into(),
+                n => n.to_string(),
+            });
             Surface::EmailClient
         } else if re!(r"^(mail\.google\.com|outlook\.(live|office|office365)\.com|mail\.yahoo\.com|mail\.proton\.me|mail\.aol\.com|mail\.yandex\.\w+|e\.mail\.ru)$").is_match(&ahost) {
             Surface::Webmail
@@ -1226,12 +1250,21 @@ impl Attributor {
             ));
         }
         let hua = Haystack::new(ua);
-        // prefer documented rules, then the longest token (Applebot-Extended over Applebot);
-        // `max_by_key` keeps the last of equal keys, so ties go to the later rule.
+        // Prefer documented rules, then the longest token (Applebot-Extended over Applebot), then
+        // the earliest match: the product token leads and URLs trail, so in
+        // `compatible; GPTBot/1.0; +https://openai.com/gptbot` GPTBot beats the `OpenAI` rule,
+        // and in `Claude-User (claude-code/2.1)` Claude-User beats `Claude-Code`.
         let b = &self
             .bots
             .matching(&hua)
-            .max_by_key(|b| (b.r.verified.is_some(), b.r.token.len()))?
+            .max_by_key(|b| {
+                let at = b.rx().find(ua).map_or(usize::MAX, |m| m.0);
+                (
+                    b.r.verified.is_some(),
+                    b.r.token.len(),
+                    std::cmp::Reverse(at),
+                )
+            })?
             .r;
         Some(mk_bot(b.class, &b.token, &b.operator, b.src.clone()))
     }
@@ -1241,7 +1274,7 @@ impl Attributor {
     /// Attribute a request. Always returns ≥1 candidate.
     pub fn attribute(&self, req: &Request) -> Attribution {
         let h = Headers::new(req);
-        let client = self.classify_client(req);
+        let mut client = self.classify_client(req);
         let bot = self.classify_bot(req);
         let purpose = ["sec-purpose", "purpose", "x-purpose", "x-moz"]
             .iter()
@@ -1250,6 +1283,9 @@ impl Attributor {
             .join(",")
             .to_ascii_lowercase();
         let is_prefetch = purpose.contains("prefetch") || purpose.contains("prerender");
+        let fetch_meta = |k: &str| h.get(k).unwrap_or("").trim().to_ascii_lowercase();
+        let (site, dest) = (fetch_meta("sec-fetch-site"), fetch_meta("sec-fetch-dest"));
+        let load = Load::of(&dest);
         let mut ev: Vec<Evidence> = Vec::new();
         let mut meta: HashMap<(Channel, String), (String, Option<String>, Interaction)> =
             HashMap::new();
@@ -1276,6 +1312,10 @@ impl Attributor {
         }
 
         if let Some(b) = &bot {
+            // The client is the bot itself, not a person's browser or app, whatever tokens its
+            // user agent borrows (Discordbot's mentions Discord; many unfurlers mimic Safari).
+            client.surface = Surface::Bot;
+            client.app = None;
             let w = if b.rule_src.is_some() {
                 weights::BOT_DOCUMENTED
             } else {
@@ -1305,7 +1345,7 @@ impl Attributor {
                 (b.class.as_str().to_string(), None, inter),
             );
             if b.class != BotClass::AiUserFetch {
-                return self.finish(ev, meta, client, bot, is_prefetch, false);
+                return self.finish(ev, meta, client, bot, Load::Page, false);
             }
             // AI user fetch: a human asked an assistant -> also an ai_assistant touch
             push(
@@ -1322,7 +1362,7 @@ impl Attributor {
                 (Channel::AiAssistant, norm_source(&b.operator)),
                 ("ai_user_fetch".into(), None, Interaction::AiUserFetch),
             );
-            return self.finish(ev, meta, client, bot, is_prefetch, false);
+            return self.finish(ev, meta, client, bot, Load::Page, false);
         }
 
         let url = parse_url(req, &h);
@@ -1333,40 +1373,64 @@ impl Attributor {
                 .find(|(a, _)| a.eq_ignore_ascii_case(k))
                 .map(|(_, b)| b.as_str())
         };
+        // `www.` is a sibling of the apex, not a separate site: a visitor moving between
+        // `www.shop.example` and `shop.example` has not left the site in either direction.
+        let site_of = |x: &str| {
+            let x = x.trim_end_matches('.').to_lowercase();
+            x.strip_prefix("www.").map(String::from).unwrap_or(x)
+        };
         let self_hosts: Vec<String> = if req.self_hosts.is_empty() {
             url.as_ref()
-                .and_then(|u| u.host_str().map(|x| x.to_lowercase()))
+                .and_then(|u| u.host_str().map(site_of))
                 .into_iter()
                 .collect()
         } else {
-            req.self_hosts.iter().map(|x| x.to_lowercase()).collect()
+            req.self_hosts.iter().map(|x| site_of(x)).collect()
         };
         let (rscheme, rhost, rpath) = parse_ref(h.referer());
-        let internal = !rhost.is_empty()
+        let ref_internal = !rhost.is_empty()
+            && rscheme != "android-app"
             && self_hosts
                 .iter()
+                .filter(|s| !s.is_empty())
                 .any(|s| rhost == *s || rhost.ends_with(&format!(".{s}")));
+        // With the referrer stripped (`Referrer-Policy: no-referrer`), `Sec-Fetch-Site` still says
+        // who initiated the request, and the page cannot forge it. A same-site initiator is a
+        // navigation within the site, even inside an in-app browser: the user agent names the
+        // app the browser lives in, not where this navigation came from.
+        let fetch_internal =
+            rhost.is_empty() && matches!(site.as_str(), "same-origin" | "same-site");
+        let internal = ref_internal || fetch_internal;
 
         // 1. UTM (GA4 waterfall)
-        let (us, um, uc) = (
-            qget_ci("utm_source"),
-            qget_ci("utm_medium"),
-            qget_ci("utm_campaign"),
-        );
+        // Hand-built tracking links often pad values (`utm_source=%20Facebook%20`); GA4 shows
+        // them padded, but no reader means the spaces, and they defeat every source match.
+        let utm = |k: &str| qget_ci(k).map(str::trim).filter(|v| !v.is_empty());
+        let (us, um, uc) = (utm("utm_source"), utm("utm_medium"), utm("utm_campaign"));
         if us.is_some() || um.is_some() {
-            let (ch, _) =
-                self.ga4_channel(us.unwrap_or(""), um.unwrap_or(""), uc.unwrap_or(""), &rhost);
+            // A missing `utm_source` is taken from an external referrer first, as GA4 does, and
+            // the channel is derived from that same name, so the two cannot disagree.
+            // Web referrers are categorised by host, which the referrer rules match; an app
+            // package by its resolved name, since `com.google.android.gm` is not a Google search.
+            let ref_src = (!rhost.is_empty() && !ref_internal)
+                .then(|| self.ref_source_name(&rscheme, &rhost));
+            let ref_for_ga4 = match &ref_src {
+                Some(n) if rscheme == "android-app" => n.as_str(),
+                Some(_) => rhost.as_str(),
+                None => "",
+            };
+            let (ch, _) = self.ga4_channel(
+                us.unwrap_or(""),
+                um.unwrap_or(""),
+                uc.unwrap_or(""),
+                ref_for_ga4,
+            );
             let full = us.is_some() && um.is_some();
             let src = us
                 .map(String::from)
+                .or(ref_src)
                 .or_else(|| client.app.clone())
-                .unwrap_or_else(|| {
-                    if rhost.is_empty() {
-                        "(not set)".into()
-                    } else {
-                        rhost.clone()
-                    }
-                });
+                .unwrap_or_else(|| "(not set)".into());
             push(
                 &mut ev,
                 SignalKind::Utm,
@@ -1465,7 +1529,7 @@ impl Attributor {
                     Interaction::Click,
                 ));
             }
-            if let Some(x) = h.get("x-requested-with").filter(|x| !is_browser_pkg(x)) {
+            if let Some(x) = h.get("x-requested-with").filter(|x| is_app_pkg(x)) {
                 let src = self
                     .xrw_apps
                     .get(x)
@@ -1563,6 +1627,21 @@ impl Attributor {
                 None,
                 Interaction::Click,
             ));
+        } else if fetch_internal {
+            push(
+                &mut ev,
+                SignalKind::SecFetch,
+                format!("sec-fetch-site:{site}"),
+                0.6,
+                Some(Channel::Internal),
+                Some("(self)".into()),
+                Some(SEC_FETCH_SITE_DOC.into()),
+                None,
+            );
+            meta.insert(
+                (Channel::Internal, "(self)".into()),
+                ("internal".into(), None, Interaction::Internal),
+            );
         } else if internal {
             push(
                 &mut ev,
@@ -1580,12 +1659,33 @@ impl Attributor {
             );
         } else if !rhost.is_empty() {
             self.referrer_evidence(&rhost, &rpath, &mut ev, &mut meta);
+        } else if load != Load::Page {
+            // A frame, embed or subresource request always has an embedding page; with the
+            // referrer stripped we only know whether it is on another site. It is not a click,
+            // so it is neither dark social nor direct.
+            let w = if site == "cross-site" {
+                weights::EMBED_NO_REFERRER
+            } else {
+                0.3
+            };
+            push(
+                &mut ev,
+                SignalKind::SecFetch,
+                format!("sec-fetch-dest:{dest}"),
+                w,
+                Some(Channel::Referral),
+                Some("(embedding page)".into()),
+                Some(SEC_FETCH_DEST_DOC.into()),
+                None,
+            );
+            meta.insert(
+                (Channel::Referral, "(embedding page)".into()),
+                ("referral".into(), None, Interaction::Embed),
+            );
         } else if ev.iter().all(|e| e.weight <= 0.0) {
             // Zero-weight evidence (the prefetch marker) carries no attribution, so it must not
             // suppress this branch — a prefetched cross-site navigation is still dark social.
             // 6. no referrer, no params
-            let site = h.get("sec-fetch-site").unwrap_or("").to_ascii_lowercase();
-            let mdn = Some("https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Fetch-Site".to_string());
             if site == "cross-site" {
                 push(
                     &mut ev,
@@ -1594,27 +1694,12 @@ impl Attributor {
                     weights::DARK_SOCIAL_SECFETCH,
                     Some(Channel::DarkSocial),
                     Some("(referrer stripped)".into()),
-                    mdn.clone(),
+                    Some(SEC_FETCH_SITE_DOC.into()),
                     None,
                 );
                 meta.insert(
                     (Channel::DarkSocial, "(referrer stripped)".into()),
                     ("(none)".into(), None, Interaction::Click),
-                );
-            } else if site == "same-origin" || site == "same-site" {
-                push(
-                    &mut ev,
-                    SignalKind::SecFetch,
-                    format!("sec-fetch-site:{site}"),
-                    0.6,
-                    Some(Channel::Internal),
-                    Some("(self)".into()),
-                    mdn.clone(),
-                    None,
-                );
-                meta.insert(
-                    (Channel::Internal, "(self)".into()),
-                    ("internal".into(), None, Interaction::Internal),
                 );
             }
             if client.surface == Surface::WebviewIab {
@@ -1646,6 +1731,26 @@ impl Attributor {
                     ("(none)".into(), None, Interaction::Click),
                 );
             }
+            if client.surface == Surface::EmailClient {
+                let src = client
+                    .app
+                    .clone()
+                    .unwrap_or_else(|| "(email client)".into());
+                push(
+                    &mut ev,
+                    SignalKind::NoReferrer,
+                    "email_client_without_referrer".into(),
+                    weights::EMAIL_CLIENT_NO_REFERRER,
+                    Some(Channel::Email),
+                    Some(src.clone()),
+                    None,
+                    None,
+                );
+                meta.insert(
+                    (Channel::Email, norm_source(&src)),
+                    ("email".into(), None, Interaction::Click),
+                );
+            }
             let w = if site == "none" || site.is_empty() {
                 weights::DIRECT
             } else {
@@ -1666,7 +1771,19 @@ impl Attributor {
                 ("(none)".into(), None, Interaction::Navigation),
             );
         }
-        if ev.iter().all(|e| e.kind == SignalKind::Prefetch) {
+        if load != Load::Page && !rhost.is_empty() {
+            push(
+                &mut ev,
+                SignalKind::SecFetch,
+                format!("sec-fetch-dest:{dest}"),
+                0.0,
+                None,
+                None,
+                Some(SEC_FETCH_DEST_DOC.into()),
+                None,
+            );
+        }
+        if ev.iter().all(|e| e.weight <= 0.0) {
             push(
                 &mut ev,
                 SignalKind::NoReferrer,
@@ -1682,8 +1799,33 @@ impl Attributor {
                 ("(none)".into(), None, Interaction::Navigation),
             );
         }
-        let new_touch = !internal && !is_prefetch;
-        self.finish(ev, meta, client, None, is_prefetch, new_touch)
+        let new_touch = !internal && !is_prefetch && load == Load::Page;
+        self.finish(ev, meta, client, None, load, new_touch)
+    }
+
+    /// The source name a referrer resolves to, the way `referrer_evidence` names it:
+    /// `android-app://com.google.android.gm` is `gmail`, `l.facebook.com` is `facebook`, an
+    /// unknown host is itself. Used where a missing `utm_source` is filled from the referrer.
+    fn ref_source_name(&self, rscheme: &str, rhost: &str) -> String {
+        if rscheme == "android-app" {
+            return self
+                .xrw_apps
+                .get(rhost)
+                .cloned()
+                .unwrap_or_else(|| rhost.to_string());
+        }
+        let bare = rhost.trim_start_matches("www.");
+        if self.mastodon.contains(bare) {
+            return "mastodon".into();
+        }
+        match self.referrers.first(rhost) {
+            Some(r) if r.r.source == "google" && rhost.starts_with("mail.") => "gmail".into(),
+            Some(r) if r.r.source == "google" && re!(r"^(docs|drive)\.").is_match(rhost) => {
+                rhost.to_string()
+            }
+            Some(r) => r.r.source.clone(),
+            None => rhost.to_string(),
+        }
     }
 
     fn referrer_evidence(
@@ -1775,7 +1917,12 @@ impl Attributor {
                     } else {
                         Channel::Referral
                     },
-                    rhost.to_string(),
+                    // `gmail`, as the Gmail app's package maps to, so web and app clicks group.
+                    if mail {
+                        "gmail".to_string()
+                    } else {
+                        rhost.to_string()
+                    },
                     if mail { "email" } else { "referral" },
                     r.src.clone(),
                     r.verified.clone(),
@@ -1908,9 +2055,10 @@ impl Attributor {
         meta: HashMap<(Channel, String), (String, Option<String>, Interaction)>,
         client: Client,
         bot: Option<Bot>,
-        is_prefetch: bool,
+        load: Load,
         new_touch: bool,
     ) -> Attribution {
+        let is_prefetch = ev.iter().any(|e| e.kind == SignalKind::Prefetch);
         // hypotheses = every (channel, source) named by evidence or meta
         let mut hyps: Vec<(Channel, String)> = meta.keys().cloned().collect();
         for e in &ev {
@@ -1971,7 +2119,7 @@ impl Attributor {
                         interaction: if is_prefetch {
                             Interaction::Prefetch
                         } else {
-                            inter
+                            load.interaction().unwrap_or(inter)
                         },
                         confidence: round(1.0 - prod),
                         share: 0.0,
@@ -2112,6 +2260,9 @@ impl Attributor {
         r(Unknown)
     }
 
+    /// GA4's session source is `utm_source` when present; the referrer (a host or a resolved
+    /// source name) only stands in for a missing one, so `utm_source=newsletter` via t.co is
+    /// still categorised as a newsletter.
     fn source_category(&self, s: &str, ref_host: &str) -> String {
         let s = s.trim_start_matches("www.");
         if ai_src(s) {
@@ -2125,13 +2276,10 @@ impl Attributor {
         if self.ga4.video_host.is_match(s) || re!(r"^(youtube|yt|vimeo|twitch|kick)$").is_match(s) {
             return "video".into();
         }
-        let r = self.referrers.first(s).or_else(|| {
-            if ref_host.is_empty() {
-                None
-            } else {
-                self.referrers.first(ref_host)
-            }
-        });
+        if s.is_empty() && !ref_host.is_empty() {
+            return self.source_category(ref_host, "");
+        }
+        let r = self.referrers.first(s);
         if search_src(s) || r.is_some_and(|r| r.r.kind == "search") {
             return "search".into();
         }
@@ -2153,6 +2301,43 @@ impl Attributor {
 
 // ---------------------------------------------------------------- helpers
 
+const SEC_FETCH_SITE_DOC: &str =
+    "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Fetch-Site";
+const SEC_FETCH_DEST_DOC: &str =
+    "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Fetch-Dest";
+
+/// What `Sec-Fetch-Dest` says was requested (fetch.spec.whatwg.org, "destination").
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Load {
+    /// A top-level document, or no fetch metadata to say otherwise.
+    Page,
+    /// A document in a nested frame, embed or object: shown inside another page.
+    Embed,
+    /// Not a document at all: an image, script, style sheet, font, media, worker, `fetch()`, ….
+    Subresource,
+}
+
+impl Load {
+    fn of(dest: &str) -> Load {
+        match dest {
+            "iframe" | "frame" | "fencedframe" | "embed" | "object" => Load::Embed,
+            "audio" | "audioworklet" | "empty" | "font" | "image" | "json" | "manifest"
+            | "paintworklet" | "report" | "script" | "serviceworker" | "sharedworker" | "style"
+            | "track" | "video" | "webidentity" | "worker" | "xslt" => Load::Subresource,
+            // `document`, absent, or a value this list does not know: a value we cannot read
+            // must not demote a page view.
+            _ => Load::Page,
+        }
+    }
+    fn interaction(self) -> Option<Interaction> {
+        match self {
+            Load::Page => None,
+            Load::Embed => Some(Interaction::Embed),
+            Load::Subresource => Some(Interaction::Subresource),
+        }
+    }
+}
+
 struct Headers<'a> {
     m: HashMap<String, &'a str>,
     req: &'a Request,
@@ -2168,13 +2353,21 @@ impl<'a> Headers<'a> {
             req,
         }
     }
+    /// Header values are trimmed (RFC 9110 5.5: surrounding whitespace is not part of the value),
+    /// and a blank value counts as absent.
+    fn without_client_hints(req: &'a Request) -> Self {
+        let mut h = Self::new(req);
+        h.m.retain(|k, _| !k.starts_with("sec-ch-ua"));
+        h
+    }
     fn get(&self, k: &str) -> Option<&'a str> {
-        self.m.get(k).copied().filter(|v| !v.is_empty())
+        self.m.get(k).map(|v| v.trim()).filter(|v| !v.is_empty())
     }
     fn ua(&self) -> &'a str {
         self.req
             .user_agent
             .as_deref()
+            .map(str::trim)
             .or_else(|| self.get("user-agent"))
             .unwrap_or("")
     }
@@ -2182,6 +2375,7 @@ impl<'a> Headers<'a> {
         self.req
             .referer
             .as_deref()
+            .map(str::trim)
             .or_else(|| self.get("referer"))
             .or_else(|| self.get("referrer"))
             .filter(|r| *r != "-")
@@ -2208,11 +2402,17 @@ fn parse_ref(r: &str) -> (String, String, String) {
                 u.path(),
                 u.query().map(|q| format!("?{q}")).unwrap_or_default()
             );
-            (
-                u.scheme().to_string(),
-                u.host_str().unwrap_or("").to_lowercase(),
-                path,
-            )
+            let scheme = u.scheme().to_string();
+            // `example.com.` is the same host as `example.com` (RFC 1034 3.1, fully qualified).
+            let mut host = u
+                .host_str()
+                .unwrap_or("")
+                .trim_end_matches('.')
+                .to_lowercase();
+            if scheme == "android-app" && !is_pkg_name(&host) {
+                host.clear();
+            }
+            (scheme, host, path)
         }
         None => (String::new(), String::new(), String::new()),
     }
@@ -2228,6 +2428,16 @@ fn mk_bot(class: BotClass, token: &str, op: &str, src: Option<String>) -> Bot {
     }
 }
 
+/// An Android application id: at least two dot-separated segments, each a letter followed by
+/// letters, digits or `_` (developer.android.com/build/configure-app-module). Anything else in
+/// `X-Requested-With` or an `android-app://` referrer is noise, not an app.
+fn is_pkg_name(x: &str) -> bool {
+    re!(r"^[A-Za-z][A-Za-z0-9_]*(\.[A-Za-z][A-Za-z0-9_]*)+$").is_match(x)
+}
+/// An app package that is not a browser's own (browsers set `X-Requested-With` to themselves).
+fn is_app_pkg(x: &str) -> bool {
+    is_pkg_name(x) && !is_browser_pkg(x)
+}
 fn is_browser_pkg(x: &str) -> bool {
     re!(r"(?i)^(com\.android\.chrome|com\.chrome\.(beta|dev|canary)|org\.mozilla\.\w+|com\.sec\.android\.app\.sbrowser|com\.opera\.\w+|com\.brave\.browser|com\.microsoft\.emmx|com\.UCMobile\.intl|com\.mi\.globalbrowser|com\.duckduckgo\.mobile\.android|com\.vivaldi\.browser|XMLHttpRequest)$").is_match(x)
 }

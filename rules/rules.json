@@ -1645,21 +1645,21 @@
   {
    "class": "ai_crawler",
    "token": "amazon-kendra",
-   "operator": "other",
+   "operator": "amazon",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "AmazonBuyForMe",
-   "operator": "other",
+   "operator": "amazon",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "Amzn-SearchBot",
-   "operator": "other",
+   "operator": "amazon",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -1680,21 +1680,21 @@
   {
    "class": "ai_crawler",
    "token": "anthropic-ai",
-   "operator": "other",
+   "operator": "anthropic",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "ApifyBot",
-   "operator": "other",
+   "operator": "apify",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "ApifyWebsiteContentCrawler",
-   "operator": "other",
+   "operator": "apify",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -1708,7 +1708,7 @@
   {
    "class": "ai_crawler",
    "token": "atlassian-bot",
-   "operator": "other",
+   "operator": "atlassian",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -1722,14 +1722,14 @@
   {
    "class": "ai_crawler",
    "token": "AzureAI-SearchBot",
-   "operator": "other",
+   "operator": "microsoft",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "bedrockbot",
-   "operator": "other",
+   "operator": "amazon",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -1743,7 +1743,7 @@
   {
    "class": "ai_crawler",
    "token": "Bravebot",
-   "operator": "other",
+   "operator": "brave",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -1792,21 +1792,21 @@
   {
    "class": "ai_crawler",
    "token": "ChatGPT Agent",
-   "operator": "other",
+   "operator": "openai",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "Claude-Code",
-   "operator": "other",
+   "operator": "anthropic",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "Claude-Web",
-   "operator": "other",
+   "operator": "anthropic",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -1820,21 +1820,21 @@
   {
    "class": "ai_crawler",
    "token": "Cloudflare-AutoRAG",
-   "operator": "other",
+   "operator": "cloudflare",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "CloudflareBrowserRenderingCrawler",
-   "operator": "other",
+   "operator": "cloudflare",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "CloudVertexBot",
-   "operator": "other",
+   "operator": "google",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -1855,14 +1855,14 @@
   {
    "class": "ai_crawler",
    "token": "cohere-ai",
-   "operator": "other",
+   "operator": "cohere",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "cohere-training-data-crawler",
-   "operator": "other",
+   "operator": "cohere",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -1911,7 +1911,7 @@
   {
    "class": "ai_crawler",
    "token": "DeepSeekBot",
-   "operator": "other",
+   "operator": "deepseek",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -1925,7 +1925,7 @@
   {
    "class": "ai_crawler",
    "token": "Diffbot",
-   "operator": "other",
+   "operator": "diffbot",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -1939,7 +1939,7 @@
   {
    "class": "ai_crawler",
    "token": "DoubaoBot",
-   "operator": "other",
+   "operator": "bytedance",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -1960,21 +1960,21 @@
   {
    "class": "ai_crawler",
    "token": "ERNIEBot",
-   "operator": "other",
+   "operator": "baidu",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "ExaBot",
-   "operator": "other",
+   "operator": "exa",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "ExaSearchBot",
-   "operator": "other",
+   "operator": "exa",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -1988,7 +1988,7 @@
   {
    "class": "ai_crawler",
    "token": "FirecrawlAgent",
-   "operator": "other",
+   "operator": "firecrawl",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -2002,49 +2002,49 @@
   {
    "class": "ai_crawler",
    "token": "Google-Extended",
-   "operator": "other",
+   "operator": "google",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "Google-Firebase",
-   "operator": "other",
+   "operator": "google",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "Google-Gemini-CLI",
-   "operator": "other",
+   "operator": "google",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "GoogleAgent-Mariner",
-   "operator": "other",
+   "operator": "google",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "GoogleOther",
-   "operator": "other",
+   "operator": "google",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "GoogleOther-Image",
-   "operator": "other",
+   "operator": "google",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "GoogleOther-Video",
-   "operator": "other",
+   "operator": "google",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -2058,7 +2058,7 @@
   {
    "class": "ai_crawler",
    "token": "GrokAppAndroid",
-   "operator": "other",
+   "operator": "xai",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -2086,7 +2086,7 @@
   {
    "class": "ai_crawler",
    "token": "Hunyuan",
-   "operator": "other",
+   "operator": "tencent",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -2170,21 +2170,21 @@
   {
    "class": "ai_crawler",
    "token": "Kimi-Agent",
-   "operator": "other",
+   "operator": "moonshot",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "Kimi-SearchBot",
-   "operator": "other",
+   "operator": "moonshot",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "KimiBot",
-   "operator": "other",
+   "operator": "moonshot",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -2240,28 +2240,28 @@
   {
    "class": "ai_crawler",
    "token": "MistralAI-Index",
-   "operator": "other",
+   "operator": "mistral",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "MistralAI-Training",
-   "operator": "other",
+   "operator": "mistral",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "MoonshotBot",
-   "operator": "other",
+   "operator": "moonshot",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "Mozilla-Tabstack",
-   "operator": "other",
+   "operator": "mozilla",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -2310,7 +2310,7 @@
   {
    "class": "ai_crawler",
    "token": "NovaAct",
-   "operator": "other",
+   "operator": "amazon",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -2331,7 +2331,7 @@
   {
    "class": "ai_crawler",
    "token": "OpenAI",
-   "operator": "other",
+   "operator": "openai",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -2408,21 +2408,21 @@
   {
    "class": "ai_crawler",
    "token": "QuillBot",
-   "operator": "other",
+   "operator": "quillbot",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "quillbot.com",
-   "operator": "other",
+   "operator": "quillbot",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "QwenBot",
-   "operator": "other",
+   "operator": "alibaba",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -2450,14 +2450,14 @@
   {
    "class": "ai_crawler",
    "token": "SemrushBot-OCOB",
-   "operator": "other",
+   "operator": "semrush",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "SemrushBot-SWA",
-   "operator": "other",
+   "operator": "semrush",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -2485,7 +2485,7 @@
   {
    "class": "ai_crawler",
    "token": "TavilyBot",
-   "operator": "other",
+   "operator": "tavily",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -2513,7 +2513,7 @@
   {
    "class": "ai_crawler",
    "token": "TikTokSpider",
-   "operator": "other",
+   "operator": "bytedance",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -2576,7 +2576,7 @@
   {
    "class": "ai_crawler",
    "token": "xAI-Grok",
-   "operator": "other",
+   "operator": "xai",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -2590,14 +2590,14 @@
   {
    "class": "ai_crawler",
    "token": "YandexAdditional",
-   "operator": "other",
+   "operator": "yandex",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
   {
    "class": "ai_crawler",
    "token": "YandexAdditionalBot",
-   "operator": "other",
+   "operator": "yandex",
    "src": "https://github.com/ai-robots-txt/ai.robots.txt (MIT) ; https://developers.cloudflare.com/ai-crawl-control/reference/bots/",
    "verified": "2026-10-24"
   },
@@ -2666,6 +2666,41 @@
   },
   {
    "class": "link_preview",
+   "token": "vkShare",
+   "operator": "vk",
+   "src": "https://dev.vk.com/en/widgets/share ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "link_preview",
+   "token": "BlueskyPreviewBot",
+   "operator": "bluesky",
+   "src": "https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "link_preview",
+   "token": "Mastodon/",
+   "operator": "mastodon",
+   "src": "https://docs.joinmastodon.org/spec/activitypub/ ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "seo_tool",
+   "token": "Google-InspectionTool",
+   "operator": "google",
+   "src": "https://developers.google.com/crawling/docs/crawlers-fetchers/google-common-crawlers ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": "2026-10-24"
+  },
+  {
+   "class": "ad_verifier",
+   "token": "SnapchatAds",
+   "operator": "snapchat",
+   "src": "https://businesshelp.snapchat.com/s/article/adsbot-crawler ; https://github.com/monperrus/crawler-user-agents (MIT)",
+   "verified": null
+  },
+  {
+   "class": "link_preview",
    "token": "LinkedInBot",
    "operator": "linkedin",
    "src": "https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/monperrus/crawler-user-agents (MIT)",
@@ -2694,7 +2729,7 @@
   },
   {
    "class": "link_preview",
-   "token": "WhatsApp/",
+   "token": "WhatsApp",
    "operator": "whatsapp",
    "src": "https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/ ; https://github.com/monperrus/crawler-user-agents (MIT)",
    "verified": "2026-10-24"

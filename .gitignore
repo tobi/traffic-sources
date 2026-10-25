@@ -1,4 +1,5 @@
 /target
+/difftest/target
 **/*.rs.bk
 *.pdb
 

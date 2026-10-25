@@ -56,6 +56,31 @@ jobs:
       - run: cargo test --doc
       - run: cargo run --quiet --example basic
 
+  difftest:
+    name: differential tests vs regex and url
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: difftest
+      - run: cargo test --release --manifest-path difftest/Cargo.toml
+
+  zero-deps:
+    name: no dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+      # The published crate must stay dependency-free, including dev- and build-dependencies.
+      - name: cargo tree lists only this crate
+        run: |
+          set -euo pipefail
+          tree=$(cargo tree --edges all --prefix none)
+          printf '%s\n' "$tree"
+          test "$(printf '%s\n' "$tree" | sort -u | wc -l)" -eq 1
+
   cli:
     name: cli smoke test
     runs-on: ubuntu-latest

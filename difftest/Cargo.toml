@@ -1,0 +1,13 @@
+[package]
+name = "traffic-sources-difftest"
+version = "0.0.0"
+edition = "2021"
+publish = false
+description = "Differential tests: the crate's own regex engine and URL parser against the regex and url crates."
+
+# Standalone: these dev-only reference crates never enter the published crate's dependency graph.
+[workspace]
+
+[dependencies]
+regex = "1"
+url = "2"

@@ -255,6 +255,22 @@ for _ in range(1500):
     row(url=URL + ("?" + qs if qs else ""), referer=rng.choice(pool_r), ua=rng.choice(REAL_UAS),
         self_hosts=rng.choice(["", "shop.example"]), **rng.choice(pool_h))
 
+# --- fetch-metadata grid: destination x initiator x mode/activation x client x referrer.
+# Appended after the random rows so that adding it left every earlier row in place.
+GRID_UAS = [CHROME_MAC, REAL_UAS[6], REAL_UAS[5], REAL_UAS[7],
+            "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 5 Build/LMY48B; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/43.0.2357.65 Mobile Safari/537.36"]
+for dest in ["document", "iframe", "frame", "embed", "object", "image", "empty", "fencedframe"]:
+    for site in ["cross-site", "same-site", "same-origin", "none", None]:
+        for mode, user in [("navigate", "?1"), ("navigate", None), ("no-cors", None)]:
+            for ua in GRID_UAS:
+                for ref in ["", "https://t.co/", "https://shop.example/", "https://news.example/"]:
+                    h = {"sec_fetch_dest": dest, "sec_fetch_mode": mode}
+                    if site:
+                        h["sec_fetch_site"] = site
+                    if user:
+                        h["sec_fetch_user"] = user
+                    row(referer=ref, ua=ua, **h)
+
 with open(os.path.join(HERE, "requests.tsv"), "w") as f:
     f.write("\n".join(rows) + "\n")
 
